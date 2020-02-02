@@ -21,9 +21,9 @@ class HospitalContract extends Contract {
                 hospital_code: 'AB1',
                 city: 'Leskovac',
                 list_of_ordinations: [
-                    "C2",
-                    "G2",
-                    "A3"
+                    'C2',
+                    'G2',
+                    'A3'
                 ],
                 services: [
                     {
@@ -69,9 +69,9 @@ class HospitalContract extends Contract {
                 hospital_code: 'AB8',
                 city: 'Nis',
                 list_of_ordinations: [
-                    "C2",
-                    "G2",
-                    "A3"
+                    'C2',
+                    'G2',   
+                    'A3'
                 ],
                 services: [
                     {

@@ -4,7 +4,7 @@
 
 'use strict';
 
-// WaitingList ID = Hospital_code + Ordination_code
+// WaitingList ID = Hospital_code + Ordination_code + Service_code
 const { Contract } = require('fabric-contract-api');
 
 class WaitingListContract extends Contract {
@@ -13,7 +13,8 @@ class WaitingListContract extends Contract {
         console.info('============= START : Initialize Ledger ==============');
         const lists = [
             {
-                list_id: 'AB2QWE',
+                list_id: 'AB2QWES2',
+                service_code: 'S2',
                 ordination_code: 'QWE',
                 hospital_code: 'AB2',
                 pacients: [ 
@@ -41,7 +42,8 @@ class WaitingListContract extends Contract {
                 ]
             },
             {
-                list_id: '112ABA',
+                list_id: '112ABAS2',
+                service_code: 'S2',
                 ordination_code: '112',
                 hospital_code: 'ABA',
                 pacients: [ 
@@ -69,7 +71,8 @@ class WaitingListContract extends Contract {
                 ]
             },
             {
-                list_id: '1121G1',
+                list_id: '1121G1S2',
+                service_code: 'S2',
                 ordination_code: '112',
                 hospital_code: '1G1',
                 pacients: [ 

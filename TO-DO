@@ -1,0 +1,9 @@
+#To-Do
+
+## PACIENT contract
+
+- Dodati paginaciju prilikom pribavljanja pacijenata
+
+## HOSPITALS contract
+
+- Prebaciti informacije o ovlascenim licima u private data

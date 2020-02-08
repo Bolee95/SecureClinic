@@ -129,8 +129,7 @@ class HospitalContract extends Contract {
         if (exists) {
             throw new Error(`The hospital with code ${hospitalCode} already exists`);
         }
-        const asset = { value };
-        const buffer = Buffer.from(JSON.stringify(asset));
+        const buffer = Buffer.from(JSON.stringify(value));
         await ctx.stub.putState(hospitalCode, buffer);
     }
 
@@ -149,8 +148,7 @@ class HospitalContract extends Contract {
         if (!exists) {
             throw new Error(`The hospital with code ${hospitalCode} does not exist`);
         }
-        const asset = { value: newValue };
-        const buffer = Buffer.from(JSON.stringify(asset));
+        const buffer = Buffer.from(JSON.stringify(newValue));
         await ctx.stub.putState(hospitalCode, buffer);
     }
 

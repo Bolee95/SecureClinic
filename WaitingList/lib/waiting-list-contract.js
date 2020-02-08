@@ -118,8 +118,7 @@ class WaitingListContract extends Contract {
         if (exists) {
             throw new Error(`The waiting list ${waitingListId} already exists`);
         }
-        const asset = { value };
-        const buffer = Buffer.from(JSON.stringify(asset));
+        const buffer = Buffer.from(JSON.stringify(value));
         await ctx.stub.putState(waitingListId, buffer);
     }
 
@@ -138,8 +137,7 @@ class WaitingListContract extends Contract {
         if (!exists) {
             throw new Error(`The waiting list ${waitingListId} does not exist`);
         }
-        const asset = { value: newValue };
-        const buffer = Buffer.from(JSON.stringify(asset));
+        const buffer = Buffer.from(JSON.stringify(newValue));
         await ctx.stub.putState(waitingListId, buffer);
     }
 

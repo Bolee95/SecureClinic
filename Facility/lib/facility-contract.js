@@ -93,8 +93,7 @@ class FacilityContract extends Contract {
         if (exists) {
             throw new Error(`The facility ${facilityId} already exists`);
         }
-        const asset = { value };
-        const buffer = Buffer.from(JSON.stringify(asset));
+        const buffer = Buffer.from(JSON.stringify(value));
         await ctx.stub.putState(facilityId, buffer);
     }
 
@@ -113,8 +112,7 @@ class FacilityContract extends Contract {
         if (!exists) {
             throw new Error(`The facility ${facilityId} does not exist`);
         }
-        const asset = { value: newValue };
-        const buffer = Buffer.from(JSON.stringify(asset));
+        const buffer = Buffer.from(JSON.stringify(newValue));
         await ctx.stub.putState(facilityId, buffer);
     }
 

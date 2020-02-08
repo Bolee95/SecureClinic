@@ -215,8 +215,7 @@ class PacientContract extends Contract {
         if (exists) {
             throw new Error(`The pacient with lbo ${lbo} already exists`);
         }
-        const asset = { value };
-        const buffer = Buffer.from(JSON.stringify(asset));
+        const buffer = Buffer.from(JSON.stringify(value));
         await ctx.stub.putState(lbo, buffer);
     }
 
@@ -277,22 +276,22 @@ class PacientContract extends Contract {
     }
 
     async updatePacient(ctx, lbo, newValue) {
-    const exists = await this.pacientExists(ctx, lbo);
-     if (!exists) {
-        throw new Error(`Pacient with lbo ${lbo} does not exist`);
-    }
-        const asset = { newValue };
-        const buffer = Buffer.from(JSON.stringify(asset));
+        const exists = await this.pacientExists(ctx, lbo);
+        if (!exists) {
+            throw new Error(`Pacient with lbo ${lbo} does not exist`);
+        }
+        const buffer = Buffer.from(JSON.stringify(newValue));
         await ctx.stub.putState(lbo, buffer);
     }
 
     async getAllPacients(ctx) {
     //https://fabric-shim.github.io/release-1.4/tutorial-using-iterators.html
-    const startKey = '';
-    const endKey = '';
+        const startKey = '';
+        const endKey = '';
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
         const allResults = [];
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             const res = await iterator.next();
 

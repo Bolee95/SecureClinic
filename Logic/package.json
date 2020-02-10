@@ -1,0 +1,13 @@
+{
+    "engineStrict": true,
+    "author": "John Doe",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "fabric-contract-api": "1.4.2",
+        "fabric-shim": "1.4.2"
+    },
+    "devDependencies": {
+        "fabric-client": "^1.4.4",
+        "fabric-network": "^1.4.4"
+    }
+}

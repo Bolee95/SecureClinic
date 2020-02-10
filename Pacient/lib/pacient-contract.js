@@ -14,19 +14,6 @@ class PacientContract extends Contract {
     //=========================================================================================
     async initLedgerWithPrivateData(ctx) {
         console.info('============= START : Initialize Ledger using private data ===========');
-
-        const pacients = [
-            {
-                name: 'Bogdan',
-                surname: 'Ilic',
-                jmbg: '1234567890',
-                lbo: '000000001',
-                current_waiting_status: 'NOT_ACTIVE',
-                hospital_name: 'Opsta bolnica Grdelica',
-                hospital_code: 'OBG1',
-                waiting_list_code: '',
-            }
-        ];
         const pacientsPrivateData = [
             {
                 sick_history:
@@ -43,32 +30,72 @@ class PacientContract extends Contract {
                     '23sdag34524' : 'I',
                     '2123sdt4532' : 'V'
                 },
+            },
+            {
+                sick_history:
+                {
+                    MP1: 'N',
+                    GP2: 'A',
+                    AS1: 'N',
+                    TF2: 'A'
+                },
+                ID: 'q123dbft34325',
+                card_id: '2231000231',
+                docs_id: {
+                    '2sdaewq2331' : 'V',
+                    '23sdag34524' : 'I',
+                    '2123sdt4532' : 'V'
+                },
+            },
+            {
+                sick_history:
+                {
+                    MP1: 'N',
+                    GP2: 'A',
+                    AS1: 'N',
+                    TF2: 'A'
+                },
+                ID: 'q123dbft34326',
+                card_id: '2231000231',
+                docs_id: {
+                    '2sdaewq2331' : 'V',
+                    '23sdag34524' : 'I',
+                    '2123sdt4532' : 'V'
+                },
             }
         ];
 
-        for (let i = 0; i < pacients.length; i++ ) {
-
-            await ctx.stub.putState(pacients[i].lbo, Buffer.from(JSON.stringify(pacients[i])));
-            await ctx.stub.putPrivateData(PACIENT_COLLECTION, pacients[i].lbo, Buffer.from(JSON.stringify(pacientsPrivateData[i])));
-            console.info('Added ---> ', pacients[i]);
+        for (let i = 0; i < pacientsPrivateData.length; i++ ) {
+            await ctx.stub.putPrivateData(PACIENT_COLLECTION, pacientsPrivateData[i].ID, Buffer.from(JSON.stringify(pacientsPrivateData[i])));
+            console.info('Added ---> ', pacientsPrivateData[i]);
         }
         console.info('============== DONE: Initialize Ledger using private data ================');
     }
 
-    async readPacientPrivateData(ctx, pacientJMBG) {
+    async readPacientPrivateData(ctx, pacientId) {
         console.info('============= START : Retrieve private data of pacient ===========');
-        const exists = this.pacientPrivateDataExists(ctx, pacientJMBG);
+        const exists = await this.pacientPrivateDataExists(ctx, pacientId);
         if (!exists) {
-            throw new Error(`The pacient private data for jmbg: ${pacientJMBG} does not exist`);
+            throw new Error(`The pacient private data for pacientId: ${pacientId} does not exist`);
         }
-        const buffer = await ctx.stub.getPrivateData(PACIENT_COLLECTION, pacientJMBG);
+        const buffer = await ctx.stub.getPrivateData(PACIENT_COLLECTION, pacientId);
         const asset = JSON.parse(buffer.toString());
         return asset;
     }
 
-    async pacientPrivateDataExists(ctx, pacientJMBG) {
-        const buffer = await ctx.stub.getPrivateData(PACIENT_COLLECTION, pacientJMBG);
+    async pacientPrivateDataExists(ctx, pacientId) {
+        const buffer = await ctx.stub.getPrivateData(PACIENT_COLLECTION, pacientId);
         return (!!buffer && buffer.length > 0);
+    }
+
+    async updatePacientPrivateData(ctx, pacientId, newData) {
+        console.info('============= START: Updating private data for pacient ============');
+        const exists = await this.pacientPrivateDataExists(ctx, pacientId);
+        if(!exists) {
+            throw new Error(`The pacient private data for pacientId: ${pacientId} does not exist`);
+        }
+        const updateResult = await ctx.stub.putPrivateData(PACIENT_COLLECTION,pacientId,Buffer.from(JSON.stringify(newData)));
+        return updateResult;
     }
 
     //==============================================================================================
@@ -85,70 +112,32 @@ class PacientContract extends Contract {
                 jmbg: '1234567890',
                 lbo: '000000002',
                 ID: 'q123dbft34324',
-                sick_history:
-                {
-                    MP1: 'N',
-                    GP2: 'A',
-                    AS1: 'N',
-                    TF2: 'A'
-                },
                 current_waiting_status: 'NOT_ACTIVE',
                 hospital_name: 'Opsta bolnica Leskovac',
                 waiting_list_code: '',
-                hospital_code: 'OBG1',
-                docs_id: {
-                    Asdaewq2331 : 'V',
-                    '23sdag34524' : 'I',
-                    '2123sdt4532' : 'V'
-                }
+                hospital_code: 'OBG1'
             },
             {
                 name: 'Darko',
                 surname: 'Ilic',
                 jmbg: '1234567890',
                 lbo: '000000003',
-                ID: 'q123dbft34323',
-                card_id: '2231000231',
-                sick_history:
-                {
-                    MP1: 'N',
-                    GP2: 'A',
-                    AS1: 'N',
-                    TF2: 'A'
-                },
+                ID: 'q123dbft34325',
                 current_waiting_status: 'ACTIVE',
                 hospital_name: 'VMA Beograd',
                 waiting_list_code: 'CD3',
-                hospital_code: 'OBG1',
-                docs_id: {
-                    Asdaewq2331 : 'V',
-                    '23sdag34524' : 'I',
-                    '2123sdt4532' : 'V'
-                }
+                hospital_code: 'OBG1'
             },
             {
                 name: 'Viktor',
                 surname: 'Djikic',
                 jmbg: '1234567890',
                 lbo: '000000004',
-                ID: 'q123dbft34321',
-                card_id: '2231000231',
-                sick_history:
-                {
-                    MP1: 'N',
-                    GP2: 'A',
-                    AS1: 'N',
-                    TF2: 'A'
-                },
+                ID: 'q123dbft34326',
                 current_waiting_status: 'NOT_ACTIVE',
                 hospital_name: 'Opsta bolnica Grdelica',
                 waiting_list_code: '',
-                hospital_code: 'OBG1',
-                docs_id: {
-                    Asdaewq2331 : 'V',
-                    '23sdag34524' : 'I',
-                    '2123sdt4532' : 'V'
-                }
+                hospital_code: 'OBG1'
             },
             {
                 name: 'Djordje',
@@ -156,23 +145,10 @@ class PacientContract extends Contract {
                 jmbg: '1234567890',
                 lbo: '000000005',
                 ID: 'q123dbft343212',
-                card_id: '2231000231',
-                sick_history:
-                {
-                    MP1: 'N',
-                    GP2: 'A',
-                    AS1: 'N',
-                    TF2: 'A'
-                },
                 current_waiting_status: 'WAITING',
                 hospital_name: 'Klicniki centar Nis',
                 waiting_list_code: 'QA1',
-                hospital_code: 'OBG1',
-                docs_id: {
-                    Asdaewq2331 : 'V',
-                    '23sdag34524' : 'I',
-                    '2123sdt4532' : 'V'
-                }
+                hospital_code: 'OBG1'
             },
         ];
 
@@ -181,7 +157,10 @@ class PacientContract extends Contract {
             await ctx.stub.putState(pacients[i].lbo, Buffer.from(JSON.stringify(pacients[i])));
             console.info('Added ---> ', pacients[i]);
         }
+
+        await this.initLedgerWithPrivateData(ctx);
         console.info('============== DONE: Init Ledger ================');
+        return true;
     }
     //===================================================================================================
     // CRUD functions

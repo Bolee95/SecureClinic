@@ -5,7 +5,7 @@
 'use strict';
 
 const { ChaincodeStub, ClientIdentity } = require('fabric-shim');
-const { HospitalsContract } = require('..');
+const { HospitalContract } = require('..');
 const winston = require('winston');
 
 const chai = require('chai');
@@ -30,77 +30,77 @@ class TestContext {
 
 }
 
-describe('HospitalsContract', () => {
+describe('HospitalContract', () => {
 
     let contract;
     let ctx;
 
     beforeEach(() => {
-        contract = new HospitalsContract();
+        contract = new HospitalContract();
         ctx = new TestContext();
-        ctx.stub.getState.withArgs('1001').resolves(Buffer.from('{"value":"hospitals 1001 value"}'));
-        ctx.stub.getState.withArgs('1002').resolves(Buffer.from('{"value":"hospitals 1002 value"}'));
+        ctx.stub.getState.withArgs('1001').resolves(Buffer.from('{"value":"Hospital 1001 value"}'));
+        ctx.stub.getState.withArgs('1002').resolves(Buffer.from('{"value":"Hospital 1002 value"}'));
     });
 
-    describe('#hospitalsExists', () => {
+    describe('#HospitalExists', () => {
 
-        it('should return true for a hospitals', async () => {
-            await contract.hospitalsExists(ctx, '1001').should.eventually.be.true;
+        it('should return true for a Hospital', async () => {
+            await contract.HospitalExists(ctx, '1001').should.eventually.be.true;
         });
 
-        it('should return false for a hospitals that does not exist', async () => {
-            await contract.hospitalsExists(ctx, '1003').should.eventually.be.false;
-        });
-
-    });
-
-    describe('#createHospitals', () => {
-
-        it('should create a hospitals', async () => {
-            await contract.createHospitals(ctx, '1003', 'hospitals 1003 value');
-            ctx.stub.putState.should.have.been.calledOnceWithExactly('1003', Buffer.from('{"value":"hospitals 1003 value"}'));
-        });
-
-        it('should throw an error for a hospitals that already exists', async () => {
-            await contract.createHospitals(ctx, '1001', 'myvalue').should.be.rejectedWith(/The hospitals 1001 already exists/);
+        it('should return false for a Hospital that does not exist', async () => {
+            await contract.HospitalExists(ctx, '1003').should.eventually.be.false;
         });
 
     });
 
-    describe('#readHospitals', () => {
+    describe('#createHospital', () => {
 
-        it('should return a hospitals', async () => {
-            await contract.readHospitals(ctx, '1001').should.eventually.deep.equal({ value: 'hospitals 1001 value' });
+        it('should create a Hospital', async () => {
+            await contract.createHospital(ctx, '1003', 'Hospital 1003 value');
+            ctx.stub.putState.should.have.been.calledOnceWithExactly('1003', Buffer.from('{"value":"Hospital 1003 value"}'));
         });
 
-        it('should throw an error for a hospitals that does not exist', async () => {
-            await contract.readHospitals(ctx, '1003').should.be.rejectedWith(/The hospitals 1003 does not exist/);
-        });
-
-    });
-
-    describe('#updateHospitals', () => {
-
-        it('should update a hospitals', async () => {
-            await contract.updateHospitals(ctx, '1001', 'hospitals 1001 new value');
-            ctx.stub.putState.should.have.been.calledOnceWithExactly('1001', Buffer.from('{"value":"hospitals 1001 new value"}'));
-        });
-
-        it('should throw an error for a hospitals that does not exist', async () => {
-            await contract.updateHospitals(ctx, '1003', 'hospitals 1003 new value').should.be.rejectedWith(/The hospitals 1003 does not exist/);
+        it('should throw an error for a Hospital that already exists', async () => {
+            await contract.createHospital(ctx, '1001', 'myvalue').should.be.rejectedWith(/The Hospital 1001 already exists/);
         });
 
     });
 
-    describe('#deleteHospitals', () => {
+    describe('#readHospital', () => {
 
-        it('should delete a hospitals', async () => {
-            await contract.deleteHospitals(ctx, '1001');
+        it('should return a Hospital', async () => {
+            await contract.readHospital(ctx, '1001').should.eventually.deep.equal({ value: 'Hospital 1001 value' });
+        });
+
+        it('should throw an error for a Hospital that does not exist', async () => {
+            await contract.readHospital(ctx, '1003').should.be.rejectedWith(/The Hospital 1003 does not exist/);
+        });
+
+    });
+
+    describe('#updateHospital', () => {
+
+        it('should update a Hospital', async () => {
+            await contract.updateHospital(ctx, '1001', 'Hospital 1001 new value');
+            ctx.stub.putState.should.have.been.calledOnceWithExactly('1001', Buffer.from('{"value":"Hospital 1001 new value"}'));
+        });
+
+        it('should throw an error for a Hospital that does not exist', async () => {
+            await contract.updateHospital(ctx, '1003', 'Hospital 1003 new value').should.be.rejectedWith(/The Hospital 1003 does not exist/);
+        });
+
+    });
+
+    describe('#deleteHospital', () => {
+
+        it('should delete a Hospital', async () => {
+            await contract.deleteHospital(ctx, '1001');
             ctx.stub.deleteState.should.have.been.calledOnceWithExactly('1001');
         });
 
-        it('should throw an error for a hospitals that does not exist', async () => {
-            await contract.deleteHospitals(ctx, '1003').should.be.rejectedWith(/The hospitals 1003 does not exist/);
+        it('should throw an error for a Hospital that does not exist', async () => {
+            await contract.deleteHospital(ctx, '1003').should.be.rejectedWith(/The Hospital 1003 does not exist/);
         });
 
     });

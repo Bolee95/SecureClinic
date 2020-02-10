@@ -38,31 +38,30 @@ describe('PacientContract', () => {
     beforeEach(() => {
         contract = new PacientContract();
         ctx = new TestContext();
-        ctx.stub.getState.withArgs('1001').resolves(Buffer.from('{"value":"pacient 1001 value"}'));
-        ctx.stub.getState.withArgs('1002').resolves(Buffer.from('{"value":"pacient 1002 value"}'));
+        ctx.stub.getState.withArgs('000000002').resolves(Buffer.from('{"value":"Pacient with lbo value of 000000002"}'));
     });
 
     describe('#pacientExists', () => {
 
         it('should return true for a pacient', async () => {
-            await contract.pacientExists(ctx, '1001').should.eventually.be.true;
+            await contract.pacientExists(ctx, '000000002').should.eventually.be.true;
         });
 
         it('should return false for a pacient that does not exist', async () => {
-            await contract.pacientExists(ctx, '1003').should.eventually.be.false;
+            await contract.pacientExists(ctx, '000000000').should.eventually.be.false;
         });
 
     });
 
-    describe('#createPacient', () => {
+    describe('#createPacientShort', () => {
 
         it('should create a pacient', async () => {
-            await contract.createPacient(ctx, '1003', 'pacient 1003 value');
-            ctx.stub.putState.should.have.been.calledOnceWithExactly('1003', Buffer.from('{"value":"pacient 1003 value"}'));
+            await contract.createPacientShort(ctx, '0000000011', 'pacient 000000002 value');
+            ctx.stub.putState.should.have.been.calledOnceWithExactly('0000000011', Buffer.from('"pacient 000000002 value"'));
         });
 
         it('should throw an error for a pacient that already exists', async () => {
-            await contract.createPacient(ctx, '1001', 'myvalue').should.be.rejectedWith(/The pacient 1001 already exists/);
+            await contract.createPacientShort(ctx, '000000002', 'myvalue').should.be.rejectedWith(/The pacient with lbo 000000002 already exists/);
         });
 
     });
@@ -70,24 +69,23 @@ describe('PacientContract', () => {
     describe('#readPacient', () => {
 
         it('should return a pacient', async () => {
-            await contract.readPacient(ctx, '1001').should.eventually.deep.equal({ value: 'pacient 1001 value' });
+            await contract.readPacient(ctx, '000000002').should.eventually.deep.equal({ value: 'Pacient with lbo value of 000000002' });
         });
 
         it('should throw an error for a pacient that does not exist', async () => {
-            await contract.readPacient(ctx, '1003').should.be.rejectedWith(/The pacient 1003 does not exist/);
+            await contract.readPacient(ctx, '000000000').should.be.rejectedWith(/The pacient with lbo 000000000 does not exist/);
         });
 
     });
 
     describe('#updatePacient', () => {
-
         it('should update a pacient', async () => {
-            await contract.updatePacient(ctx, '1001', 'pacient 1001 new value');
-            ctx.stub.putState.should.have.been.calledOnceWithExactly('1001', Buffer.from('{"value":"pacient 1001 new value"}'));
+            await contract.updatePacient(ctx, '000000002', 'pacient 000000002 new value');
+            ctx.stub.putState.should.have.been.calledOnceWithExactly('000000002', Buffer.from('"pacient 000000002 new value"'));
         });
 
         it('should throw an error for a pacient that does not exist', async () => {
-            await contract.updatePacient(ctx, '1003', 'pacient 1003 new value').should.be.rejectedWith(/The pacient 1003 does not exist/);
+            await contract.updatePacient(ctx, '000000000', 'pacient 000000000 new value').should.be.rejectedWith(/Pacient with lbo 000000000 does not exist/);
         });
 
     });
@@ -95,14 +93,23 @@ describe('PacientContract', () => {
     describe('#deletePacient', () => {
 
         it('should delete a pacient', async () => {
-            await contract.deletePacient(ctx, '1001');
-            ctx.stub.deleteState.should.have.been.calledOnceWithExactly('1001');
+            await contract.deletePacient(ctx, '000000002');
+            ctx.stub.deleteState.should.have.been.calledOnceWithExactly('000000002');
         });
 
         it('should throw an error for a pacient that does not exist', async () => {
-            await contract.deletePacient(ctx, '1003').should.be.rejectedWith(/The pacient 1003 does not exist/);
+            await contract.deletePacient(ctx, '000000000').should.be.rejectedWith(/The pacient with lbo 000000000 does not exist/);
         });
 
     });
 
+    // TO-DO
+    /*
+    describe('#getAllPacients', () => {
+        it('Should return iterator for pacients', async() => {
+            const iterator = await contract.getAllPacients(ctx);
+            console.log(iterator);
+        });
+    });
+    */
 });

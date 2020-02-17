@@ -3,22 +3,22 @@ const path = require('path');
 const os = require('os');
 const SmartContractUtil = require('./utils/js-smart-contract-util');
 
-async function checkPacientExists() {
+async function readPacient() {
     const homedir = os.homedir();
     const walletPath = path.join(homedir,  '.fabric-vscode', 'environments', 'Local Fabric', 'wallets', 'Org1');
     const gateway = new fabricNetwork.Gateway();
     const fabricWallet = new fabricNetwork.FileSystemWallet(walletPath);
-    let connectionProfile;
+    const connectionProfile = await SmartContractUtil.getConnectionProfile();
+
     const identityName = process.argv[2];
     const pacientId = process.argv[3];
-    connectionProfile = await SmartContractUtil.getConnectionProfile();
-    
+
     const discoveryAsLocalhost = SmartContractUtil.hasLocalhostURLs(connectionProfile);
     const discoveryEnabled = true;
 
     // Check if user exists in wallets
     await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    
+
     // Setting up Gateway parameters
     const options = {
         discovery: {
@@ -31,11 +31,20 @@ async function checkPacientExists() {
 
     // Connecting to Gateway
     await gateway.connect(connectionProfile, options);
-    // Execute Transaction
-    const result = await SmartContractUtil.submitTransaction(gateway,'Pacient','pacientExists', pacientId);
-    // Disconecting from Gateway
-    gateway.disconnect();
 
-    console.log(result.toString());
-}
-checkPacientExists();
+    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient','readPacient', pacientId);
+
+    let pacient = JSON.parse(bufferedResult.toString());
+    console.log(pacient.jmbg);
+
+    gateway.disconnect();
+};
+
+readPacient().then(() => {
+    console.log('Creating new Pacient started!');
+}).catch((expection) => {
+    console.log('Exception catched');
+    console.log(expection);
+    console.log(expection.stack);
+    process.exit(-1);
+});

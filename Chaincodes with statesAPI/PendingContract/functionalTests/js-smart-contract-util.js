@@ -16,7 +16,7 @@ class SmartContractUtil {
 
     static async getConnectionProfile() {
         const homedir = os.homedir();
-        const connectionProfilePath = path.join(homedir, '.fabric-vscode', 'gateways', 'local_fabric', 'local_fabric.json');
+        const connectionProfilePath = path.join(homedir, '.fabric-vscode', 'environments', 'Local Fabric', 'gateways', 'Org1', 'Org1.json');
 
         const connectionProfileContents = await fs.readFile(connectionProfilePath, 'utf8');
         if (connectionProfilePath.endsWith('.json')) {
@@ -31,9 +31,9 @@ class SmartContractUtil {
         const network = await gateway.getNetwork('mychannel');
         let contract;
         if (contractName !== '') {
-            contract = await network.getContract('Pacient', contractName);
+            contract = await network.getContract('Pending', contractName);
         } else {
-            contract = await network.getContract('Pacient');
+            contract = await network.getContract('Pending');
         }
         const responseBuffer = await contract.submitTransaction(functionName, ...args);
         return responseBuffer;

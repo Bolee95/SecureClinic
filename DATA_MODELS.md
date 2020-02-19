@@ -58,6 +58,7 @@ __PUBLIC DATA__
 - **hospital_code**
 - pendings (array)
 -- jmbg
+-- lbo
 -- list_id
 -- service_code
 -- ordination_code

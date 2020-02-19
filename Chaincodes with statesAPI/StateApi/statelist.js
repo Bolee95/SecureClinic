@@ -65,12 +65,18 @@ class StateList {
     }
 
     /**
-     * Get all state of list without any criteria
+     * Get all state of list that would be filtered by some part of composite key (obj parameter)
     */
-    async getAllStates() {
+    async getAllStates(obj) {
         //const compositeStartKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(startKey));
         //const compositeEndKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(endKey));
-        const iterator = await this.ctx.stub.getStateByPartialCompositeKey(this.name, []);//await this.ctx.stub.getStateByRange(compositeStartKey, compositeEndKey);
+        let partialKey;
+        if (obj == null) {
+            partialKey = [];
+        } else {
+            partialKey = State.splitKey(obj);
+        }
+        const iterator = await this.ctx.stub.getStateByPartialCompositeKey(this.name, partialKey);
         
         const allResults = [];
         while (true) {

@@ -87,9 +87,9 @@ class State {
      */
     static makeKey(keyParts) {
         //return keyParts.map(part => JSON.stringify(part)).join(':');
-        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+        const reducer = (accumulator, currentValue) => accumulator + ':' + currentValue;
         const key = keyParts.reduce(reducer);
-        return key
+        return key;
     }
 
     static splitKey(key){

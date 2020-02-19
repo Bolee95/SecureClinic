@@ -5,7 +5,7 @@ const State = require('../../StateApi/state.js');
 class Facility extends State {
 
     constructor(obj) {
-        super(Service.getClass(), [obj.code]);
+        super(Facility.getClass(), [obj.facilityCode]);
         Object.assign(this, obj);
     }
 

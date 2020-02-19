@@ -20,7 +20,7 @@ class Service {
     toBuffer() {
         return Buffer.from(JSON.stringify(this));
     }
-
+    
     static createInstance(serviceCode, serviceName, maxWaitingTime) {
         return new Service({serviceCode, serviceName, maxWaitingTime});
     }

@@ -23,7 +23,7 @@ class FacilitiesList extends StateList {
     }
 
     async getAllFacilities() {
-        return this.getAllFacilities();
+        return this.getAllStates();
     }
 }
 

@@ -39,8 +39,8 @@ class PendingContract extends Contract {
         return pendingData;
     }
 
-    async getPending(ctx, listId) {
-        const pendingData = await ctx.pendingList.getPending(listId);
+    async getPending(ctx, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
+        const pendingData = await ctx.pendingList.getPending([hospitalCode,serviceCode,ordinationCode,pacientLbo]);
         return pendingData;
     }
 

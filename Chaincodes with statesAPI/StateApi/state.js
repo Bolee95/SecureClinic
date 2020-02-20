@@ -86,7 +86,9 @@ class State {
      * @param (String[]) keyParts
      */
     static makeKey(keyParts) {
-        //return keyParts.map(part => JSON.stringify(part)).join(':');
+        if (!Array.isArray(keyParts)) {
+            return keyParts;
+        }
         const reducer = (accumulator, currentValue) => accumulator + ':' + currentValue;
         const key = keyParts.reduce(reducer);
         return key;
@@ -97,5 +99,4 @@ class State {
     }
 
 }
-
 module.exports = State;

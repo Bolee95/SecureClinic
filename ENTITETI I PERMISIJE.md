@@ -40,7 +40,7 @@
 ---------------------------------------------------------------------------------------------------------------
 |    Pacient PD     | addPacientPrivateData |     privateData(Model)      |               DOC                 |
 |                   | getPacientPrivateData |   pacientKey (uniqueId)     |               DOC                 |
-|                   | updatePacientPD       |     privateData(Model)      |               DOC                 |
+|                   |    updatePacientPD    |     privateData(Model)      |               DOC                 |
 ---------------------------------------------------------------------------------------------------------------
 |     Hospital      |     addHospital       |      hospital (Model)       |                A                  |
 |                   |     getHospital       |       hospitalCode          |            DOC, U, T              |

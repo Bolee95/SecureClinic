@@ -33,8 +33,13 @@ class HospitalContract extends Contract {
 
     async addHospital(ctx, hospital) {
         const modeledHospital = Hospital.fromJSON(hospital, Hospital);
-        const hospitalData = await ctx.hospitalList.addHospital(modeledHospital);
-        return hospitalData;
+        const hospitalExists = await ctx.hospitalList.hospitalExists(modeledHospital.hospitalCode);
+        if (!hospitalExists) {
+            const hospitalData = await ctx.hospitalList.addHospital(modeledHospital);
+            return hospitalData;
+        } else {
+            throw new Error(`Hospital with hospitalCode ${modeledHospital.hospitalCode} already exists!`);
+        }
     }
 
     async getHospital(ctx, hospitalCode) {

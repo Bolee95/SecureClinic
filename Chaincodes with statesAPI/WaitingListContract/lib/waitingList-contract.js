@@ -36,8 +36,14 @@ class WaitingListContract extends Contract {
     }
 
     async addWaitingList(ctx, waitingList) {
-        const waitingListData = await ctx.waitingLists.addWaitingList(waitingList);
-        return waitingListData;
+        const modeledWaitingList = WaitingList.fromJSON(waitingList, WaitingList);
+        const waitingListExists = await ctx.waitingLists.waitingListExists([modeledWaitingList.hospitalCode, modeledWaitingList.serviceCode, modeledWaitingList.ordinationCode]);
+        if (!waitingListExists) {
+            const waitingListData = await ctx.waitingLists.addWaitingList(waitingList);
+            return waitingListData;
+        } else {
+            throw new Error(`WaitingList with key ${[modeledWaitingList.hospitalCode, modeledWaitingList.serviceCode, modeledWaitingList.ordinationCode]} already exists!`)
+        }
     }
 
     async getWaitingList(ctx, hospitalCode, serviceCode, ordinationCode) {
@@ -45,8 +51,9 @@ class WaitingListContract extends Contract {
         return waitingListData;
     }
 
-    async updateWaitingList(ctx, waitingList) {
-        const waitingListData = await ctx.waitingLists.updateWaitingList(waitingList);
+    async updateWaitingList(ctx, newWaitingList) {
+        const modeledWaitingList = WaitingList.fromJSON(newWaitingList, WaitingList);
+        const waitingListData = await ctx.waitingLists.updateWaitingList(modeledWaitingList);
         return waitingListData;
     }
 

@@ -34,13 +34,26 @@ class FacilityContract extends Contract {
         await ctx.facilitiesList.addFacility(facility2);
     }
 
+    async addFacility(ctx, facility) {
+        const modeledFacility = Facility.fromJSON(facility, Facility);
+        const facilityExists = await ctx.facilitiesList.facilityExists(modeledFacility.facilityCode);
+        if(!facilityExists) {
+            const facilityData = await ctx.facilitiesList.addFacility(modeledFacility);
+            return facilityData;
+        } else {
+            throw new Error(`Facility with facilityCode ${modeledFacility.facilityCode} already exists!`);
+        }
+    }
+
     async getFacility(ctx, facilityCode) {
         const facilityData = await ctx.facilitiesList.getFacility(facilityCode);
         return facilityData; 
     }
 
-    async updateFacility(ctx, facility) {
-        const facility = await ctx.facilitiesList.updateFacility(facility);
+    async updateFacility(ctx, newFacility) {
+        const modeledFacility = Facility.fromJSON(newFacility, Facility);
+        const facility = await ctx.facilitiesList.updateFacility(modeledFacility);
+        return facility;
     }
 
     async getAllFacilities(ctx) {

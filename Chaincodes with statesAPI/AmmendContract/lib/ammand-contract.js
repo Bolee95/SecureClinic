@@ -34,8 +34,14 @@ class AmmandListContract extends Contract {
     }
 
     async addAmmand(ctx, ammand) {
-        const ammandData = await ctx.ammandList.addAmmand(ammand);
-        return ammandData;
+        const modeledAmmand = Ammand.fromJSON(ammand, Ammand);
+        const ammandExists = await ctx.ammandList.ammandExists([modeledAmmand.hospitalCode, modeledAmmand.ammandId]);
+        if (!ammandExists) {
+            const ammandData = await ctx.ammandList.addAmmand(modeledAmmand);
+            return ammandData;
+        } else {
+            throw new Error(`Ammand with key ${[modeledAmmand.hospitalCode, modeledAmmand.ammandId]} already exists!`);
+        }
     }
 
     async getAmmand(ctx, hospitalCode, ammandId) {
@@ -43,8 +49,9 @@ class AmmandListContract extends Contract {
         return ammandData;
     }
 
-    async updateAmmand(ctx, ammand) {
-        const ammandData = await ctx.ammandList.updateAmmand(ammand);
+    async updateAmmand(ctx, newAmmand) {
+        const modeledAmmand = Ammand.fromJSON(newAmmand, Ammand);
+        const ammandData = await ctx.ammandList.updateAmmand(modeledAmmand);
         return ammandData;
     }
 

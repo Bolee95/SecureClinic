@@ -35,8 +35,14 @@ class PendingContract extends Contract {
     }
 
     async addPending(ctx, pending) {
-        const pendingData = await ctx.pendingList.addPending(pending);
-        return pendingData;
+        const modeledPending = Pending.fromJSON(pending, Pending);
+        const pendingExists = await ctx.pendingList.pendingExists([modeledPending.hospitalCode, modeledPending.serviceCode, modeledPending.ordinationCode, modeledPending.pacientLbo]);
+        if (!pendingExists) {
+            const pendingData = await ctx.pendingList.addPending(modeledPending);
+            return pendingData;
+        } else {
+            throw new Error(`Pending with key ${[modeledPending.hospitalCode, modeledPending.serviceCode, modeledPending.ordinationCode, modeledPending.pacientLbo]} already exists!`);
+        }
     }
 
     async getPending(ctx, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
@@ -44,8 +50,9 @@ class PendingContract extends Contract {
         return pendingData;
     }
 
-    async updatePending(ctx, pending) {
-        const pendingData = await ctx.pendingList.updatePending(pending);
+    async updatePending(ctx, newPending) {
+        const modeledPending = Pending.fromJSON(newPending, Pending);
+        const pendingData = await ctx.pendingList.updatePending(modeledPending);
         return pendingData;
     }
 

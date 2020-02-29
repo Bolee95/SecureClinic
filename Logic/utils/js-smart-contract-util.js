@@ -12,7 +12,50 @@ const URL = require('url');
 const os = require('os');
 const path = require('path');
 
+const fabricNetwork = require('fabric-network');
+
 class SmartContractUtil {
+
+    static async checkIdentityNameWithRole(identityName, identityRole) {
+        let roleCheckValid = identityName.includes(identityRole);
+        if (roleCheckValid) {
+            return;
+        } else {
+            throw new Error(`Error check failed. Identity is not associated with role --> ${identityRole}.`);
+        }
+    }
+
+    static async getConfiguredGateway(fabricWallet, identityName) {
+
+        // Retrieving connection profile 
+        const connectionProfile = await SmartContractUtil.getConnectionProfile();
+
+        // Retrieving gateway API and setting up configuration
+        const gateway = new fabricNetwork.Gateway();
+        const discoveryAsLocalhost = SmartContractUtil.hasLocalhostURLs(connectionProfile);
+        const discoveryEnabled = true;
+
+        // Setting up Gateway parameters
+        const options = {
+            discovery: {
+                asLocalhost: discoveryAsLocalhost,
+                enabled: discoveryEnabled,
+            },
+            identity: identityName,
+            wallet: fabricWallet,
+        };
+
+        // Connecting to Gateway
+        await gateway.connect(connectionProfile, options);
+        return gateway;
+    }
+
+    static async getFileSystemWallet() {
+        const homedir = os.homedir();
+        const walletPath = path.join(homedir,  '.fabric-vscode', 'environments', 'Local Fabric', 'wallets', 'Org1');
+        const fabricWallet = new fabricNetwork.FileSystemWallet(walletPath);
+        return fabricWallet;
+    }
 
     static async getConnectionProfile() {
         const homedir = os.homedir();
@@ -36,16 +79,17 @@ class SmartContractUtil {
         } else {
             throw new Error('Please define contract name!');
         }
-        const responseBuffer = await contract.submitTransaction(functionName, ...args);
+        const stringifiedArgs = JSON.stringify(args);
+        const responseBuffer = await contract.submitTransaction(functionName, stringifiedArgs);
         return responseBuffer;
     }
 
     static async checkIdentityInWallet(fabricWallet,identityName) {
         const userExists = await fabricWallet.exists(identityName);
-        if (!userExists) {
-            return false;
+        if (userExists) {
+            return;
         } else {
-            return true;
+            throw new Error('User already enrolled!');
         }
     }
     

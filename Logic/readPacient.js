@@ -1,42 +1,30 @@
-const fabricNetwork = require('fabric-network');
-const path = require('path');
-const os = require('os');
-const SmartContractUtil = require('./utils/js-smart-contract-util');
+const SmartContractUtil = require('./utils/js-smart-contract-util.js');
+
+const IdentityRole = require('./utils/js-smart-contract-globals.js');
+const Pacient = require('../../Contracts/Chaincodes with statesAPI/PacientContract/lib/pacient.js');
 
 async function readPacient() {
-    const homedir = os.homedir();
-    const walletPath = path.join(homedir,  '.fabric-vscode', 'environments', 'Local Fabric', 'wallets', 'Org1');
-    const gateway = new fabricNetwork.Gateway();
-    const fabricWallet = new fabricNetwork.FileSystemWallet(walletPath);
-    const connectionProfile = await SmartContractUtil.getConnectionProfile();
 
     const identityName = process.argv[2];
     const pacientId = process.argv[3];
 
-    const discoveryAsLocalhost = SmartContractUtil.hasLocalhostURLs(connectionProfile);
-    const discoveryEnabled = true;
-
+    // Using Utility class to setup everything
+    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
     await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-
-    // Setting up Gateway parameters
-    const options = {
-        discovery: {
-            asLocalhost: discoveryAsLocalhost,
-            enabled: discoveryEnabled,
-        },
-        identity: identityName,
-        wallet: fabricWallet,
-    };
+    await SmartContractUtil.checkIdentityNameWithRole(identityName, IdentityRole.USER);
 
     // Connecting to Gateway
-    await gateway.connect(connectionProfile, options);
+    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet,identityName);    
 
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient','readPacient', pacientId);
+    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient','getPacient', pacientId);
 
-    let pacient = JSON.parse(bufferedResult.toString());
-    console.log(pacient.jmbg);
-
+    if (bufferedResult.length > 0) {
+        let pacient = Pacient.deserialize(bufferedResult);
+        console.log(pacient.getNameAndSurname());
+    } else {
+        console.log(`No pacient registered with pacientId ${pacientId}.`);
+    }
     gateway.disconnect();
 };
 
@@ -47,4 +35,6 @@ readPacient().then(() => {
     console.log(expection);
     console.log(expection.stack);
     process.exit(-1);
+}).finally(() => {
+    console.log('ReadPacient function call ended.');
 });

@@ -31,7 +31,7 @@ class PacientList extends StateList {
     }
 
     async getAllPacients() {
-        return this.getAllStates('0000000000','9999999999');
+        return this.getAllStates();
     }
 }
 

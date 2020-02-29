@@ -22,16 +22,17 @@ async function registerUser() {
     const enrollment = await ca.enroll({ enrollmentID: username, enrollmentSecret: secret});
     const userIdentity = await fabricNetwork.X509WalletMixin.createIdentity('Org1MSP', enrollment.certificate, enrollment.key.toBytes());
     await fabricWallet.import(username, userIdentity);
+    console.log(`User with id ${username} registered`);
     gateway.disconnect();
 };
 
 registerUser().then(() => {
-    console.log('RegisterUser function started!');
+    //console.log('RegisterUser function started!');
 }).catch((exception) => {
     console.log('Registering new user failed... Error:\n!');
     console.log(exception);
     //console.log(exception.stack);
     process.exit(-1);
 }).finally(() => {
-    console.log('RegisterUser fucniton call ended!');
+    //console.log('RegisterUser fucniton call ended!');
 })

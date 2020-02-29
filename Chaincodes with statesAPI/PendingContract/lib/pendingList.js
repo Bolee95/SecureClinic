@@ -21,6 +21,10 @@ class PendingList extends StateList {
         return this.updateState(pending);
     }
 
+    async pendingExists(listId) {
+        return this.stateExists(listId);
+    }
+
     async removePending(listId) {
         return this.deleteState(listId);
     }

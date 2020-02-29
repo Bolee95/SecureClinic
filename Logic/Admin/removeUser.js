@@ -18,18 +18,18 @@ async function registerUser() {
 
     // Remove user of system
     await ca.revoke({ enrollmentID: username }, adminIdentity);
-    //const userIdentity = await fabricNetwork.X509WalletMixin.createIdentity('Org1MSP', enrollment.certificate, enrollment.key.toBytes());
     await fabricWallet.delete(username);
+    console.log(`User with id ${username} removed from wallet.`);
     gateway.disconnect();
 };
 
 registerUser().then(() => {
-    console.log('RemoveUser function started!');
+    //console.log('RemoveUser function started!');
 }).catch((exception) => {
     console.log('Removing new user failed... Error:\n!');
     console.log(exception);
     //console.log(exception.stack);
     process.exit(-1);
 }).finally(() => {
-    console.log('RemoveUser fucniton call ended!');
+    //console.log('RemoveUser fucniton call ended!');
 })

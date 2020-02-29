@@ -13,13 +13,12 @@ async function createHospital() {
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
-    const dummyHospital = Hospital.createInstance('Test Bolnica #3','ABBA', true,'Nis',[],[],[]);
+    const dummyHospital = Hospital.createInstance('Test Bolnica #3','ASQAA', true,'Nis',[],[],[]);
     const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'addHospital', dummyHospital.stringifyClass());
     if (bufferedResult.length > 0) {
-        let hospital = Hospital.deserialize(bufferedResult);
-        console.log(hospital.getHospitalName());
+        console.log(dummyHospital.getHospitalName());
     } else {
-        console.log(`Check if Hospital is created...`);
+        console.log(`Error while creating Hospital...`);
     }
    
     gateway.disconnect();
@@ -32,5 +31,5 @@ createHospital().then(() => {
     console.log(exception);
     process.exit(-1);
 }).finally(() => {
-    console.log('CreateHospital function ended');
+    //console.log('CreateHospital function ended');
 });

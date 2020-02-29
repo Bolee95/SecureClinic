@@ -21,6 +21,10 @@ class WaitingLists extends StateList {
         return this.updateState(waitingList);
     }
 
+    async waitingListExists(listId) {
+        return this.stateExists(listId);
+    }
+
     async getAllWaitingLists() {
         return this.getAllStates();
     }

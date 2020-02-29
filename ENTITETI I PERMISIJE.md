@@ -65,7 +65,7 @@
 |                   |  getAllWaitingLists   |           -//-              |           DOC, DIR, A             |
 |                   |  getAllWLForHospital  |        hospitalCode         |            DOC, DIR               | 
 ---------------------------------------------------------------------------------------------------------------
-| WaitingListAmmend |      addAmmend        |     ammand (Model)          |          T, DOC, DIR              |
+|     Ammand        |      addAmmend        |     ammand (Model)          |          T, DOC, DIR              |
 |                   |      getAmmand        |        ammandId             |          T, DOC, DIR              |
 |                   |     updateAmmand      |     ammand (Model)          |          T, DOC, DIR              |
 |                   |     removeAmmand      |        ammandId             |           -//- (AUTO)             |

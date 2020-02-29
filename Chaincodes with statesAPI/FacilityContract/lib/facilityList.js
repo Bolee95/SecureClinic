@@ -22,6 +22,10 @@ class FacilitiesList extends StateList {
         return this.updateState(facility);
     }
 
+    async facilityExists(facilityCode) {
+        return this.stateExists(facilityCode);
+    }
+
     async getAllFacilities() {
         return this.getAllStates();
     }

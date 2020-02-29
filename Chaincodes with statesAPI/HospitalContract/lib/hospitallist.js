@@ -21,6 +21,10 @@ class HospitalList extends StateList {
         return this.updateState(hospital);
     }
 
+    async hospitalExists(hospitalCode) {
+        return this.stateExists(hospitalCode);
+    }
+
     async getAllHospitals() {
         return this.getAllStates();
     }

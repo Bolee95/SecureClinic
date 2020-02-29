@@ -32,6 +32,7 @@ class StateList {
         let key = this.ctx.stub.createCompositeKey(this.name, state.getSplitKey());
         let data = State.serialize(state);
         await this.ctx.stub.putState(key, data);
+        return true;
     }
 
     /**
@@ -48,6 +49,32 @@ class StateList {
             return state;
         } else {
             return null;
+        }
+    }
+
+     /**
+     * Update a state in the list. Puts the new state in world state with
+     * appropriate composite key.  Note that state defines its own key.
+     * A state is serialized before writing. Logic is very similar to
+     * addState() but kept separate becuase it is semantically distinct.
+     */
+    async updateState(state) {
+        let key = this.ctx.stub.createCompositeKey(this.name, state.getSplitKey());
+        let data = State.serialize(state);
+        await this.ctx.stub.putState(key, data);
+        return true;
+    }
+
+    /**
+     * Checks if state with passed key already exists in worldstate 
+     */
+    async stateExists(key) {
+        let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
+        let data = await this.ctx.stub.getState(ledgerKey);
+        if (data.length > 0){
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -98,31 +125,6 @@ class StateList {
                 await iterator.close();
                 return allResults;
             }
-        }
-    }
-
-    /**
-     * Update a state in the list. Puts the new state in world state with
-     * appropriate composite key.  Note that state defines its own key.
-     * A state is serialized before writing. Logic is very similar to
-     * addState() but kept separate becuase it is semantically distinct.
-     */
-    async updateState(state) {
-        let key = this.ctx.stub.createCompositeKey(this.name, state.getSplitKey());
-        let data = State.serialize(state);
-        await this.ctx.stub.putState(key, data);
-    }
-
-    /**
-     * Checks if state with passed key already exists in worldstate 
-     */
-    async stateExists(key) {
-        let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
-        let data = await this.ctx.stub.getState(ledgerKey);
-        if (data){
-            return true;
-        } else {
-            return false;
         }
     }
 

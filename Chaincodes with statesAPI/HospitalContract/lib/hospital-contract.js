@@ -32,7 +32,8 @@ class HospitalContract extends Contract {
     }
 
     async addHospital(ctx, hospital) {
-        const hospitalData = await ctx.hospitalList.addHospital(hospital);
+        const modeledHospital = Hospital.fromJSON(hospital, Hospital);
+        const hospitalData = await ctx.hospitalList.addHospital(modeledHospital);
         return hospitalData;
     }
 
@@ -42,7 +43,8 @@ class HospitalContract extends Contract {
     }
 
     async updateHospital(ctx, hospital) {
-        const hospitalData = await ctx.hospitalList.updateHospital(hospital);
+        const modeledHospital = Hospital.fromJSON(hospital);
+        const hospitalData = await ctx.hospitalList.updateHospital(modeledHospital);
         return hospitalData;
     }
 

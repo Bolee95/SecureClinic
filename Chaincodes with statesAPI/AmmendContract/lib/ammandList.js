@@ -21,6 +21,10 @@ class AmmandList extends StateList {
         return this.updateState(ammand);
     }
 
+    async removeAmmend(ammandId) {
+        return this.deleteState(ammandId);
+    }
+
     async getAllAmmands() {
         return this.getAllStates();
     }

@@ -82,6 +82,34 @@ class State {
     }
 
     /**
+     * Stringify created class so that it can be used to
+     * be passed around like string. Later, it can be
+     * return back to object by parsing JSON from string
+     * and casted to proper class.
+     */
+    stringifyClass() {
+        return JSON.stringify(this);
+    }
+
+     /**
+     * Constructs a specific State object from string data
+     * that should represent stringified object of specific State instance
+     * @param {string} stringData Stringifed object
+     */
+    fromJSON(stringData, objClass) {
+        return State.fromJSON(stringData, objClass);
+    }
+
+    /**
+     * Static method that constructs a specific State object from string data
+     * that should represent stringified object of specific State instance
+     * @param {string} stringData Stringifed object
+     */
+    static fromJSON(stringData, objClass) {
+        return new (objClass)(JSON.parse(stringData));
+    }
+
+    /**
      * Join the keyParts to make a unififed string
      * @param (String[]) keyParts
      */

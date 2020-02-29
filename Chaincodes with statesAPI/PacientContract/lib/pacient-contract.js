@@ -35,19 +35,36 @@ class PacientContract extends Contract {
         await ctx.pacientPrivateDataList.addPacientPrivateData(pacientPrivateData1);
     }
 
+    async addPacient(ctx, pacient) {
+        const modeledPacient = Pacient.fromJSON(pacient, Pacient);
+        const pacientExists = await ctx.pacientList.pacientExists(modeledPacient.lbo);
+        if (!pacientExists) {
+            const pacientData = await ctx.pacientList.addPacient(modeledPacient);
+            return pacientData;
+        } else {
+            throw new Error(`Pacient with lbo ${modeledPacient.lbo} already exists!`);
+        }
+    }
+
     async getPacient(ctx, pacientLbo) {
         let pacientData = await ctx.pacientList.getPacient(pacientLbo);
         return pacientData;
     }
 
     async updatePacient(ctx, newPacient) {
-        let pacient = await ctx.pacientList.updatePacient(newPacient.lbo, newPacient);
+        const modeledPacient = Pacient.fromJSON(newPacient, Pacient);
+        let pacient = await ctx.pacientList.updatePacient(newPacient.lbo, modeledPacient);
         return pacient;
     }
 
     async removePacient(ctx, pacientLbo) {
         let pacientRemoved = await ctx.pacientList.removePacient(pacientLbo);
         return pacientRemoved;
+    }
+
+    async addPacientPrivateData(ctx, pacientData) {
+        let pacientData = await ctx.pacientPrivateDataList.addPacientPrivateData(pacientData);
+        return pacientData;
     }
 
     async getPacientPrivateData(ctx, pacientId) {
@@ -62,13 +79,7 @@ class PacientContract extends Contract {
 
     async getAllPacients(ctx) {
         let allPacients = await ctx.pacientList.getAllPacients();
-        //allPacients.forEach(pacient => {
-        //    console.log(pacient);
-        //    let pacienttest = new (Pacient)(pacient);
-        //    console.log(pacienttest);
-        //});
         return new (Pacient)(allPacients);
     }
-
 }
 module.exports = PacientContract;

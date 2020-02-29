@@ -79,8 +79,7 @@ class SmartContractUtil {
         } else {
             throw new Error('Please define contract name!');
         }
-        const stringifiedArgs = JSON.stringify(args);
-        const responseBuffer = await contract.submitTransaction(functionName, stringifiedArgs);
+        const responseBuffer = await contract.submitTransaction(functionName, args);
         return responseBuffer;
     }
 
@@ -89,7 +88,7 @@ class SmartContractUtil {
         if (userExists) {
             return;
         } else {
-            throw new Error('User already enrolled!');
+            throw new Error('There is no such user in system!');
         }
     }
     

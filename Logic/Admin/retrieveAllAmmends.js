@@ -1,6 +1,6 @@
 const IdentityRole = require ('../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../utils/js-smart-contract-util');
-const Ammend = require('../../Chaincodes with statesAPI/AmmendContract/lib/ammend.js');
+const Ammend = require('../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend.js');
 
 async function retrieveAllAmmends() {
 
@@ -18,6 +18,7 @@ async function retrieveAllAmmends() {
         const ammendArray = JSON.parse(bufferedResult.toString());
         const firstAmmend = new (Ammend)(ammendArray[0]);
         console.log(ammendArray);
+        return ammendArray;
     } else {
         console.log(`Error while reading all ammends...`);
     }

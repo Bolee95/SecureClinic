@@ -1,7 +1,7 @@
 const IdentityRole = require ('../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../utils/js-smart-contract-util');
-const Pending = require('../../Chaincodes with statesAPI/PendingContract/lib/pending.js');
-const Approver = require('../../Chaincodes with statesAPI/PendingContract/lib/approver.js');
+const Pending = require('../../ChaincodeWithStateAPI/PendingContract/lib/pending.js');
+const Approver = require('../../ChaincodeWithStatesAPI/PendingContract/lib/approver.js');
 
 async function retrieveAllPendings() {
 
@@ -19,7 +19,7 @@ async function retrieveAllPendings() {
         const pendingArray = JSON.parse(bufferedResult.toString());
         const firstPending = new (Pending)(pendingArray[0]);
         const approvers = firstPending.getApprovers();
-        console.log(pendingArray);
+        return pendingArray;
     } else {
         console.log(`Error while reading all pendings...`);
     }

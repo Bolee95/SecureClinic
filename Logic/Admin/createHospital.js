@@ -1,6 +1,6 @@
 const IdentityRole = require ('../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../utils/js-smart-contract-util');
-const Hospital = require('../../Chaincodes with statesAPI/HospitalContract/lib/hospital.js');
+const Hospital = require('../../ChaincodeWithStatesAPI/HospitalContract/lib/hospital.js');
 
 async function createHospital() {
 

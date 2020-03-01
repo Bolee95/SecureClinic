@@ -38,7 +38,7 @@ class Facility extends State {
      * @param {Buffer} data to form back into the object
      */
     static deserialize(data) {
-        return State.deserializeClass(data, Pacient);
+        return State.deserializeClass(data, Facility);
     }
 
     static createInstance(facilityName, facilityCode, services) {

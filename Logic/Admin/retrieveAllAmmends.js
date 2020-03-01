@@ -1,14 +1,10 @@
 const IdentityRole = require ('../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../utils/js-smart-contract-util');
-const Hospital = require('../../Chaincodes with statesAPI/HospitalContract/lib/hospital.js');
+const Ammend = require('../../Chaincodes with statesAPI/AmmendContract/lib/ammend.js');
 
-async function createHospital() {
+async function retrieveAllAmmends() {
 
     const identityName = process.argv[2];
-    const hospitalName = process.argv[3];
-    const hospitalCode = process.argv[4];
-    const privateOrPublic = process.argv[5];
-    const city = process.argv[6];
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -17,23 +13,21 @@ async function createHospital() {
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
-    const hospital = Hospital.createInstance(hospitalName,hospitalCode,privateOrPublic,city,[],[],[]);
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'addHospital', hospital.stringifyClass());
+    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAllAmmends');
     if (bufferedResult.length > 0) {
-        console.log(dummyHospital.getHospitalName());
+        const ammendArray = JSON.parse(bufferedResult.toString());
+        const firstAmmend = new (Ammend)(ammendArray[0]);
+        console.log(ammendArray);
     } else {
-        console.log(`Error while creating Hospital...`);
+        console.log(`Error while reading all ammends...`);
     }
-   
     gateway.disconnect();
-    
 };
 
-createHospital().then(() => {
+retrieveAllAmmends().then(() => {
 }).catch((exception) => {
-    console.log('Creating new hospital failed.... Error:\n');
+    console.log('Retriving pendings failed.... Error:\n');
     console.log(exception);
     process.exit(-1);
 }).finally(() => {
-    //console.log('CreateHospital function ended');
 });

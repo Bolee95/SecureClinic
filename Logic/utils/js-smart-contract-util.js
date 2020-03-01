@@ -17,12 +17,20 @@ const fabricNetwork = require('fabric-network');
 class SmartContractUtil {
 
     static async checkIdentityNameWithRole(identityName, identityRole) {
-        let roleCheckValid = identityName.includes(identityRole);
-        if (roleCheckValid) {
-            return;
+        let roleCheckValid;
+        if(Array.isArray(identityRole)) {
+            for (const role in identityRole) {
+                if(identityName.includes(role)){
+                    return;
+                }
+            }
         } else {
-            throw new Error(`Error check failed. Identity is not associated with role --> ${identityRole}.`);
+            roleCheckValid = identityName.includes(identityRole);
+            if (roleCheckValid) {
+                return;
+            } 
         }
+        throw new Error(`Error check failed. Identity is not associated with role --> ${identityRole}.`);
     }
 
     static async getConfiguredGateway(fabricWallet, identityName) {
@@ -79,8 +87,30 @@ class SmartContractUtil {
         } else {
             throw new Error('Please define contract name!');
         }
-        const responseBuffer = await contract.submitTransaction(functionName, args);
+        let responseBuffer;
+
+        if (Array.isArray(args)) {
+            responseBuffer = await SmartContractUtil.submitTransactionMultipleArgs(contract, functionName, args);
+        }
+        else if (args) {
+            responseBuffer = await contract.submitTransaction(functionName, args);
+        }
+        else {
+            responseBuffer = await contract.submitTransaction(functionName);
+        }
         return responseBuffer;
+    }
+
+    static async submitTransactionMultipleArgs(contract, functionName, args) {
+        let result;
+        if (args.length == 2) {
+            console.log(args[0]);
+            console.log(args[1]);
+            result = await contract.submitTransaction(functionName, args[0], args[1]);
+        } else if (args.length == 3) {
+            result = await contract.submitTransaction(functionName, args[0], args[1], args[2]);
+        }
+        return result;
     }
 
     static async checkIdentityInWallet(fabricWallet,identityName) {

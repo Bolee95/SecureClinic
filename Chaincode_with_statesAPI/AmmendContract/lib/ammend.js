@@ -2,7 +2,7 @@
 
 const State = require('../../StateApi/state.js');
 
-const AmmandType = {
+const AmmendType = {
     USER_INITED: 1,
     TEHNICAL: 2,
     MEDICAL: 3
@@ -10,7 +10,7 @@ const AmmandType = {
 
 class Ammend extends State {
     constructor(obj) {
-        super(Ammend.getClass(), [obj.hospitalCode, obj.ammandId]);
+        super(Ammend.getClass(), [obj.hospitalCode, obj.ammendId]);
         Object.assign(this,obj);
     }
 
@@ -18,8 +18,8 @@ class Ammend extends State {
         return this.hospitalCode;
     }
 
-    getAmmandId() {
-        return this.ammandId;
+    getAmmendId() {
+        return this.ammendId;
     }
 
     getPacientJmbg() {
@@ -58,22 +58,22 @@ class Ammend extends State {
          this.approversList.push(approver);
     }
 
-    // Ammand Type Methods
+    // Ammend Type Methods
 
-    getAmmandType() {
-        return this.ammandType;
+    getAmmendType() {
+        return this.ammendType;
     }
 
-    setAmmandTypePacientInited() {
-        this.ammandType = AmmandType.USER_INITED;
+    setAmmendTypePacientInited() {
+        this.ammendType = AmmendType.USER_INITED;
     }
 
-    setAmmandTypeMedical() {
-        this.ammandType = AmmandType.MEDICAL;
+    setAmmendTypeMedical() {
+        this.ammendType = AmmendType.MEDICAL;
     }
 
-    setAmmandTypeTehnical() {
-        this.ammandType = AmmandType.TEHNICAL;
+    setAmmendTypeTehnical() {
+        this.ammendType = AmmendType.TEHNICAL;
     }
 
     // Utility Methods
@@ -91,15 +91,15 @@ class Ammend extends State {
      * @param {Buffer} data to form back into the object
      */
     static deserialize(data) {
-        return State.deserializeClass(data, Ammand);
+        return State.deserializeClass(data, Ammend);
     }
 
-    static createInstance(ammandId, hospitalCode, pacientJmbg, action, neededEndorsments, listId, evidencesList, approversList) {
-        return new Ammand({ ammandId, hospitalCode, pacientJmbg, action, neededEndorsments, listId, evidencesList, approversList});
+    static createInstance(ammendId, hospitalCode, pacientJmbg, action, neededEndorsments, listId, evidencesList, approversList) {
+        return new Ammend({ ammendId, hospitalCode, pacientJmbg, action, neededEndorsments, listId, evidencesList, approversList});
     }
 
     static getClass() {
-        return 'org.secureclinic.ammand';
+        return 'org.secureclinic.ammend';
     }
 }
 module.exports = Ammend;

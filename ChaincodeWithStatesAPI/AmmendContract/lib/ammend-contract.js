@@ -37,7 +37,7 @@ class AmmendListContract extends Contract {
         const modeledAmmend = Ammend.fromJSON(ammend, Ammend);
         const ammendExists = await ctx.ammendList.ammendExists([modeledAmmend.hospitalCode, modeledAmmend.ammendId]);
         if (!ammendExists) {
-            const ammendData = await ctx.ammendList.addAmmend(modeledammend);
+            const ammendData = await ctx.ammendList.addAmmend(modeledAmmend);
             return ammendData;
         } else {
             throw new Error(`ammend with key ${[modeledammend.hospitalCode, modeledammend.ammendId]} already exists!`);
@@ -49,9 +49,9 @@ class AmmendListContract extends Contract {
         return ammendData;
     }
 
-    async updateAmmend(ctx, newammend) {
-        const modeledammend = ammend.fromJSON(newammend, ammend);
-        const ammendData = await ctx.ammendList.updateAmmend(modeledammend);
+    async updateAmmend(ctx, newAmmend) {
+        const modeledAmmend = Ammend.fromJSON(newAmmend, Ammend);
+        const ammendData = await ctx.ammendList.updateAmmend(modeledAmmend);
         return ammendData;
     }
 

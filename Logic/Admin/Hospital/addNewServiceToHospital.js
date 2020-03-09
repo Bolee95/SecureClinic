@@ -1,15 +1,15 @@
-const IdentityRole = require('../utils/js-smart-contract-globals.js');
-const SmartContractUtil = require('../utils/js-smart-contract-util.js');
-const Hospital = require('../../ChaincodeWithStatesAPI/HospitalContract/lib/hospital.js');
-const Facility = require('../../ChaincodeWithStatesAPI/FacilityContract/lib/facility.js');
-const Service = require('../../ChaincodeWithStatesAPI/FacilityContract/lib/service.js');
+const IdentityRole = require('../../utils/js-smart-contract-globals.js');
+const SmartContractUtil = require('../../utils/js-smart-contract-util.js');
+const Hospital = require('../../../ChaincodeWithStatesAPI/HospitalContract/lib/hospital.js');
+const Facility = require('../../../ChaincodeWithStatesAPI/FacilityContract/lib/facility.js');
+const Service = require('../../../ChaincodeWithStatesAPI/FacilityContract/lib/service.js');
 
 async function addNewServiceToHospital() {
     const identityName = process.argv[2];
     const hospitalCode = process.argv[3];
     const serviceCode = process.argv[4];
 
-    // Using Utility class to setup everything
+    // Using Utility class to setup everythingdD
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
     await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);

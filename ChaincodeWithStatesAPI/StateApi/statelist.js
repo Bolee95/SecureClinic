@@ -69,7 +69,8 @@ class StateList {
      * Checks if state with passed key already exists in worldstate 
      */
     async stateExists(key) {
-        let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
+        let primaryKey = State.makeKey(key);
+        let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(primaryKey));
         let data = await this.ctx.stub.getState(ledgerKey);
         if (data.length > 0){
             return true;

@@ -19,7 +19,7 @@ class SmartContractUtil {
     static async checkIdentityNameWithRole(identityName, identityRole) {
         let roleCheckValid;
         if(Array.isArray(identityRole)) {
-            for (const role in identityRole) {
+            for (const role of identityRole) {
                 if(identityName.includes(role)){
                     return;
                 }
@@ -109,6 +109,10 @@ class SmartContractUtil {
             result = await contract.submitTransaction(functionName, args[0], args[1]);
         } else if (args.length == 3) {
             result = await contract.submitTransaction(functionName, args[0], args[1], args[2]);
+        } else if (args.length == 4) {
+            result = await contract.submitTransaction(functionName, args[0], args[1], args[2], args[3]);
+        } else {
+            throw new Error('Check submitTransactionMultipleArgs method, cannot receive more parameters currently.');
         }
         return result;
     }

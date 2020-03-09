@@ -65,10 +65,10 @@
 |                   |  getAllWaitingLists   |           -//-              |           DOC, DIR, A             |
 |                   |  getAllWLForHospital  |        hospitalCode         |            DOC, DIR               | 
 ---------------------------------------------------------------------------------------------------------------
-|     Ammand        |      addAmmend        |     ammand (Model)          |          T, DOC, DIR              |
-|                   |      getAmmand        |        ammandId             |          T, DOC, DIR              |
-|                   |     updateAmmand      |     ammand (Model)          |          T, DOC, DIR              |
-|                   |     removeAmmand      |        ammandId             |           -//- (AUTO)             |
-|                   |    getAllAmmands      |           -//-              |               A                   |
-|                   | getAllAmmandsForHosp  |      hospitalCode           |          T, DOC, DIR              | 
+|     Ammend        |      addAmmend        |     ammend (Model)          |          T, DOC, DIR              |
+|                   |      getAmmend        |        ammendId             |          T, DOC, DIR              |
+|                   |     updateAmmend      |     ammend (Model)          |          T, DOC, DIR              |
+|                   |     removeAmmend      |        ammendId             |           -//- (AUTO)             |
+|                   |    getAllAmmends      |           -//-              |               A                   |
+|                   | getAllAmmendsForHosp  |      hospitalCode           |          T, DOC, DIR              | 
 ---------------------------------------------------------------------------------------------------------------

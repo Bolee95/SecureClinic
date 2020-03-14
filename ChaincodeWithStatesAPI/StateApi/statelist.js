@@ -84,7 +84,7 @@ class StateList {
      */
     async deleteState(key) {
         let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
-        let pacientExists = await this.pacientExists(ledgerKey);
+        let pacientExists = await this.pacientExists(key);
         if (pacientExists) {
             await this.ctx.stub.deleteState(ledgerKey);
             return true;

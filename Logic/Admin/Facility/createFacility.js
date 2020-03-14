@@ -30,5 +30,4 @@ createFacility().then(() => {
     console.log(exception);
     process.exit(-1);
 }).finally(() => {
-    //console.log('CreateHospital function ended');
 });

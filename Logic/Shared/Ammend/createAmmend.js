@@ -18,7 +18,7 @@ async function createAmmend() {
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
     await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, IdentityRole.TEHNICAL, IdentityRole.DOCTOR, IdentityRole.DIRECTOR);
+    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.TEHNICAL, IdentityRole.DOCTOR, IdentityRole.DIRECTOR]);
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 

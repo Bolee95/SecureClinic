@@ -6,13 +6,13 @@ async function createWaitingList() {
 
     const identityName = process.argv[2];
     const hospitalCode = process.argv[3];
-    const ordinationCode = process.argv[4];
-    const serviceCode = process.argv[5];
+    const serviceCode = process.argv[4];
+    const ordinationCode = process.argv[5];
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
     await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, IdentityRole.ADMIN);
+    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.ADMIN, IdentityRole.DIRECTOR]);
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 

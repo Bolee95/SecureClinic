@@ -53,7 +53,7 @@ class PacientContract extends Contract {
 
     async updatePacient(ctx, newPacient) {
         const modeledPacient = Pacient.fromJSON(newPacient, Pacient);
-        let pacient = await ctx.pacientList.updatePacient(newPacient.lbo, modeledPacient);
+        let pacient = await ctx.pacientList.updatePacient(modeledPacient);
         return pacient;
     }
 

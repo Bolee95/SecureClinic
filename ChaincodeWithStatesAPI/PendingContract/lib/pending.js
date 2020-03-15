@@ -7,11 +7,7 @@ class Pending extends State {
         super(Pending.getClass(), [obj.hospitalCode, obj.serviceCode, obj.ordinationCode, obj.pacientLbo]);
         Object.assign(this, obj);
     }
-
-    getListId() {
-        return this.listId;
-    }
-
+    
     getPacientJmbg() {
         return this.pacientJmbg;
     }
@@ -65,8 +61,8 @@ class Pending extends State {
         return State.deserializeClass(data, Pending);
     }
 
-    static createInstance(listId, pacientLbo, pacientJmbg, hospitalCode, serviceCode, ordinationCode, approvers) {
-        return new Pending({listId ,pacientLbo, pacientJmbg, hospitalCode, serviceCode, ordinationCode, approvers});
+    static createInstance(pacientLbo, pacientJmbg, hospitalCode, serviceCode, ordinationCode, approvers) {
+        return new Pending({pacientLbo, pacientJmbg, hospitalCode, serviceCode, ordinationCode, approvers});
     }
 
     static getClass() {

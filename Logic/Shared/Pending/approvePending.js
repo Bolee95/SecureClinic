@@ -2,6 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Pending = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/pending.js');
 const Approver = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/approver.js');
+const AddPacientToWaitingList = require('../../Auto/addPacientToWaitingList.js');
 
 async function approvePending() {
     const identityName = process.argv[2];
@@ -24,8 +25,15 @@ async function approvePending() {
         let jsonResult = JSON.parse(bufferedResult.toString());
         modeledPending = new (Pending)(jsonResult);
         const role = getRole(identityName);
+ 
+        for (const approver of modeledPending.approvers) {
+            const modeledApprover = new (Approver)(approver);
+            if (modeledApprover.getApproverRole() == role) {
+                throw new Error(`Approver with role ${role} and licence Id  ${licenceId} already approved this pending!`);
+            } 
+        }
+        
         const approver = Approver.createInstance(licenceId, role);
-
         modeledPending.addApprover(approver);
         console.log(modeledPending);
 
@@ -34,11 +42,16 @@ async function approvePending() {
             jsonResult = JSON.parse(bufferedResult.toString());
             updatingResult = (Boolean)(jsonResult);
             console.log(updatingResult);
+
+            if (updatingResult == true && modeledPending.approvers.length >= 3) {
+                await AddPacientToWaitingList(gateway,hospitalCode,serviceCode,ordinationCode,pacientLbo);
+            } else {
+                gateway.disconnect();
+            }
         }
     } else {
         console.log(`Error while approving pending with id ${hospitalCode + ' ' + serviceCode + ' ' + ordinationCode + ' ' + pacientLbo}...`);
     }
-    gateway.disconnect();
     return updatingResult;
 };
 

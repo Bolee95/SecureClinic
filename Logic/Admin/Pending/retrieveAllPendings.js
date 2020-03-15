@@ -9,7 +9,7 @@ async function retrieveAllPendings() {
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
     await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.ADMIN, IdentityRole.USER]);
+    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.ADMIN]);
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 

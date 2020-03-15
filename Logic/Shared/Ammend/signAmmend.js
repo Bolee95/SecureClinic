@@ -2,6 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend.js');
 const Approver = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/approver.js');
+const RemovePacientFromWList = require('../../Auto/removePacientFromWaitingList.js');
 
 async function signAmmend() {
     const identityName = process.argv[2];
@@ -19,6 +20,7 @@ async function signAmmend() {
 
     const role = getRole(identityName);
     const approver = Approver.createInstance(role,workingLicence);
+    let updateRes;
 
     const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAmmend', [hospitalCode,ammendId]);
     if (bufferedResult.length > 0) {
@@ -30,14 +32,21 @@ async function signAmmend() {
         const updateResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'updateAmmend', modeledAmmend.stringifyClass());
         if (updateResult.length > 0) {
             const result = JSON.parse(updateResult.toString());
-            if (result == true) {
-                console.log(`New sign ${hospitalCode + '-' + ammendId} successfully added!`);   
+            updateRes = (Boolean)(result);
+            if (updateRes == true) {
+                console.log(`New sign ${hospitalCode + '-' + ammendId} successfully added!`);
+
+                if (modeledAmmend.getListOfApprovers().length > modeledAmmend.getNumberOfNeededEndrsments()) {
+                    // await RemovePacientFromWList(gateway,hospitalCode,modeledAmmend.)
+                } else {
+                    gateway.disconnect(); 
+                }
             }
         } else {
             console.log(`Error while signing Ammend with id ${hospitalCode + ':' + ammendId}...`);
         }
     }  
-    gateway.disconnect();   
+    return updateRes;
 };
 
 signAmmend().then(() => {

@@ -9,7 +9,7 @@ async function getHospital() {
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
     await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.ADMIN, IdentityRole.USER, IdentityRole.TEHNICAL]);
+    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.USER, IdentityRole.TEHNICAL]);
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledHospital;

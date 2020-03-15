@@ -22,18 +22,20 @@ async function addServiceToFacility() {
         const facility = JSON.parse(bufferedResult.toString());
         modeledFacility = new (Facility)(facility);
 
-        let newService = Service.createInstance(facilityCode + '-' + serviceCode, serviceName, maxWaitTime);
+        let newService = Service.createInstance(serviceCode, serviceName, maxWaitTime);
         modeledFacility.addService(newService);
 
         const updateResult = await SmartContractUtil.submitTransaction(gateway, 'Facility', 'updateFacility', modeledFacility.stringifyClass());
         if (updateResult.length > 0) {
             const result = JSON.parse(updateResult.toString());
             if (result == true) {
-                console.log(`New service ${facilityCode + '-' + serviceCode} successfully added!`);   
+                console.log(`New service ${serviceCode} to Facility with code ${facilityCode} successfully added!`);   
             }
         } else {
             console.log(`Error while updating Facility with new service...`);
         }
+    } else {
+        throw new Error(`Error while retrieving facility with code ${facilityCode}`);
     }  
     gateway.disconnect();   
 };
@@ -44,5 +46,4 @@ addServiceToFacility().then(() => {
     console.log(exception);
     process.exit(-1);
 }).finally(() => {
-    //console.log('CreateHospital function ended');
 });

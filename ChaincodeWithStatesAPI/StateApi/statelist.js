@@ -83,13 +83,14 @@ class StateList {
      * Remove state from worldstate
      */
     async deleteState(key) {
-        let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
-        let pacientExists = await this.pacientExists(key);
-        if (pacientExists) {
+        let primaryKey = State.makeKey(key);
+        let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(primaryKey));
+        let stateExists = await this.stateExists(key);
+        if (stateExists) {
             await this.ctx.stub.deleteState(ledgerKey);
             return true;
         } else {
-            throw new Error("Pacient does not exist, so it can't be removed!");
+            return false;
         }
     }
 

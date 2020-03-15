@@ -19,6 +19,7 @@ class PrivateStateList {
         let key = this.ctx.stub.createCompositeKey(this.name, state.getSplitKey());
         let data = State.serialize(state);
         await this.ctx.stub.putPrivateData(this.collectionName, key, data);
+        return true;
     }
 
     /**
@@ -27,9 +28,10 @@ class PrivateStateList {
      * into JSON object before being returned.
      */
     async getPrivateState(key) {
+        let makeKey = State.makeKey(key);
         let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
         let data = await this.ctx.stub.getPrivateData(this.collectionName, ledgerKey);
-        if (data){
+        if (data.length > 0) {
             let state = State.deserialize(data, this.supportedClasses);
             return state;
         } else {
@@ -46,6 +48,19 @@ class PrivateStateList {
         let key = this.ctx.stub.createCompositeKey(this.name, state.getSplitKey());
         let data = State.serialize(state);
         await this.ctx.stub.putPrivateData(this.collectionName, key, data);
+        return true;
+    }
+
+
+    async privateStateExists(key) {
+        let primaryKey = State.makeKey(key);
+        let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(primaryKey));
+        let data = await this.ctx.stub.getPrivateData(this.collectionName,ledgerKey);
+        if (data.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /** Stores the class for future deserialization */

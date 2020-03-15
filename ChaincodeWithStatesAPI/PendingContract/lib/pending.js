@@ -37,7 +37,7 @@ class Pending extends State {
     }
 
     addApprover(approver) {
-        return this.approver.push(approver);
+        return this.approvers.push(approver);
     }
 
     setPacientLbo(lbo) {

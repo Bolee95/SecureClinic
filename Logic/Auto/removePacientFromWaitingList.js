@@ -39,6 +39,4 @@ async function removePacientFromWaitingList(gateway, hospitalCode, serviceCode, 
         throw new Error('There is no waiting list with passed parameters for key.');
     }
 };
-
-
 module.exports = removePacientFromWaitingList;

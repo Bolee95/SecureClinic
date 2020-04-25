@@ -3,17 +3,8 @@ const AmmendType = require('../../utils/js-smart-contract-ammend-type.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend.js');
 
-
 //let ammend1 = Ammend.createInstance('aba123', 'AB', '12345123', 'Delete', '2', '', [], [approver1, approver2]);
-async function createAmmend() {
-    const identityName = process.argv[2];
-    const ammendId = process.argv[3];
-    const hospitalCode = process.argv[4];
-    const pacientJmbg = process.argv[5];
-    const action = process.argv[6];
-    const neededEndors = process.argv[7];
-    const listId = process.argv[8];
-
+async function createAmmend(identityName, ammendId, hospitalCode, pacientJmbg, action, neededEndors, listId) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -22,7 +13,7 @@ async function createAmmend() {
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
-    const ammend = Ammend.createInstance(ammendId, hospitalCode,pacientJmbg, action, neededEndors, listId, [], []);
+    const ammend = Ammend.createInstance(ammendId, hospitalCode, pacientJmbg, action, neededEndors, listId, [], []);
 
     checkAndSetAmmendType(ammend, identityName);
 
@@ -35,13 +26,15 @@ async function createAmmend() {
     gateway.disconnect();   
 };
 
-createAmmend().then(() => {
-}).catch((exception) => {
-    console.log('Creating new ammend failed.... Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-});
+module.exports = createAmmend;
+
+// createAmmend().then(() => {
+// }).catch((exception) => {
+//     console.log('Creating new ammend failed.... Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+// });
 
 function checkAndSetAmmendType(ammend, identityName) 
 {

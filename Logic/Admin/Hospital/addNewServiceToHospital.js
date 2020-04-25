@@ -4,11 +4,7 @@ const Hospital = require('../../../ChaincodeWithStatesAPI/HospitalContract/lib/h
 const Facility = require('../../../ChaincodeWithStatesAPI/FacilityContract/lib/facility.js');
 const Service = require('../../../ChaincodeWithStatesAPI/FacilityContract/lib/service.js');
 
-async function addNewServiceToHospital() {
-    const identityName = process.argv[2];
-    const hospitalCode = process.argv[3];
-    const serviceCode = process.argv[4];
-
+async function addNewServiceToHospital(identityName, hospitalCode, serviceCode) {
     // Using Utility class to setup everythingdD
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -43,14 +39,15 @@ async function addNewServiceToHospital() {
     } else {
         console.log('Service is not added!');
     }
-
     gateway.disconnect();
 };
 
-addNewServiceToHospital().then(() => {
-}).catch((exception) => {
-    console.log('Adding new service to Hospital failed...Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-});
+module.exports = addNewServiceToHospital;
+
+// addNewServiceToHospital().then(() => {
+// }).catch((exception) => {
+//     console.log('Adding new service to Hospital failed...Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+// });

@@ -2,9 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Pending = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/pending.js');
 
-async function retrieveAllPendings() {
-
-    const identityName = process.argv[2];
+async function retrieveAllPendings(identityName) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -27,10 +25,12 @@ async function retrieveAllPendings() {
     return pendingArray;
 };
 
-retrieveAllPendings().then(() => {
-}).catch((exception) => {
-    console.log('Retriving pendings failed.... Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-});
+module.exports = retrieveAllPendings;
+
+// retrieveAllPendings().then(() => {
+// }).catch((exception) => {
+//     console.log('Retriving pendings failed.... Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+// });

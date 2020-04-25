@@ -2,10 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const PacientPrivateData = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacientPrivateData.js');
 
-async function addPacientPrivateData() {
-    const identityName = process.argv[2];
-    const uniqueId = process.argv[3];
-    const cardId = process.argv[4];
+async function addPacientPrivateData(identityName, uniqueId, cardId) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -28,10 +25,11 @@ async function addPacientPrivateData() {
     return addingResult;
 };
 
-addPacientPrivateData().then(() => {
-}).catch((exception) => {
-    console.log('Adding Pacient private data failed.... Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-});
+module.exports = addPacientPrivateData;
+// addPacientPrivateData().then(() => {
+// }).catch((exception) => {
+//     console.log('Adding Pacient private data failed.... Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+// });

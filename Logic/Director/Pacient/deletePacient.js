@@ -2,9 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Pacient = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
 
-async function deletePacient() {
-    const identityName = process.argv[2];
-    const pacientLbo = process.argv[3];
+async function deletePacient(identityName, pacientLbo) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -26,10 +24,12 @@ async function deletePacient() {
     return deletetingResult;
 };
 
-deletePacient().then(() => {
-}).catch((exception) => {
-    console.log('Deleting pacient failed.... Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-});
+module.exports = deletePacient;
+
+// deletePacient().then(() => {
+// }).catch((exception) => {
+//     console.log('Deleting pacient failed.... Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+// });

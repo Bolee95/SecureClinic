@@ -2,9 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const PacientPrivateData = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacientPrivateData.js');
 
-async function getPacientPrivateData() {
-    const identityName = process.argv[2];
-    const pacientId = process.argv[3];
+async function getPacientPrivateData(identityName, pacientId) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -26,10 +24,11 @@ async function getPacientPrivateData() {
     return modeledPrivateData;
 };
 
-getPacientPrivateData().then(() => {
-}).catch((exception) => {
-    console.log('Retrieving Pacient private data failed.... Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-});
+module.exports = getPacientPrivateData;
+// getPacientPrivateData().then(() => {
+// }).catch((exception) => {
+//     console.log('Retrieving Pacient private data failed.... Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+// });

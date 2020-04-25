@@ -2,10 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const fabricNetwork = require('fabric-network');
 
-async function registerUser() {
-    const identityName = process.argv[2];
-    const username = process.argv[3];
-
+async function registerUser(identityName, username) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -26,13 +23,15 @@ async function registerUser() {
     gateway.disconnect();
 };
 
-registerUser().then(() => {
-    //console.log('RegisterUser function started!');
-}).catch((exception) => {
-    console.log('Registering new user failed... Error:\n!');
-    console.log(exception);
-    //console.log(exception.stack);
-    process.exit(-1);
-}).finally(() => {
-    //console.log('RegisterUser fucniton call ended!');
-})
+module.exports = registerUser;
+
+// registerUser().then(() => {
+//     //console.log('RegisterUser function started!');
+// }).catch((exception) => {
+//     console.log('Registering new user failed... Error:\n!');
+//     console.log(exception);
+//     //console.log(exception.stack);
+//     process.exit(-1);
+// }).finally(() => {
+//     //console.log('RegisterUser fucniton call ended!');
+// })

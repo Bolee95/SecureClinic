@@ -2,14 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Pending = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/pending.js');
 
-async function createPending() {
-    const identityName = process.argv[2];
-    const pacientLbo = process.argv[3];
-    const pacientJmbg = process.argv[4];
-    const hospitalCode = process.argv[5];
-    const serviceCode = process.argv[6];
-    const ordinationCode = process.argv[7];
-
+async function createPending(identityName, pacientLbo, pacientJmbg, hospitalCode, serviceCode, ordinationCode) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -33,10 +26,12 @@ async function createPending() {
     return addingResult;
 };
 
-createPending().then(() => {
-}).catch((exception) => {
-    console.log('Creating Pending failed.... Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-});
+module.exports = createPending;
+
+// createPending().then(() => {
+// }).catch((exception) => {
+//     console.log('Creating Pending failed.... Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+// });

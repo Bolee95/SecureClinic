@@ -19,7 +19,7 @@ class SmartContractUtil {
     static async checkIdentityNameWithRole(identityName, identityRole) {
         let roleCheckValid;
         if(Array.isArray(identityRole)) {
-            for (const role in identityRole) {
+            for (const role of identityRole) {
                 if(identityName.includes(role)){
                     return;
                 }
@@ -60,15 +60,15 @@ class SmartContractUtil {
 
     static async getFileSystemWallet() {
         const homedir = os.homedir();
-        const walletPath = path.join(homedir,  '.fabric-vscode', 'environments', 'Local Fabric', 'wallets', 'Org1');
+        const walletPath = path.join(homedir,  '.fabric-vscode', 'environments', '1 Org Local Fabric', 'wallets', 'Org1');
         const fabricWallet = new fabricNetwork.FileSystemWallet(walletPath);
-        return fabricWallet;
+        return fabricWallet; 
     }
 
     static async getConnectionProfile() {
         const homedir = os.homedir();
 
-        const connectionProfilePath = path.join(homedir, '.fabric-vscode', 'environments', 'Local Fabric', 'gateways', 'Org1', 'Org1.json');
+        const connectionProfilePath = path.join(homedir, '.fabric-vscode', 'environments', '1 Org Local Fabric', 'gateways', 'Org1', 'Org1.json');
 
         const connectionProfileContents = await fs.readFile(connectionProfilePath, 'utf8');
         if (connectionProfilePath.endsWith('.json')) {
@@ -109,6 +109,10 @@ class SmartContractUtil {
             result = await contract.submitTransaction(functionName, args[0], args[1]);
         } else if (args.length == 3) {
             result = await contract.submitTransaction(functionName, args[0], args[1], args[2]);
+        } else if (args.length == 4) {
+            result = await contract.submitTransaction(functionName, args[0], args[1], args[2], args[3]);
+        } else {
+            throw new Error('Check submitTransactionMultipleArgs method, cannot receive more parameters currently.');
         }
         return result;
     }

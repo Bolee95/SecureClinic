@@ -22,7 +22,7 @@
 -------------------------------------
 |     -//-       |   javni podaci   |
 -------------------------------------
-|       PD       |  private data    |
+|      PD        |  private data    |
 =====================================    
 
 
@@ -30,45 +30,45 @@
 ========== FUNKCIJE UGOVORA =========
 ===============================================================================================================
 |       Ugovor      |       Funkcija        |       Parametri f-je        |       Dozvola za izvrsenje        |
----------------------------------------------------------------------------------------------------------------
+|-------------------------------------------------------------------------------------------------------------|
 |      Pacient      |      getPacient       |      pacientKey (lbo)       |             DOC, DIR              |
 |                   |      addPacient       |       pacient (Model)       |               DOC                 |
 |                   |     pacientExists     |      pacientKey (lbo)       |               DOC                 |
 |                   |     updatePacient     |       pacient (Model)       |               DOC                 |
 |                   |     removePacient     |      pacientKey (lbo)       |               DIR                 |
 |                   |     getAllPacients    |            -//-             |               DOC                 |
----------------------------------------------------------------------------------------------------------------
-|    Pacient PD     | addPacientPrivateData |     privateData(Model)      |               DOC                 |
-|                   | getPacientPrivateData |   pacientKey (uniqueId)     |               DOC                 |
-|                   |    updatePacientPD    |     privateData(Model)      |               DOC                 |
----------------------------------------------------------------------------------------------------------------
+|-------------------------------------------------------------------------------------------------------------|
+|    Pacient PD     | addPacientPrivateData |     privateData(Model)      |             DOC,DIR               |
+|                   | getPacientPrivateData |   pacientKey (uniqueId)     |             DOC,DIR               |
+|                   |    updatePacientPD    |     privateData(Model)      |             DOC,DIR               |
+|-------------------------------------------------------------------------------------------------------------|
 |     Hospital      |     addHospital       |      hospital (Model)       |                A                  |
 |                   |     getHospital       |       hospitalCode          |            DOC, U, T              |
 |                   |    updateHospital     |      hospital (Model)       |                A                  |
 |                   |    getAllHospitals    |           -//-              |             DOC, U                |
----------------------------------------------------------------------------------------------------------------
-|     Facility      |     addFacility       |      facility (Model)       |             A, DIR                | 
-|                   |     getFacility       |       facilityCode          |             A, DIR                |
-|                   |    updateFacility     |      facility (Model)       |             A, DIR                |
-|                   |    removeFacility     |       facilityCode          |             A, DIR                |
----------------------------------------------------------------------------------------------------------------
+|-------------------------------------------------------------------------------------------------------------|
+|     Facility      |     addFacility       |      facility (Model)       |                A                  | 
+|                   |     getFacility       |       facilityCode          |                A       		      |
+|                   |    updateFacility     |      facility (Model)       |                A                  |
+|                   |    removeFacility     |       facilityCode          |                A                  |
+|-------------------------------------------------------------------------------------------------------------|
 |     Pending       |     addPending        |       pending (Model)       |               DOC                 |
 |                   |     getPending        | [hCode, sCode, oCode, lbo]  |          U, DOC, DIR, T           |
-|                   |    updatePending      |       pending (Model)       |               DOC                 |
+|                   |    updatePending      |       pending (Model)       |            DOC,DIR, T             |
 |                   |    getAllPendings     |           -//-              |                A                  |
 |                   | getAllPendingsHospital|        hospitalCode         |           DOC, DIR, T             |
 |                   |    removePending      | [hCode, sCode, oCode, lbo]  |           -//- (AUTO)             | 
----------------------------------------------------------------------------------------------------------------
+|-------------------------------------------------------------------------------------------------------------|
 |   WaitingList     |    addWaitingList     |        list (Model)         |             DIR, A                |
 |                   |    getWaitingList     |          listId             |             DOC, U                |
-|                   |   updateWaitingList   |        list (Model)         |             DIR, A                |
+|                   |   updateWaitingList   |        list (Model)         |           -//- (AUTO?)            |
 |                   |  getAllWaitingLists   |           -//-              |           DOC, DIR, A             |
 |                   |  getAllWLForHospital  |        hospitalCode         |            DOC, DIR               | 
----------------------------------------------------------------------------------------------------------------
-|     Ammand        |      addAmmend        |     ammand (Model)          |          T, DOC, DIR              |
-|                   |      getAmmand        |        ammandId             |          T, DOC, DIR              |
-|                   |     updateAmmand      |     ammand (Model)          |          T, DOC, DIR              |
-|                   |     removeAmmand      |        ammandId             |           -//- (AUTO)             |
-|                   |    getAllAmmands      |           -//-              |               A                   |
-|                   | getAllAmmandsForHosp  |      hospitalCode           |          T, DOC, DIR              | 
----------------------------------------------------------------------------------------------------------------
+|-------------------------------------------------------------------------------------------------------------|
+|     Ammend        |      addAmmend        |     ammend (Model)          |          T, DOC, DIR              |
+|                   |      getAmmend        |        ammendId             |          T, DOC, DIR              |
+|                   |     updateAmmend      |     ammend (Model)          |          T, DOC, DIR              |
+|                   |     removeAmmend      |        ammendId             |           -//- (AUTO)             |
+|                   |    getAllAmmends      |           -//-              |               A                   |
+|                   | getAllAmmendsForHosp  |      hospitalCode           |          T, DOC, DIR              | 
+|-------------------------------------------------------------------------------------------------------------|

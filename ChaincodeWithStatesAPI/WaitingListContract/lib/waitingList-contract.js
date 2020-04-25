@@ -39,7 +39,7 @@ class WaitingListContract extends Contract {
         const modeledWaitingList = WaitingList.fromJSON(waitingList, WaitingList);
         const waitingListExists = await ctx.waitingLists.waitingListExists([modeledWaitingList.hospitalCode, modeledWaitingList.serviceCode, modeledWaitingList.ordinationCode]);
         if (!waitingListExists) {
-            const waitingListData = await ctx.waitingLists.addWaitingList(waitingList);
+            const waitingListData = await ctx.waitingLists.addWaitingList(modeledWaitingList);
             return waitingListData;
         } else {
             throw new Error(`WaitingList with key ${[modeledWaitingList.hospitalCode, modeledWaitingList.serviceCode, modeledWaitingList.ordinationCode]} already exists!`)

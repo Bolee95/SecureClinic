@@ -1,9 +1,8 @@
-const IdentityRole = require ('../utils/js-smart-contract-globals.js');
-const SmartContractUtil = require('../utils/js-smart-contract-util');
-const Hospital = require('../../ChaincodeWithStatesAPI/HospitalContract/lib/hospital.js');
+const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
+const SmartContractUtil = require('../../utils/js-smart-contract-util');
+const Hospital = require('../../../ChaincodeWithStatesAPI/HospitalContract/lib/hospital.js');
 
 async function createHospital() {
-
     const identityName = process.argv[2];
     const hospitalName = process.argv[3];
     const hospitalCode = process.argv[4];
@@ -20,13 +19,11 @@ async function createHospital() {
     const hospital = Hospital.createInstance(hospitalName,hospitalCode,privateOrPublic,city,[],[],[]);
     const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'addHospital', hospital.stringifyClass());
     if (bufferedResult.length > 0) {
-        console.log(dummyHospital.getHospitalName());
+        console.log(hospital.getHospitalName());
     } else {
         console.log(`Error while creating Hospital...`);
-    }
-   
-    gateway.disconnect();
-    
+    }  
+    gateway.disconnect();   
 };
 
 createHospital().then(() => {

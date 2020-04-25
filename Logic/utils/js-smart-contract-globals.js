@@ -5,7 +5,8 @@ const IdentityRole = {
     TEHNICAL: 'tehnical',
     DIRECTOR: 'director',
     DOCTOR: 'doctor',
-    USER: 'user'
+    USER: 'user',
+    AUTO: 'auto'
 };
 
 module.exports = IdentityRole;

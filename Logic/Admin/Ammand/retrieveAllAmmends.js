@@ -1,6 +1,6 @@
-const IdentityRole = require ('../utils/js-smart-contract-globals.js');
-const SmartContractUtil = require('../utils/js-smart-contract-util');
-const Ammend = require('../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend.js');
+const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
+const SmartContractUtil = require('../../utils/js-smart-contract-util');
+const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend.js');
 
 async function retrieveAllAmmends() {
 
@@ -12,17 +12,17 @@ async function retrieveAllAmmends() {
     await SmartContractUtil.checkIdentityNameWithRole(identityName, IdentityRole.ADMIN);
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
-
+    let ammendArray;
     const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAllAmmends');
     if (bufferedResult.length > 0) {
-        const ammendArray = JSON.parse(bufferedResult.toString());
+        ammendArray = JSON.parse(bufferedResult.toString());
         const firstAmmend = new (Ammend)(ammendArray[0]);
-        console.log(ammendArray);
-        return ammendArray;
+        console.log(ammendArray); 
     } else {
         console.log(`Error while reading all ammends...`);
     }
     gateway.disconnect();
+    return ammendArray;
 };
 
 retrieveAllAmmends().then(() => {

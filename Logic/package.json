@@ -4,7 +4,8 @@
     "license": "Apache-2.0",
     "dependencies": {
         "fabric-contract-api": "1.4.2",
-        "fabric-shim": "1.4.2"
+        "fabric-shim": "1.4.2",
+        "fs-extra": "8.1.0"
     },
     "devDependencies": {
         "fabric-client": "^1.4.4",

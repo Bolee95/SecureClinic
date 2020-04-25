@@ -69,7 +69,8 @@ class StateList {
      * Checks if state with passed key already exists in worldstate 
      */
     async stateExists(key) {
-        let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
+        let primaryKey = State.makeKey(key);
+        let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(primaryKey));
         let data = await this.ctx.stub.getState(ledgerKey);
         if (data.length > 0){
             return true;
@@ -82,13 +83,14 @@ class StateList {
      * Remove state from worldstate
      */
     async deleteState(key) {
-        let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
-        let pacientExists = await this.pacientExists(ledgerKey);
-        if (pacientExists) {
+        let primaryKey = State.makeKey(key);
+        let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(primaryKey));
+        let stateExists = await this.stateExists(key);
+        if (stateExists) {
             await this.ctx.stub.deleteState(ledgerKey);
             return true;
         } else {
-            throw new Error("Pacient does not exist, so it can't be removed!");
+            return false;
         }
     }
 

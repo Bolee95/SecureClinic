@@ -53,7 +53,7 @@ class PacientContract extends Contract {
 
     async updatePacient(ctx, newPacient) {
         const modeledPacient = Pacient.fromJSON(newPacient, Pacient);
-        let pacient = await ctx.pacientList.updatePacient(newPacient.lbo, modeledPacient);
+        let pacient = await ctx.pacientList.updatePacient(modeledPacient);
         return pacient;
     }
 
@@ -63,8 +63,15 @@ class PacientContract extends Contract {
     }
 
     async addPacientPrivateData(ctx, pacientData) {
-        let pacientData = await ctx.pacientPrivateDataList.addPacientPrivateData(pacientData);
-        return pacientData;
+
+        const modeledPrivateData = PacientPrivateData.fromJSON(pacientData, PacientPrivateData);
+        const privateDataExists = await ctx.pacientPrivateDataList.privateDataExists(modeledPrivateData.getUniqueId());
+        if (!privateDataExists) {
+            const privateData = await ctx.pacientPrivateDataList.addPacientPrivateData(modeledPrivateData);
+            return privateData;
+        } else {
+            throw new Error(`Private data for pacient with uniqueId ${modeledPrivateData.uniqueId} already exists!`);
+        }
     }
 
     async getPacientPrivateData(ctx, pacientId) {
@@ -73,8 +80,9 @@ class PacientContract extends Contract {
     }
 
     async updatePacientPrivateData(ctx, pacientData) {
-        let pacientData = await ctx.pacientPrivateDataList.updatePacientPrivateData(pacientData.uniqueId, pacientData);
-        return pacientData;
+        const modeledPrivateData = Pacient.fromJSON(pacientData, PacientPrivateData);
+        let data = await ctx.pacientPrivateDataList.updatePacientPrivateData(modeledPrivateData);
+        return data;
     }
 
     async getAllPacients(ctx) {

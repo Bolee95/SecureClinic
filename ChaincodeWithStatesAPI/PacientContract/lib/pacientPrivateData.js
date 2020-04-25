@@ -26,7 +26,7 @@ class PacientPrivateData extends State {
     }
 
     addNewDocumentId(documentId) {
-        this.documentIds.push(documentId);
+        this.documentsIds.push(documentId);
     }
 
     addNewDiseaseCode(diseaseCode) {

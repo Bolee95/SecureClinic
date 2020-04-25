@@ -1,8 +1,8 @@
-const IdentityRole = require('../utils/js-smart-contract-globals.js');
-const SmartContractUtil = require('../utils/js-smart-contract-util.js');
-const Hospital = require('../../ChaincodeWithStatesAPI/HospitalContract/lib/hospital.js');
-const Facility = require('../../ChaincodeWithStatesAPI/FacilityContract/lib/facility.js');
-const Service = require('../../ChaincodeWithStatesAPI/FacilityContract/lib/service.js');
+const IdentityRole = require('../../utils/js-smart-contract-globals.js');
+const SmartContractUtil = require('../../utils/js-smart-contract-util.js');
+const Hospital = require('../../../ChaincodeWithStatesAPI/HospitalContract/lib/hospital.js');
+const Facility = require('../../../ChaincodeWithStatesAPI/FacilityContract/lib/facility.js');
+const Service = require('../../../ChaincodeWithStatesAPI/FacilityContract/lib/service.js');
 
 async function addNewOrdinationToHospital() {
     const identityName = process.argv[2];

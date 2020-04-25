@@ -27,6 +27,10 @@ class WaitingList extends State {
         return this.pacients.push(pacient);
     }
 
+    removePacient(pacient) {
+        this.pacients = this.pacients.filter(function(value, index, arr) { return value != pacient.lbo})
+    }
+
     static fromBuffer(buffer) {
         return WaitingList.deserialize(Buffer.from(JSON.parse(buffer)));
     }

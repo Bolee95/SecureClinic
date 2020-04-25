@@ -26,9 +26,9 @@ class PendingContract extends Contract {
     async instantiate(ctx) {
         let approver1 = Approver.createInstance('123456789', 'Director');
         let approver2 = Approver.createInstance('23232145','Doctor');
-        let pending1 = Pending.createInstance('ABCDEF','1234','5678', 'AB', 'CD', 'EF', [approver1]);
-        let pending2 = Pending.createInstance('ABCDEF','4444','5555', 'AB', 'CD', 'EF', [approver1, approver2]);
-        let pending3 = Pending.createInstance('GGCDEF','4444','5555', 'GG', 'CD', 'EF', [approver1, approver2]);
+        let pending1 = Pending.createInstance('1234','5678', 'AB', 'CD', 'EF', [approver1]);
+        let pending2 = Pending.createInstance('4444','5555', 'AB', 'CD', 'EF', [approver1, approver2]);
+        let pending3 = Pending.createInstance('4444','5555', 'GG', 'CD', 'EF', [approver1, approver2]);
         await ctx.pendingList.addPending(pending1);
         await ctx.pendingList.addPending(pending2);
         await ctx.pendingList.addPending(pending3);
@@ -47,6 +47,11 @@ class PendingContract extends Contract {
 
     async getPending(ctx, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
         const pendingData = await ctx.pendingList.getPending([hospitalCode,serviceCode,ordinationCode,pacientLbo]);
+        return pendingData;
+    }
+
+    async removePending(ctx, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
+        const pendingData = await ctx.pendingList.removePending([hospitalCode,serviceCode,ordinationCode,pacientLbo]);
         return pendingData;
     }
 

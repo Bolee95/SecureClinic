@@ -3,6 +3,7 @@ const formidableMiddleware = require('express-formidable');
 
 const initTestMethods = require("./testAPI");
 const configureAdminServiceListeners = require("./adminApi");
+const configureDirectorServiceListeners = require("./directorApi");
 
 const app = express();
 app.use(formidableMiddleware());
@@ -25,9 +26,9 @@ function startServer() {
 
 	initTestMethods(app);
 	configureAdminServiceListeners(app);
-	// configureDirectorServiceListeners(app);
-	// configureDoctorServiceListners(app);
-	// configureSharedServiceListners(app);
+	configureDirectorServiceListeners(app);
+	configureDoctorServiceListners(app);
+	configureSharedServiceListners(app);
 
 
 

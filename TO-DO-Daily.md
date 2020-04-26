@@ -10,8 +10,9 @@ addNewEvidenceToAmmend - na putanji Logic/Shared/Ammend
 PacientPrivateData - koji id se koristi
 
 https://github.com/IBM-Blockchain/ansible-examples -> Kako odraditi deployment lokalni za dve ogranizacije sa dva cvora
+Da li dobro radi DELETE metoda kod API poziva?
+Da li treba uniqueID za bilo sta da se prosledjuje kroz api, tj da se izracunava vam backenda?
 
--- DA li dobro radi DELETE metoda kod API poziva?
 
 
 TODO:

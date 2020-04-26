@@ -9,6 +9,10 @@ Proveriti:
 addNewEvidenceToAmmend - na putanji Logic/Shared/Ammend
 PacientPrivateData - koji id se koristi
 
+https://github.com/IBM-Blockchain/ansible-examples -> Kako odraditi deployment lokalni za dve ogranizacije sa dva cvora
+
+-- DA li dobro radi DELETE metoda kod API poziva?
+
 
 TODO:
 - Ubaciti error propagaciju u backendu, a uhvatiti greske u Servisima. Rezultat apiju vracamo kroz res ili error, popunjavaju se oba zavisno sta se vrati iz servisa. znaci ide (res, error) kao rezultat poziva funkcije

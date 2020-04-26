@@ -28,102 +28,102 @@ const getWaitingList = require('../Shared/WaitingList/getWaitingList');
 class SharedService {
 
     // Ammend
-    async addNewEvidenceToAmmend(identityName, evidenceId, hospitalCode, ammendId) {
+    static async addNewEvidenceToAmmend(identityName, evidenceId, hospitalCode, ammendId) {
         const result = await addNewEvidenceToAmmend(identityName, evidenceId, hospitalCode, ammendId);
         return result;
     }
 
-    async createAmmend(identityName, ammendId, hospitalCode, pacientJmbg, action, neededEndors, listId) {
+    static async createAmmend(identityName, ammendId, hospitalCode, pacientJmbg, action, neededEndors, listId) {
         const result = await createAmmend(identityName, ammendId, hospitalCode, pacientJmbg, action, neededEndors, listId);
         return result;
     }
 
-    async getAllAmmendsForHosptial(identityName, hospitalCode) {
+    static async getAllAmmendsForHosptial(identityName, hospitalCode) {
         const result = await getAllAmmendsForHosptial(identityName, hospitalCode);
         return result;
     }
 
-    async getAmmend(identityName, hospitalCode, ammendId) {
+    static async getAmmend(identityName, hospitalCode, ammendId) {
         const result = await getAmmend(identityName, hospitalCode, ammendId);
         return result;
     }
 
-    async signAmmend(identityName, workingLicence, hospitalCode, ammendId) {
+    static async signAmmend(identityName, workingLicence, hospitalCode, ammendId) {
         const result = await signAmmend(identityName, workingLicence, hospitalCode, ammendId);
         return result;
     }
 
     // Hospital
-    async getAllHospitals(identityName) {
+    static async getAllHospitals(identityName) {
         const result = await getAllHospitals(identityName);
         return result;
     }
 
-    async getHospital(identityName, hospitalCode) {
+    static async getHospital(identityName, hospitalCode) {
         const result = await getHospital(identityName, hospitalCode);
         return result;
     }
 
     // Pacient
-    async getPacient(identityName, pacientLbo) {
+    static async getPacient(identityName, pacientLbo) {
         const result = await getPacient(identityName, pacientLbo);
         return result;
     }
 
     // Pacient Private Data
-    async addNewDocumentId(identityName, pacientId, documentId) {
+    static async addNewDocumentId(identityName, pacientId, documentId) {
         const result = await addNewDocumentId(identityName, pacientId, documentId);
         return result;
     }
 
-    async addNewEntityToSickness(identityName, pacientId, deseaseCode) {
+    static async addNewEntityToSickness(identityName, pacientId, deseaseCode) {
         const result = await addNewEntityToSickness(identityName, pacientId, deseaseCode);
         return result;
     }
 
-    async addPacientPrivateData(identityName, uniqueId, cardId) {
+    static async addPacientPrivateData(identityName, uniqueId, cardId) {
         const result = await addPacientPrivateData(identityName, uniqueId, cardId);
         return result;
     }
 
-    async getPacientPrivateData(identityName, pacientId) {
+    static async getPacientPrivateData(identityName, pacientId) {
         const result = await getPacientPrivateData(identityName, pacientId);
         return result;
     }
 
     // Pending
-    async approvePending(identityName, licenceId, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
+    static async approvePending(identityName, licenceId, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
         const result = await approvePending(identityName, licenceId, hospitalCode, serviceCode, ordinationCode, pacientLbo);
         return result;
     }
 
-    async getPending(identityName, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
+    static async getPending(identityName, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
         const result = await getPending(identityName, hospitalCode, serviceCode, ordinationCode, pacientLbo);
         return result;
     }
 
-    async getPendingsForHospital(identityName, hospitalCode) {
+    static async getPendingsForHospital(identityName, hospitalCode) {
         const result = await getPendingsForHospital(identityName, hospitalCode);
         return result;
     }
 
     // Waiting List
-    async createWaitingList(identityName, hospitalCode, serviceCode, ordinationCode) {
+    static async createWaitingList(identityName, hospitalCode, serviceCode, ordinationCode) {
         const result = await createWaitingList(identityName, hospitalCode, serviceCode, ordinationCode);
         return result;
     }
 
-    async getAllPacientsForWaitingList(identityName, hospitalCode, serviceCode, ordinationCode) {
+    static async getAllPacientsForWaitingList(identityName, hospitalCode, serviceCode, ordinationCode) {
         const result = await getAllPacientsForWaitingList(identityName, hospitalCode, serviceCode, ordinationCode);
         return result;
     }
 
-    async getAllWaitingListsForHospital(identityName, hospitalCode) {
+    static async getAllWaitingListsForHospital(identityName, hospitalCode) {
         const result = await getAllWaitingListsForHospital(identityName, hospitalCode);
         return result;
     }
 
-    async getWaitingList(identityName, hospitalCode, serviceCode, ordinationCode) {
+    static async getWaitingList(identityName, hospitalCode, serviceCode, ordinationCode) {
         const result = await getWaitingList(identityName, hospitalCode, serviceCode, ordinationCode);
         return result;
     }

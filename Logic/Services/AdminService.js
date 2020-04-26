@@ -17,56 +17,56 @@ const retrieveAllPendings = require('../Admin/Pending/retrieveAllPendings');
 
 class AdminService {
     // Ammands
-    async retrieveAllAmmends(identityName) {
+    static async retrieveAllAmmends(identityName) {
         const result = await importAmmends(identityName);
         return result;
     }
 
     // Facility
-    async addServiceToFacility(identityName, facilityCode, serviceCode, serviceName, maxWaitTime) {
+    static async addServiceToFacility(identityName, facilityCode, serviceCode, serviceName, maxWaitTime) {
         const result = await addServiceToFacility(identityName, facilityCode, serviceCode, serviceName, maxWaitTime);
         return result;
     }
 
-    async createFacility(identityName, facilityName, facilityCode) {
+    static async createFacility(identityName, facilityName, facilityCode) {
         const result = await createFacility(identityName, facilityName, facilityCode);
         return result;
     }
 
-    async getFacility(identityName, facilityCode) {
+    static async getFacility(identityName, facilityCode) {
         const result = await getFacility(identityName, facilityCode);
         return result;
     }
 
     // Hospital
-    async addNewOrdiantionToHospital(identityName, hospitalCode, ordinationCode) {
+    static async addNewOrdiantionToHospital(identityName, hospitalCode, ordinationCode) {
         const result = await addNewOrdiantionToHospital(identityName, hospitalCode, ordinationCode);
         return result;
     }
 
-    async addNewServiceToHospital() {
+    static async addNewServiceToHospital(identityName, hospitalCode, serviceCode) {
         const result = await addNewServiceToHospital(identityName, hospitalCode, serviceCode);
         return result;
     }
 
-    async createHospital(identityName, hospitalName, hospitalCode, privateOrPublic, city) {
+    static async createHospital(identityName, hospitalName, hospitalCode, privateOrPublic, city) {
         const result = await createHospital(identityName, hospitalName, hospitalCode, privateOrPublic, city);
         return result;
     }
 
     //Network
-    async registerUser(identityName, userName) {
+    static async registerUser(identityName, userName) {
         const result = await registerUser(identityName, userName);
         return result;
     }
 
-    async removeUser(identityName, userName) {
+    static async removeUser(identityName, userName) {
         const result = await removeUser(identityName,userName);
         return result;
     }
 
     // Pending
-    async retrieveAllPendings(identityName) {
+    static async retrieveAllPendings(identityName) {
         const result = await retrieveAllPendings(identityName);
         return result;
     }

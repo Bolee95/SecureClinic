@@ -203,8 +203,8 @@ function configureSharedServiceListners(expressApp) {
         const identityName = req.get("Identity_name");
 
         const hospitalCode = req.query.hospitalCode;
-        const hospitalCode = req.query.serviceCode;
-        const hospitalCode = req.query.ordinationCode;
+        const serviceCode = req.query.serviceCode;
+        const ordinationCode = req.query.ordinationCode;
     
         const result = await sharedService.getWaitingList(identityName, hospitalCode, serviceCode, ordinationCode);
         res.status(200).json(result);

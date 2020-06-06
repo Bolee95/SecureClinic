@@ -1,7 +1,7 @@
 #Backend Refactoring and API creation
 1) Proci kroz kreirane metode za komunikaciju sa backendom, zameniti cmd argumente sa parametrima i odraditi default export za svaku **DONE**
 2) Kreirati servise za svakog korisnika u aplikaciji koja ce prosledjivati pozive ka refaktorisanim metodama **DONE**
-3) Kreirati API servis koriscenjem ExpressJS za svaku metodu (prouciti prosledjivanje argumenta kroz query)
+3) Kreirati API servis koriscenjem ExpressJS za svaku metodu (prouciti prosledjivanje argumenta kroz query) *DONE*
 4) Kreirati test pozive koriscenjem Postman alata i testirati novokreirani API
 
 

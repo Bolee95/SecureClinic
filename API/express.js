@@ -4,6 +4,8 @@ const formidableMiddleware = require('express-formidable');
 const initTestMethods = require("./testAPI");
 const configureAdminServiceListeners = require("./adminApi");
 const configureDirectorServiceListeners = require("./directorApi");
+const configureDoctorServiceListners = require("./doctorApi");
+const configureSharedServiceListners = require("./sharedApi");
 
 const app = express();
 app.use(formidableMiddleware());

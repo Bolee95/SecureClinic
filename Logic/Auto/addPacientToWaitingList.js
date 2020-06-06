@@ -74,4 +74,5 @@ async function addPacientToWaitingList(gateway, hospitalCode, serviceCode, ordin
     gateway.disconnect();   
     return pendingRemovalRes;
 };
+
 module.exports = addPacientToWaitingList;

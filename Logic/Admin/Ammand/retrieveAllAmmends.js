@@ -2,9 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend.js');
 
-async function retrieveAllAmmends() {
-
-    const identityName = process.argv[2];
+async function retrieveAllAmmends(identityName) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -25,10 +23,12 @@ async function retrieveAllAmmends() {
     return ammendArray;
 };
 
-retrieveAllAmmends().then(() => {
-}).catch((exception) => {
-    console.log('Retriving pendings failed.... Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-});
+module.exports = retrieveAllAmmends;
+
+// retrieveAllAmmends().then(() => {
+// }).catch((exception) => {
+//     console.log('Retriving pendings failed.... Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+// });

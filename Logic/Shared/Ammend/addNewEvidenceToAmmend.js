@@ -2,12 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend.js');
 
-async function addNewEvidenceToAmmend() {
-    const identityName = process.argv[2];
-    const evidenceId = process.argv[3];
-    const hospitalCode = process.argv[4];
-    const ammendId = process.argv[5];
-   
+async function addNewEvidenceToAmmend(identityName, evidenceId, hospitalCode, ammendId) {  
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -36,10 +31,11 @@ async function addNewEvidenceToAmmend() {
     gateway.disconnect();   
 };
 
-addNewEvidenceToAmmend().then(() => {
-}).catch((exception) => {
-    console.log('Signing Ammend failed.... Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-});
+module.exports = addNewEvidenceToAmmend;
+// addNewEvidenceToAmmend().then(() => {
+// }).catch((exception) => {
+//     console.log('Signing Ammend failed.... Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+// });

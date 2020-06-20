@@ -2,8 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Pacient = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
 
-async function getAllPacients() {
-    const identityName = process.argv[2];
+async function getAllPacients(identityName) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -36,10 +35,12 @@ async function getAllPacients() {
     return modeledPacients;
 };
 
-getAllPacients().then(() => {
-}).catch((exception) => {
-    console.log('Retriving pacients failed.... Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-});
+module.exports = getAllPacients;
+
+// getAllPacients().then(() => {
+// }).catch((exception) => {
+//     console.log('Retriving pacients failed.... Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+// });

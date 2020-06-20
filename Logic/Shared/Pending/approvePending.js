@@ -4,13 +4,7 @@ const Pending = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/pen
 const Approver = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/approver.js');
 const AddPacientToWaitingList = require('../../Auto/addPacientToWaitingList.js');
 
-async function approvePending() {
-    const identityName = process.argv[2];
-    const licenceId = process.argv[3];
-    const hospitalCode = process.argv[4];
-    const serviceCode = process.argv[5];
-    const ordinationCode = process.argv[6];
-    const pacientLbo = process.argv[7];
+async function approvePending(identityName, licenceId, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -55,13 +49,14 @@ async function approvePending() {
     return updatingResult;
 };
 
-approvePending().then(() => {
-}).catch((exception) => {
-    console.log('Approving pending failed.... Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-});
+module.exports = approvePending;
+// approvePending().then(() => {
+// }).catch((exception) => {
+//     console.log('Approving pending failed.... Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+// });
 
 function getRole(identityName) {
     if (identityName.includes(IdentityRole.DIRECTOR)) {

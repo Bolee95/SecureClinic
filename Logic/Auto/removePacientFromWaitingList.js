@@ -1,4 +1,4 @@
-const SmartContractUtil = require('../../utils/js-smart-contract-util');
+const SmartContractUtil = require('../utils/js-smart-contract-util');
 const Pacient = require('../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
 const WaitingList = require('../../ChaincodeWithStatesAPI/WaitingListContract/lib/waitingList.js');
 

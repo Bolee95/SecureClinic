@@ -4,12 +4,7 @@ const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammen
 const Approver = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/approver.js');
 const RemovePacientFromWList = require('../../Auto/removePacientFromWaitingList.js');
 
-async function signAmmend() {
-    const identityName = process.argv[2];
-    const workingLicence = process.argv[3];
-    const hospitalCode = process.argv[4];
-    const ammendId = process.argv[5];
-   
+async function signAmmend(identityName, workingLicence, hospitalCode, ammendId) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -49,13 +44,14 @@ async function signAmmend() {
     return updateRes;
 };
 
-signAmmend().then(() => {
-}).catch((exception) => {
-    console.log('Signing Ammend failed.... Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-});
+module.exports = signAmmend;
+// signAmmend().then(() => {
+// }).catch((exception) => {
+//     console.log('Signing Ammend failed.... Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+// });
 
 function getRole(identityName) {
     if (identityName.includes(IdentityRole.DIRECTOR)) {

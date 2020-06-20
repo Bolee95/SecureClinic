@@ -3,13 +3,7 @@ const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const WaitingState = require('../../utils/js-smart-contact-waiting-status.js');
 const Pacient = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
 
-async function addPacientToWaitingList() {
-    const identityName = process.argv[2];
-    const pacientLbo = process.argv[3];
-    const hospitalName = process.argv[4];
-    const waitingListCode = process.argv[5];
-    const hospitalCode = process.argv[6];
-
+async function addPacientToWaitingList(identityName, pacientLbo, hospitalName, waitingListCode, hospitalCode) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -44,10 +38,12 @@ async function addPacientToWaitingList() {
     return updatingResult;
 };
 
-addPacientToWaitingList().then(() => {
-}).catch((exception) => {
-    console.log('Updating pacient failed.... Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-});
+module.exports = addPacientToWaitingList;
+
+// addPacientToWaitingList().then(() => {
+// }).catch((exception) => {
+//     console.log('Updating pacient failed.... Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+// });

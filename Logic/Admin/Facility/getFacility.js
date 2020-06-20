@@ -2,9 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Facility = require('../../../ChaincodeWithStatesAPI/FacilityContract/lib/facility.js');
 
-async function getFacility() {
-    const identityName = process.argv[2];
-    const facilityCode = process.argv[3];
+async function getFacility(identityName, facilityCode) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -23,11 +21,13 @@ async function getFacility() {
     return modeledFacility;
 };
 
-getFacility().then(() => {
-}).catch((exception) => {
-    console.log('Creating new facility failed.... Error:\n');
-    console.log(exception);
-    process.exit(-1);
-}).finally(() => {
-    //console.log('CreateHospital function ended');
-});
+module.exports = getFacility;
+
+// getFacility().then(() => {
+// }).catch((exception) => {
+//     console.log('Creating new facility failed.... Error:\n');
+//     console.log(exception);
+//     process.exit(-1);
+// }).finally(() => {
+//     //console.log('CreateHospital function ended');
+// });

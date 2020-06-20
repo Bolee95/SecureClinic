@@ -1,6 +1,6 @@
 'use strict';
 
-const State = require('../../StateApi/state.js');
+const State = require('./StateApi/state.js');
 
 const AmmendType = {
     USER_INITED: 1,

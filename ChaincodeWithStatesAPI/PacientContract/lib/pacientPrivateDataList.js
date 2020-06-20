@@ -1,6 +1,6 @@
 'use strict';
 
-const PrivateStateList = require('../../StateApi/privatestatelist.js');
+const PrivateStateList = require('./StateApi/privatestatelist.js');
 const PacientPrivateData = require('./pacientPrivateData.js');
 const PACIENT_COLLECTION_NAME = 'collectionPacients';
 

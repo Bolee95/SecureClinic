@@ -1,6 +1,6 @@
 'use strict';
 
-const StateList = require('../../StateApi/statelist.js');
+const StateList = require('./StateApi/statelist.js');
 const Ammend = require('./ammend.js');
 
 class AmmendList extends StateList {

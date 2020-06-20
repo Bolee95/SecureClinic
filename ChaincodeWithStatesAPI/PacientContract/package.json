@@ -1,6 +1,6 @@
 {
     "name": "Pacient",
-    "version": "0.5.1",
+    "version": "1.0.1",
     "description": "My Smart Contract",
     "main": "index.js",
     "engines": {

@@ -1,6 +1,6 @@
 'use strict';
 
-const State = require('../../StateApi/state.js');
+const State = require('./StateApi/state.js');
 
 class Hospital extends State {
     constructor(obj) {

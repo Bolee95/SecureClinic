@@ -1,7 +1,7 @@
 
 'use strict';
 
-const State = require('../../StateApi/state.js');
+const State = require('./StateApi/state.js');
 
 const waitingState = {
     NONACTIVE: 1,

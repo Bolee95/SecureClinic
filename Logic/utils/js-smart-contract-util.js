@@ -13,6 +13,7 @@ const os = require('os');
 const path = require('path');
 
 const fabricNetwork = require('fabric-network');
+const projectName = "Secure Clinic";
 
 class SmartContractUtil {
 
@@ -60,7 +61,7 @@ class SmartContractUtil {
 
     static async getFileSystemWallet() {
         const homedir = os.homedir();
-        const walletPath = path.join(homedir,  '.fabric-vscode', 'environments', '1 Org Local Fabric', 'wallets', 'Org1');
+        const walletPath = path.join(homedir,  '.fabric-vscode', 'environments', projectName, 'wallets', 'Org1');
         const fabricWallet = new fabricNetwork.FileSystemWallet(walletPath);
         return fabricWallet; 
     }
@@ -68,7 +69,7 @@ class SmartContractUtil {
     static async getConnectionProfile() {
         const homedir = os.homedir();
 
-        const connectionProfilePath = path.join(homedir, '.fabric-vscode', 'environments', '1 Org Local Fabric', 'gateways', 'Org1', 'Org1.json');
+        const connectionProfilePath = path.join(homedir, '.fabric-vscode', 'environments', projectName, 'gateways', 'Org1', 'Org1.json');
 
         const connectionProfileContents = await fs.readFile(connectionProfilePath, 'utf8');
         if (connectionProfilePath.endsWith('.json')) {

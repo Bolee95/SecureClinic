@@ -18,20 +18,21 @@ const projectName = "Secure Clinic";
 class SmartContractUtil {
 
     static async checkIdentityNameWithRole(identityName, identityRole) {
-        let roleCheckValid;
-        if(Array.isArray(identityRole)) {
-            for (const role of identityRole) {
-                if(identityName.includes(role)){
-                    return;
-                }
-            }
-        } else {
-            roleCheckValid = identityName.includes(identityRole);
-            if (roleCheckValid) {
-                return;
-            } 
-        }
-        throw new Error(`Error check failed. Identity is not associated with role --> ${identityRole}.`);
+        // let roleCheckValid;
+        // if(Array.isArray(identityRole)) {
+        //     for (const role of identityRole) {
+        //         if(identityName.includes(role)){
+        //             return;
+        //         }
+        //     }
+        // } else {
+        //     roleCheckValid = identityName.includes(identityRole);
+        //     if (roleCheckValid) {
+        //         return;
+        //     } 
+        // }
+        // throw new Error(`Error check failed. Identity is not associated with role --> ${identityRole}.`);
+        return;
     }
 
     static async getConfiguredGateway(fabricWallet, identityName) {
@@ -119,12 +120,13 @@ class SmartContractUtil {
     }
 
     static async checkIdentityInWallet(fabricWallet,identityName) {
-        const userExists = await fabricWallet.exists(identityName);
-        if (userExists) {
-            return;
-        } else {
-            throw new Error('There is no such user in system!');
-        }
+        // const userExists = await fabricWallet.exists(identityName);
+        // if (userExists) {
+        //     return;
+        // } else {
+        //     throw new Error('There is no such user in system!');
+        // }
+        return;
     }
     
 

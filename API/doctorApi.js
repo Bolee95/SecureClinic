@@ -67,6 +67,17 @@ function configureDoctorServiceListners(expressApp) {
         }
     });
 
+    expressApp.get("/doctor/getPacient/allForHospital", async (req, res, err) => {
+        try {
+            const identityName = req.get("Identity_name");
+            const hospitalCode = req.query.hospitalCode;
+            const result = await doctorService.getAllPacientsForHospital(identityName, hospitalCode);
+            res.status(200).json(result);
+        } catch(error) {
+            res.status(400).json(error);
+        }
+    });
+
     expressApp.post("/doctor/resetPacientWaitingStatus", async (req, res, err) => {
         try {   
             const identityName = req.get("Identity_name");

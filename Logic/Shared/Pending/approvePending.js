@@ -50,13 +50,6 @@ async function approvePending(identityName, licenceId, hospitalCode, serviceCode
 };
 
 module.exports = approvePending;
-// approvePending().then(() => {
-// }).catch((exception) => {
-//     console.log('Approving pending failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });
 
 function getRole(identityName) {
     if (identityName.includes(IdentityRole.DIRECTOR)) {

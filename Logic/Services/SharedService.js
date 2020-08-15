@@ -1,4 +1,6 @@
 'use strict';
+// Shared
+const login = require('../Shared/login');
 // Ammend
 const addNewEvidenceToAmmend = require('../Shared/Ammend/addNewEvidenceToAmmend');
 const createAmmend = require('../Shared/Ammend/createAmmend');
@@ -26,6 +28,12 @@ const getAllWaitingListsForHospital = require('../Shared/WaitingList/getAllWaiti
 const getWaitingList = require('../Shared/WaitingList/getWaitingList');
 
 class SharedService {
+
+    // Shared
+    static async login(userId) {
+        const result = await login(userId);
+        return result;
+    }
 
     // Ammend
     static async addNewEvidenceToAmmend(identityName, evidenceId, hospitalCode, ammendId) {

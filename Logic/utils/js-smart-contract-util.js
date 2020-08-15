@@ -120,13 +120,12 @@ class SmartContractUtil {
     }
 
     static async checkIdentityInWallet(fabricWallet,identityName) {
-        // const userExists = await fabricWallet.exists(identityName);
-        // if (userExists) {
-        //     return;
-        // } else {
-        //     throw new Error('There is no such user in system!');
-        // }
-        return;
+        const userExists = await fabricWallet.exists(identityName);
+        if (userExists) {
+            return true;
+        } else {
+            throw new Error('There is no such user in system!');
+        };
     }
     
 

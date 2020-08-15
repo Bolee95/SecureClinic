@@ -23,6 +23,7 @@ class PrivateStateList {
     }
 
     /**
+     * 
      * Get a state from the list using supplied keys. Form composite
      * keys to retrieve state from world state. State data is deserialized
      * into JSON object before being returned.

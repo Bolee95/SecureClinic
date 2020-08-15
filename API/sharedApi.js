@@ -2,6 +2,20 @@ const sharedService = require("../Logic/Services/SharedService");
 
 function configureSharedServiceListners(expressApp) {
 
+
+    // Shared
+    expressApp.post("/shared/login", async (req, res, err) => {
+        try {
+            const formFields = req.fields;
+            const userId = formFields["userId"];
+
+            const result = await sharedService.login(userId);
+            res.status(200).json(result);
+        } catch(error) {
+            res.status(400).json(error);
+        }
+    });
+
     // Ammend
     expressApp.post("/shared/addNewEvidenceToAmmend", async (req, res, err) => {
         try {

@@ -1,9 +1,8 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
-const WaitingState = require('../../utils/js-smart-contact-waiting-status.js');
 const Pacient = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
 
-async function addPacientToPending(identityName, pacientLbo, hospitalName, waitingListCode, hospitalCode) {
+async function changePacientStatusToPending(identityName, pacientLbo) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -18,9 +17,6 @@ async function addPacientToPending(identityName, pacientLbo, hospitalName, waiti
         let jsonResult = JSON.parse(bufferedResult.toString());
         const pacient = new (Pacient)(jsonResult);
 
-        pacient.setHospitalCode(hospitalCode);
-        pacient.setHospitalName(hospitalName);
-        pacient.setWaitingListCode(waitingListCode);
         pacient.setWaitingStatusPending();
 
         bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'updatePacient', pacient.stringifyClass());
@@ -38,7 +34,7 @@ async function addPacientToPending(identityName, pacientLbo, hospitalName, waiti
     return updatingResult;
 };
 
-module.exports = addPacientToPending;
+module.exports = changePacientStatusToPending;
 
 // addPacientToPending().then(() => {
 // }).catch((exception) => {

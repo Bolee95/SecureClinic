@@ -17,13 +17,8 @@ class DoctorService {
         return result;
     }
 
-    static async changePacientStatusToPending(identityName, pacientLbo, hospitalName, waitingListCode, hospitalCode) {
-        const result = await changePacientStatusToPending(identityName, pacientLbo, hospitalName, waitingListCode, hospitalCode);
-        return result;
-    }
-
-    static async changePacientStatusToWaiting(identityName, pacientLbo, hospitalName, waitingListCode, hospitalCode) {
-        const result = await changePacientStatusToWaiting(identityName, pacientLbo, hospitalName, waitingListCode, hospitalCode);
+    static async changePacientStatusToPending(identityName, pacientLbo) {
+        const result = await changePacientStatusToPending(identityName, pacientLbo);
         return result;
     }
 

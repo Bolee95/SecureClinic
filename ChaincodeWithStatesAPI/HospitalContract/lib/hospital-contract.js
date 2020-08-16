@@ -5,6 +5,7 @@ const { Contract, Context } = require('fabric-contract-api');
 const Hospital = require('./hospital.js');
 const Entity = require('./entity.js');
 const HospitalService = require('./hospitalService.js');
+const HospitalOrdination = require('./hospitalOrdination.js');
 const HospitalList = require('./hospitallist.js');
 
 class HospitalContext extends Context {
@@ -26,8 +27,11 @@ class HospitalContract extends Contract {
     async instantiate(ctx) {
         let entity1 = Entity.createInstance('Bogdan Bogdanovic', 'abc1212', 'Director');
         let entity2 = Entity.createInstance('Darko Ilic', 'qwer123', 'Doctor');
-        let hospitalService1 = HospitalService.createInstance('AB1', 10);
-        let hospital1 = Hospital.createInstance('Opsta Bolnica', 'AD', true, 'Nis', [], [hospitalService1], [entity1, entity2]);
+        let hospitalService1 = HospitalService.createInstance('Operacija srca','AB1', 10);
+        let hospitalService2 = HospitalService.createInstance('Operacija kolena', 'A21', 30);
+        let hospitalOrdination1 = HospitalOrdination.createInstance('Kardiohirurgija', 'AA');
+        let hospitalOrdination2 = HospitalOrdination.createInstance('Ortopedija', 'BB');
+        let hospital1 = Hospital.createInstance('Opsta Bolnica', 'AD', true, 'Nis', [hospitalOrdination1, hospitalOrdination2], [hospitalService1, hospitalService2], [entity1, entity2]);
         await ctx.hospitalList.addHospital(hospital1);
     }
 

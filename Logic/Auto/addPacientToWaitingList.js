@@ -4,6 +4,7 @@ const Pacient = require('../../ChaincodeWithStatesAPI/PacientContract/lib/pacien
 const WaitingList = require('../../ChaincodeWithStatesAPI/WaitingListContract/lib/waitingList.js');
 const Facility = require('../../ChaincodeWithStatesAPI/FacilityContract/lib/facility.js');
 const Service = require('../../ChaincodeWithStatesAPI/FacilityContract/lib/service.js');
+const changePacientWaitingStatusToWaiting = require('./changePacientStatusToWaiting');
 
 async function addPacientToWaitingList(gateway, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
     let pacient;
@@ -71,6 +72,10 @@ async function addPacientToWaitingList(gateway, hospitalCode, serviceCode, ordin
             console.log(`Error while removing pending with id ${hospitalCode}:${serviceCode}:${ordinationCode}:${pacientLbo} failed...`);
         }
     }
+
+    // UPDATING USER WAITING STATUS 
+    changePacientWaitingStatusToWaiting(gateway, pacientLbo, hospitalCode, waitingList.key, hospitalCode);
+
     gateway.disconnect();   
     return pendingRemovalRes;
 };

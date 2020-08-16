@@ -5,6 +5,10 @@ class HospitalService {
         Object.assign(this, obj);
     }
 
+    getServiceName() {
+        return this.serviceName;
+    }
+
     getServiceCode() {
         return this.serviceCode;
     }
@@ -17,8 +21,8 @@ class HospitalService {
         return Buffer.from(JSON.stringify(this));
     }
 
-    static createInstance(serviceCode, dayCapacity) {
-        return new HospitalService({serviceCode, dayCapacity});
+    static createInstance(serviceName, serviceCode, dayCapacity) {
+        return new HospitalService({serviceName, serviceCode, dayCapacity});
     }
 }
 

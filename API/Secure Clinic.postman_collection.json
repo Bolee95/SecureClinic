@@ -1,0 +1,1514 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Secure Clinic",
+		"_postman_id": "bc920136-9e2f-b499-ef94-fb44e87724d3",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"description": "API calls specific for Admin user\n",
+			"item": [
+				{
+					"name": "Get All Ammends",
+					"request": {
+						"url": "{{API_URL}}/admin/getAmmend/all",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add Service To Facility (body)",
+					"request": {
+						"url": "{{API_URL}}/admin/addServiceToFacility",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "facilityCode",
+									"value": "AB",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "serviceCode",
+									"value": "CD",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "serviceName",
+									"value": "EF",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "maxWaitTime",
+									"value": "22",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add Service To Facility (query) (TEST)",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/admin/addServiceToFacility/test?facilityCode&serviceCode&serviceName&maxWaitTime",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"admin",
+								"addServiceToFacility",
+								"test"
+							],
+							"query": [
+								{
+									"key": "facilityCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								},
+								{
+									"key": "serviceCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								},
+								{
+									"key": "serviceName",
+									"value": "",
+									"equals": false,
+									"description": ""
+								},
+								{
+									"key": "maxWaitTime",
+									"value": "",
+									"equals": false,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create Facility (body)",
+					"request": {
+						"url": "{{API_URL}}/admin/createFacility",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "facilityName",
+									"value": "Test",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "facilityCode",
+									"value": "A1",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create Facility (query) (TEST)",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/admin/createFacility/test?facilityName&facilityCode",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"admin",
+								"createFacility",
+								"test"
+							],
+							"query": [
+								{
+									"key": "facilityName",
+									"value": "",
+									"equals": false,
+									"description": ""
+								},
+								{
+									"key": "facilityCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Facility With Code",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/admin/getFacility?facilityCode=A1",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"admin",
+								"getFacility"
+							],
+							"query": [
+								{
+									"key": "facilityCode",
+									"value": "A1",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add Ordination To Hospital",
+					"request": {
+						"url": "{{API_URL}}/admin/addOrdinationToHospital",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "ordinationCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add Service To Hospital",
+					"request": {
+						"url": "{{API_URL}}/admin/addServiceToHospital",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "serviceCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create Hospital",
+					"request": {
+						"url": "{{API_URL}}/admin/createHospital",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "hospitalName",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "privateOrPublic",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Register User In Wallet",
+					"request": {
+						"url": "{{API_URL}}/admin/registerUserWallet",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userName",
+									"value": "doctor",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User In Wallet",
+					"request": {
+						"url": "{{API_URL}}/admin/deleteUserWallet",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Pendings",
+					"request": {
+						"url": "{{API_URL}}/admin/getPending/all",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Director",
+			"description": "",
+			"item": [
+				{
+					"name": "Delete Pacient",
+					"request": {
+						"url": "{{API_URL}}/director/deletePacient",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "director",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "pacientLbo",
+									"value": "001",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Doctor",
+			"description": "",
+			"item": [
+				{
+					"name": "Add pacient",
+					"request": {
+						"url": "{{API_URL}}/doctor/addPacient",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "doctor",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "surname",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "lbo",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "jmbg",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "uniqueId",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Change Pacient Status (Pending)",
+					"request": {
+						"url": "{{API_URL}}/doctor/changePacientStatusToPending",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "doctor",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "pacientLbo",
+									"value": "002",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "(NE KORISTI SE) Change Pacient Status (Waiting)",
+					"request": {
+						"url": "{{API_URL}}/doctor/changePacientStatusToWaiting",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "doctor",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "pacientLbo",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "hospitalName",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "waitingListCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Pacients",
+					"request": {
+						"url": "{{API_URL}}/doctor/getPacient/all",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "doctor",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Pacient Waiting Status",
+					"request": {
+						"url": "{{API_URL}}/doctor/resetPacientWaitingStatus",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "doctor",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "pacientLbo",
+									"value": "001",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create new Pending",
+					"request": {
+						"url": "{{API_URL}}/doctor/createNewPending",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "doctor",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "pacientLbo",
+									"value": "12345678",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "pacientJbmg",
+									"value": "12345678",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "hospitalCode",
+									"value": "AD",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "serviceCode",
+									"value": "12",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "ordinationCode",
+									"value": "we1",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Pacients For Hospital",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/doctor/getPacient/allForHospital?hospitalCode=DD2",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"doctor",
+								"getPacient",
+								"allForHospital"
+							],
+							"query": [
+								{
+									"key": "hospitalCode",
+									"value": "DD2",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "doctor",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shared",
+			"description": "",
+			"item": [
+				{
+					"name": "Private",
+					"description": "",
+					"item": [
+						{
+							"name": "Add new Document Id (PRIVATE)",
+							"request": {
+								"url": "{{API_URL}}/shared/privateData/addNewDocumentId",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Identity_name",
+										"value": "",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "pacientId",
+											"value": "",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "documentId",
+											"value": "",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Add new Entity to Sickness",
+							"request": {
+								"url": "{{API_URL}}/shared/privateData/addNewEntityToSickness",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Identity_name",
+										"value": "",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "pacientId",
+											"value": "",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "deseaseCode",
+											"value": "",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Add Pacient Private Data",
+							"request": {
+								"url": "{{API_URL}}/shared/privateData/addPacientPrivateData",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Identity_name",
+										"value": "",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "uniqueId",
+											"value": "",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "cardId",
+											"value": "",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get Pacient Private Data",
+							"request": {
+								"url": {
+									"raw": "{{API_URL}}shared/privateData/getPacientPrivateData?pacientId",
+									"host": [
+										"{{API_URL}}shared"
+									],
+									"path": [
+										"privateData",
+										"getPacientPrivateData"
+									],
+									"query": [
+										{
+											"key": "pacientId",
+											"value": "",
+											"equals": false,
+											"description": ""
+										}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Identity_name",
+										"value": "",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Add new Evidence to Ammend",
+					"request": {
+						"url": "{{API_URL}}/shared/addNewEvidenceToAmmend",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "evidenceId",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "ammendId",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create Ammend",
+					"request": {
+						"url": "{{API_URL}}/shared/createAmmend",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "ammendId",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "pacientJmbg",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "action",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "neededEndors",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "listId",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Ammends for Hospital",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/shared/getAllAmmendsForHosptial?hospitalCode",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"shared",
+								"getAllAmmendsForHosptial"
+							],
+							"query": [
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get ammend",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/shared/getAmmend?hospitalCode&ammendId",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"shared",
+								"getAmmend"
+							],
+							"query": [
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								},
+								{
+									"key": "ammendId",
+									"value": "",
+									"equals": false,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sign Ammend",
+					"request": {
+						"url": "{{API_URL}}/shared/signAmmend",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "workingLicence",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "ammendId",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Hospitals",
+					"request": {
+						"url": "{{API_URL}}/shared/getHospital/all",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "doctor",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Hospital",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/shared/getHospital?hospitalCode",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"shared",
+								"getHospital"
+							],
+							"query": [
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pacient",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/shared/getPacient?pacientLbo=002",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"shared",
+								"getPacient"
+							],
+							"query": [
+								{
+									"key": "pacientLbo",
+									"value": "002",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "doctor",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Pending",
+					"request": {
+						"url": "{{API_URL}}/shared/approvePending",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "licenceId",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "serviceCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "ordinationCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "pacientLbo",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pending",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/shared/getPending?hospitalCode&serviceCode&ordinationCode&pacientLbo",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"shared",
+								"getPending"
+							],
+							"query": [
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								},
+								{
+									"key": "serviceCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								},
+								{
+									"key": "ordinationCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								},
+								{
+									"key": "pacientLbo",
+									"value": "",
+									"equals": false,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Pendings",
+					"request": {
+						"url": "{{API_URL}}/shared/getAllPendings",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "doctor",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Pendings For Hospital",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/shared/getPendingsForHospital?hospitalCode=AD",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"shared",
+								"getPendingsForHospital"
+							],
+							"query": [
+								{
+									"key": "hospitalCode",
+									"value": "AD",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "doctor",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create Waiting List",
+					"request": {
+						"url": "{{API_URL}}/shared/createWaitingList",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "serviceCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "ordinationCode",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Pacients for Waiting List",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/shared/getAllPacientsForWaitingList?hospitalCode&serviceCode&ordinationCode",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"shared",
+								"getAllPacientsForWaitingList"
+							],
+							"query": [
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								},
+								{
+									"key": "serviceCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								},
+								{
+									"key": "ordinationCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Waiting Lists For Hospital",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/shared/getAllWaitingListsForHospital?hospitalCode",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"shared",
+								"getAllWaitingListsForHospital"
+							],
+							"query": [
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Waiting List",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/shared/getWaitingList?hospitalCode&serviceCode&ordinationCode",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"shared",
+								"getWaitingList"
+							],
+							"query": [
+								{
+									"key": "hospitalCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								},
+								{
+									"key": "serviceCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								},
+								{
+									"key": "ordinationCode",
+									"value": "",
+									"equals": false,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"url": "{{API_URL}}/shared/login",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userId",
+									"value": "doctor1",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

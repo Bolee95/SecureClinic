@@ -227,6 +227,16 @@ function configureSharedServiceListners(expressApp) {
         }
     });
 
+    expressApp.get("/shared/getAllPendings", async (req, res, err) => {
+        try {
+            const identityName = req.get("Identity_name");
+            const result = await sharedService.getAllPendings(identityName);
+            res.status(200).json(result);
+        } catch(error) {
+            res.status(400).json(error);
+        }
+    })
+
     expressApp.get("/shared/getPendingsForHospital", async (req, res, err) => {
         try {
             const identityName = req.get("Identity_name");

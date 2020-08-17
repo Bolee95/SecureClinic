@@ -2,7 +2,7 @@
 // Pacient
 const addPacient = require('../Doctor/Pacient/addPacient');
 const changePacientStatusToPending = require('../Doctor/Pacient/changePacientStatusToPending');
-const changePacientStatusToWaiting = require('../Doctor/Pacient/changePacientStatusToWaiting');
+// const changePacientStatusToWaiting = require('../Doctor/Pacient/changePacientStatusToWaiting');
 const getAllPacients = require('../Doctor/Pacient/getAllPacients');
 const getAllPacientsForHospital = require('../Doctor/Pacient/getAllPacientsForHospital');
 const resetPacientWaitingStatus = require('../Doctor/Pacient/resetPacientWaitingStatus');

@@ -1,9 +1,8 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Pending = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/pending.js');
-const Approver = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/approver.js');
 
-async function getPendingsForHospital(identityName, hospitalCode) {
+async function getAllPendings(identityName) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -12,9 +11,7 @@ async function getPendingsForHospital(identityName, hospitalCode) {
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledPendings = [];
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'getAllPendingsForHospitalCode', hospitalCode);
-
-    const role = getRole(identityName);
+    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'getAllPendings');
     if (bufferedResult.length > 0) {
         const jsonResult = JSON.parse(bufferedResult.toString());
         
@@ -24,20 +21,8 @@ async function getPendingsForHospital(identityName, hospitalCode) {
             if (pendingElement == undefined) {
                 index = null;
             } else {
-
                 const modeledPending = new (Pending)(pendingElement);
-                var alreadyApproved = false;
-
-                for (const approver of modeledPending.approvers) {
-                    const modeledApprover = new (Approver)(approver);
-                    if (modeledApprover.getApproverRole() == role) {
-                        alreadyApproved = true;
-                    } 
-                }
-                if (!alreadyApproved) {
-                    modeledPendings.push(modeledPending);
-                }
-                
+                modeledPendings.push(modeledPending);
                 index++;
            }    
         };
@@ -49,14 +34,4 @@ async function getPendingsForHospital(identityName, hospitalCode) {
     return modeledPendings;
 };
 
-module.exports = getPendingsForHospital;
-
-function getRole(identityName) {
-    if (identityName.includes(IdentityRole.DIRECTOR)) {
-        return IdentityRole.DIRECTOR;
-    } else if (identityName.includes(IdentityRole.DOCTOR)) {
-        return IdentityRole.DOCTOR;
-    } else if (identityName.includes(IdentityRole.TEHNICAL)) {
-        return IdentityRole.TEHNICAL;
-    }
-}
+module.exports = getAllPendings;

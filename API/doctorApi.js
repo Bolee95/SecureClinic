@@ -28,33 +28,31 @@ function configureDoctorServiceListners(expressApp) {
 
             const formFields = req.fields;
             const pacientLbo = formFields["pacientLbo"];
-            const hospitalName = formFields["hospitalName"];
-            const waitingListCode = formFields["waitingListCode"];
-            const hospitalCode = formFields["hospitalCode"];
 
-            const result = await doctorService.changePacientStatusToPending(identityName, pacientLbo, hospitalName, waitingListCode, hospitalCode);
+            const result = await doctorService.changePacientStatusToPending(identityName, pacientLbo);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);
         }
     });
 
-    expressApp.post("/doctor/changePacientStatusToWaiting", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+    // Skonjeno 16.08. Prebaceno u automatske metode kada se korisnik postavlja na listu cekanja
+    // expressApp.post("/doctor/changePacientStatusToWaiting", async (req, res, err) => {
+    //     try {
+    //         const identityName = req.get("Identity_name");
 
-            const formFields = req.fields;
-            const pacientLbo = formFields["pacientLbo"];
-            const hospitalName = formFields["hospitalName"];
-            const waitingListCode = formFields["waitingListCode"];
-            const hospitalCode = formFields["hospitalCode"];
+    //         const formFields = req.fields;
+    //         const pacientLbo = formFields["pacientLbo"];
+    //         const hospitalName = formFields["hospitalName"];
+    //         const waitingListCode = formFields["waitingListCode"];
+    //         const hospitalCode = formFields["hospitalCode"];
 
-            const result = await doctorService.changePacientStatusToWaiting(identityName, pacientLbo, hospitalName, waitingListCode, hospitalCode);
-            res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
-        }
-    });
+    //         const result = await doctorService.changePacientStatusToWaiting(identityName, pacientLbo, hospitalName, waitingListCode, hospitalCode);
+    //         res.status(200).json(result);
+    //     } catch(error) {
+    //         res.status(400).json(error);
+    //     }
+    // });
 
     expressApp.get("/doctor/getPacient/all", async (req, res, err) => {
         try {

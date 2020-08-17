@@ -20,6 +20,7 @@ const getPacientPrivateData = require('../Shared/Pacient-Private_data/getPacient
 // Pending
 const approvePending = require('../Shared/Pending/approvePending');
 const getPending = require('../Shared/Pending/getPending');
+const getAllPendings = require('../Shared/Pending/getAllPendings');
 const getPendingsForHospital = require('../Shared/Pending/getPendingsForHospital');
 // WaitingList
 const createWaitingList = require('../Shared/WaitingList/createWaitingList');
@@ -107,6 +108,11 @@ class SharedService {
 
     static async getPending(identityName, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
         const result = await getPending(identityName, hospitalCode, serviceCode, ordinationCode, pacientLbo);
+        return result;
+    }
+
+    static async getAllPendings(identityName) {
+        const result = await getAllPendings(identityName);
         return result;
     }
 

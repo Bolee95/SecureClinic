@@ -14,6 +14,9 @@ const registerUser = require('../Admin/Network/registerUser');
 const removeUser = require('../Admin/Network/removeUser');
 // Pending
 const retrieveAllPendings = require('../Admin/Pending/retrieveAllPendings');
+// Entity
+const getAllEntities = require('../Admin/Entity/getAllEntities');
+const createEntity = require('../Admin/Entity/createEntity');
 
 class AdminService {
     // Ammands
@@ -68,6 +71,17 @@ class AdminService {
     // Pending
     static async retrieveAllPendings(identityName) {
         const result = await retrieveAllPendings(identityName);
+        return result;
+    }
+
+    // Entity 
+    static async getAllEntities(identityName) {
+        const result = await getAllEntities(identityName);
+        return result;
+    }
+
+    static async createEntity(identityName, licenceId, name, surname, hospitalName, hospitalCode, role) {
+        const result = await createEntity(identityName, licenceId, role, name, surname, hospitalName, hospitalCode);
         return result;
     }
 }

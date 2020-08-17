@@ -27,6 +27,8 @@ const createWaitingList = require('../Shared/WaitingList/createWaitingList');
 const getAllPacientsForWaitingList = require('../Shared/WaitingList/getAllPacientsForWaitingList');
 const getAllWaitingListsForHospital = require('../Shared/WaitingList/getAllWaitingListsForHospital');
 const getWaitingList = require('../Shared/WaitingList/getWaitingList');
+// Entity
+const getEntity = require('../Shared/Entity/getEntity');
 
 class SharedService {
 
@@ -139,6 +141,11 @@ class SharedService {
 
     static async getWaitingList(identityName, hospitalCode, serviceCode, ordinationCode) {
         const result = await getWaitingList(identityName, hospitalCode, serviceCode, ordinationCode);
+        return result;
+    }
+    // Entity
+    static async getEntity(identityName, licenceId) {
+        const result = await getEntity(identityName, licenceId);
         return result;
     }
 }

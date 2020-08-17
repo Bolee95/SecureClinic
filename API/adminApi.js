@@ -167,6 +167,35 @@ function configureAdminServiceListeners(expressApp) {
             res.status(400).json(error);
         }
     });
+
+    // Entity
+    expressApp.get("/admin/getEntity/all", async (req, res, err) => {
+        try {
+            const identityName = req.get("Identity_name");
+            const result = await adminService.getAllEntities(identityName);
+            res.status(200).json(result); 
+        } catch(error) {
+            res.status(400).json(error);
+        }
+    });
+
+    expressApp.post("/admin/createEntity", async (req, res, err) => {
+        try {
+            const identityName = req.get("Identity_name");
+            const formFields = req.fields;
+            const licenceId = formFields["licenceId"];
+            const name = formFields["name"];
+            const surname = formFields["surname"];
+            const hospitalName = formFields["hospitalName"];
+            const hospitalCode = formFields["hospitalCode"];
+            const role = formFields["role"];
+
+            const result = await adminService.createEntity(identityName, licenceId, name, surname, hospitalName, hospitalCode, role);
+            res.status(200).json(result);
+        } catch(error) {
+            res.status(400).json(error);
+        }
+    })
 }
 
 module.exports = configureAdminServiceListeners;

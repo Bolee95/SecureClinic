@@ -418,6 +418,80 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "Create Entity",
+					"request": {
+						"url": "{{API_URL}}/admin/createEntity",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "licenceId",
+									"value": "12345",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Pera",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "surname",
+									"value": "Detlic",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "hospitalName",
+									"value": "Opsta",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "hospitalCode",
+									"value": "AD",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "tehnical",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Entities",
+					"request": {
+						"url": "{{API_URL}}/admin/getEntity/all",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "admin",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
@@ -1504,6 +1578,41 @@
 								}
 							]
 						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Entity",
+					"request": {
+						"url": {
+							"raw": "{{API_URL}}/shared/getEntity?licenceId=doctor",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"shared",
+								"getEntity"
+							],
+							"query": [
+								{
+									"key": "licenceId",
+									"value": "doctor",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Identity_name",
+								"value": "doctor",
+								"description": ""
+							}
+						],
+						"body": {},
 						"description": ""
 					},
 					"response": []

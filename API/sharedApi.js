@@ -309,6 +309,19 @@ function configureSharedServiceListners(expressApp) {
             res.status(400).json(error);
         }
     });
+
+    // Entity
+    expressApp.get("/shared/getEntity", async (req, res, err) => {
+        try {
+            const identityName = req.get("Identity_name");
+            const licenceId = req.query.licenceId;
+
+            const result = await sharedService.getEntity(identityName, licenceId);
+            res.status(200).json(result);
+        } catch(error) {
+            res.status(400).json(error);
+        }
+    });
 }
 
 module.exports = configureSharedServiceListners;

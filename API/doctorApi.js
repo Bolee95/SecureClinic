@@ -97,12 +97,16 @@ function configureDoctorServiceListners(expressApp) {
 
             const formFields = req.fields;
             const pacientLbo = formFields["pacientLbo"];
-            const pacientJbmg = formFields["pacientJbmg"];
+            const pacientJmbg = formFields["pacientJmbg"];
+            const pacientScreenName = formFields["pacientScreenName"];
+            const hospitalName = formFields["hospitalName"];
+            const serviceName = formFields["serviceName"];
+            const ordinationName = formFields["ordinationName"];
             const hospitalCode = formFields["hospitalCode"];
             const serviceCode = formFields["serviceCode"];
             const ordinationCode = formFields["ordinationCode"];
 
-            const result = await doctorService.createNewPending(identityName, pacientLbo, pacientJbmg, hospitalCode, serviceCode, ordinationCode);
+            const result = await doctorService.createNewPending(identityName, pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, serviceCode, ordinationCode);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);

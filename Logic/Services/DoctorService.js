@@ -38,8 +38,8 @@ class DoctorService {
     }
 
     // Pending 
-    static async createNewPending(identityName, pacientLbo, pacientJmbg, hospitalCode, serviceCode, ordinationCode) {
-        const result = await createNewPending(identityName, pacientLbo, pacientJmbg, hospitalCode, serviceCode, ordinationCode);
+    static async createNewPending(identityName, pacientLbo, patientScreenName, hospitalName, ordinationName, serviceName, pacientJmbg, hospitalCode, serviceCode, ordinationCode) {
+        const result = await createNewPending(identityName, pacientLbo, pacientJmbg, patientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, serviceCode, ordinationCode);
         return result;
     }
 }

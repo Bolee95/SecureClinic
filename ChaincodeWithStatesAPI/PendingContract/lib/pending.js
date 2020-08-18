@@ -60,9 +60,8 @@ class Pending extends State {
     static deserialize(data) {
         return State.deserializeClass(data, Pending);
     }
-
-    static createInstance(pacientLbo, pacientJmbg, hospitalCode, serviceCode, ordinationCode, approvers) {
-        return new Pending({pacientLbo, pacientJmbg, hospitalCode, serviceCode, ordinationCode, approvers});
+    static createInstance(pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, serviceCode, ordinationCode, approvers) {
+        return new Pending({pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, serviceCode, ordinationCode, approvers});
     }
 
     static getClass() {

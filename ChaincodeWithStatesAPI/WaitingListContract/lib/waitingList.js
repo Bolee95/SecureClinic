@@ -4,19 +4,19 @@ const State = require('./StateApi/state.js');
 
 class WaitingList extends State {
     constructor(obj) {
-        super(WaitingList.getClass(), [obj.hospitalCode, obj.serviceCode, obj.ordinationCode]);
+        super(WaitingList.getClass(), [obj.hospitalCode, obj.ordinationCode, obj.serviceCode]);
         Object.assign(this,obj);
     }
     getHospitalCode() {
         return this.hospitalCode;
     }
 
-    getServiceCode() {
-        return this.serviceCode;
-    }
-
     getOrdinationCode() {
         return this.ordinationCode;
+    }
+
+    getServiceCode() {
+        return this.serviceCode;
     }
 
     getAllPacients() {
@@ -47,8 +47,8 @@ class WaitingList extends State {
         return State.deserializeClass(data, WaitingList);
     }
 
-    static createInstance(hospitalCode, serviceCode, ordinationCode, pacients) {
-        return new WaitingList({hospitalCode ,serviceCode, ordinationCode, pacients});
+    static createInstance(hospitalCode, ordinationCode, serviceCode, pacients) {
+        return new WaitingList({hospitalCode ,ordinationCode, serviceCode, pacients});
     }
 
     static getClass() {

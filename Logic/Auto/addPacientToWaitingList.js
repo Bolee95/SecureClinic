@@ -18,7 +18,15 @@ async function addPacientToWaitingList(gateway, hospitalCode, serviceCode, ordin
         const jsonResult = JSON.parse(waitingListResult.toString());
         waitingList = new (WaitingList)(jsonResult);
     } else {
-        throw new Error(`Error while retrieving WaitingList with id ${hospitalCode}:${serviceCode}:${ordinationCode}...`)
+        // Waiting list doesn't exist, create one   
+        const newWaitingList = WaitingList.createInstance(hospitalCode, ordinationCode, serviceCode, []);
+        const createWaitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'addWaitingList', newWaitingList.stringifyClass());
+        if (createWaitingListResult.length > 0) {
+            // Everything alright, can continue futher
+        } 
+        else {
+            throw new Error(`Error while creating Waiting List with key ${hospitalCode}:${ordinationCode}:${serviceCode}...`);
+        }
     }
     // PACIENT RETRIVAL
     const pacientResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'getPacient', pacientLbo);
@@ -29,25 +37,25 @@ async function addPacientToWaitingList(gateway, hospitalCode, serviceCode, ordin
         throw new Error(`Error while retrieving Pacient with lbo ${pacientLbo}...`);
     }
     // FACILITY RETRIVAL
-    const facilityResult = await SmartContractUtil.submitTransaction(gateway, 'Facility', 'getFacility', ordinationCode);
-    if (facilityResult.length > 0) {
-        const jsonResult = JSON.parse(facilityResult.toString());
-        const modeledFacility = new (Facility)(jsonResult);
+    // const facilityResult = await SmartContractUtil.submitTransaction(gateway, 'Facility', 'getFacility', ordinationCode);
+    // if (facilityResult.length > 0) {
+    //     const jsonResult = JSON.parse(facilityResult.toString());
+    //     const modeledFacility = new (Facility)(jsonResult);
 
-        for (const service of modeledFacility.getServices()) {
-            const modeledService = new (Service)(service);
-            if (modeledService.getServiceCode() == serviceCode) {
-                operationService = modeledService;
-                break;
-            }
-        }
+    //     for (const service of modeledFacility.getServices()) {
+    //         const modeledService = new (Service)(service);
+    //         if (modeledService.getServiceCode() == serviceCode) {
+    //             operationService = modeledService;
+    //             break;
+    //         }
+    //     }
 
-        if (operationService == undefined) {
-            throw new Error(`There is no service with id ${serviceCode} for facility code ${ordinationCode}`);
-        }
-    }
+    //     if (operationService == undefined) {
+    //         throw new Error(`There is no service with id ${serviceCode} for facility code ${ordinationCode}`);
+    //     }
+    // }
     // CREATING AND ADDING PACIENT TO WAITNG LIST
-    const approvedPacient = ApprovedPacient.createInstance(pacient.uniqueId,pacient.city,Date.now(), operationService.getMaxWaitingTime() ,5);
+    const approvedPacient = ApprovedPacient.createInstance(pacient.lbo, pacient.city, Date.now(), 10);
     waitingList.addNewPacient(approvedPacient);
 
     const updateResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'updateWaitingList', waitingList.stringifyClass());
@@ -74,7 +82,7 @@ async function addPacientToWaitingList(gateway, hospitalCode, serviceCode, ordin
     }
 
     // UPDATING USER WAITING STATUS 
-    changePacientWaitingStatusToWaiting(gateway, pacientLbo, hospitalCode, waitingList.key, hospitalCode);
+    await changePacientWaitingStatusToWaiting(gateway, pacientLbo, hospitalCode, waitingList.key, hospitalCode);
 
     gateway.disconnect();   
     return pendingRemovalRes;

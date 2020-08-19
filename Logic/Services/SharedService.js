@@ -108,8 +108,8 @@ class SharedService {
         return result;
     }
 
-    static async getPending(identityName, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
-        const result = await getPending(identityName, hospitalCode, serviceCode, ordinationCode, pacientLbo);
+    static async getPending(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
+        const result = await getPending(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo);
         return result;
     }
 
@@ -139,8 +139,8 @@ class SharedService {
         return result;
     }
 
-    static async getWaitingList(identityName, hospitalCode, serviceCode, ordinationCode) {
-        const result = await getWaitingList(identityName, hospitalCode, serviceCode, ordinationCode);
+    static async getWaitingList(identityName, hospitalCode, ordinationCode, serviceCode) {
+        const result = await getWaitingList(identityName, hospitalCode, ordinationCode, serviceCode);
         return result;
     }
     // Entity

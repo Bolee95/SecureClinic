@@ -4,7 +4,7 @@ const State = require('./StateApi/state.js');
 
 class Pending extends State {
     constructor(obj) {
-        super(Pending.getClass(), [obj.hospitalCode, obj.serviceCode, obj.ordinationCode, obj.pacientLbo]);
+        super(Pending.getClass(), [obj.hospitalCode, obj.ordinationCode, obj.serviceCode, obj.pacientLbo]);
         Object.assign(this, obj);
     }
     
@@ -20,12 +20,12 @@ class Pending extends State {
         return this.hospitalCode;
     }
 
-    getServiceCode() {
-        return this.serviceCode;
-    }
-
     getOrdinationCode() {
         return this.ordinationCode;
+    }
+
+    getServiceCode() {
+        return this.serviceCode;
     }
 
     getApprovers() {
@@ -60,8 +60,8 @@ class Pending extends State {
     static deserialize(data) {
         return State.deserializeClass(data, Pending);
     }
-    static createInstance(pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, serviceCode, ordinationCode, approvers) {
-        return new Pending({pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, serviceCode, ordinationCode, approvers});
+    static createInstance(pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, approvers) {
+        return new Pending({pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, approvers});
     }
 
     static getClass() {

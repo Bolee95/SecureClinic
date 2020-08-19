@@ -11,7 +11,7 @@ async function createPending(identityName, pacientLbo, pacientJmbg, pacientScree
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
-    const pending = Pending.createInstance(pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, serviceCode, ordinationCode, []); 
+    const pending = Pending.createInstance(pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, []);
     let addingResult;
 
     const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'addPending', pending.stringifyClass());
@@ -27,11 +27,3 @@ async function createPending(identityName, pacientLbo, pacientJmbg, pacientScree
 };
 
 module.exports = createPending;
-
-// createPending().then(() => {
-// }).catch((exception) => {
-//     console.log('Creating Pending failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

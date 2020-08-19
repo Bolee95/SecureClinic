@@ -36,22 +36,22 @@ class PendingContract extends Contract {
 
     async addPending(ctx, pending) {
         const modeledPending = Pending.fromJSON(pending, Pending);
-        const pendingExists = await ctx.pendingList.pendingExists([modeledPending.hospitalCode, modeledPending.serviceCode, modeledPending.ordinationCode, modeledPending.pacientLbo]);
+        const pendingExists = await ctx.pendingList.pendingExists([modeledPending.hospitalCode, modeledPending.ordinationCode, modeledPending.serviceCode, modeledPending.pacientLbo]);
         if (!pendingExists) {
             const pendingData = await ctx.pendingList.addPending(modeledPending);
             return pendingData;
         } else {
-            throw new Error(`Pending with key ${[modeledPending.hospitalCode, modeledPending.serviceCode, modeledPending.ordinationCode, modeledPending.pacientLbo]} already exists!`);
+            throw new Error(`Pending with key ${modeledPending.hospitalCode}:${modeledPending.ordinationCode}:${modeledPending.serviceCode}:${modeledPending.pacientLbo} already exists!`);
         }
     }
 
-    async getPending(ctx, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
-        const pendingData = await ctx.pendingList.getPending([hospitalCode,serviceCode,ordinationCode,pacientLbo]);
+    async getPending(ctx, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
+        const pendingData = await ctx.pendingList.getPending([hospitalCode,ordinationCode,serviceCode,pacientLbo]);
         return pendingData;
     }
 
-    async removePending(ctx, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
-        const pendingData = await ctx.pendingList.removePending([hospitalCode,serviceCode,ordinationCode,pacientLbo]);
+    async removePending(ctx, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
+        const pendingData = await ctx.pendingList.removePending([hospitalCode,ordinationCode,serviceCode,pacientLbo]);
         return pendingData;
     }
 

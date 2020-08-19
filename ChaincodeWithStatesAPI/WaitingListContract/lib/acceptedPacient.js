@@ -6,10 +6,10 @@ class AcceptedPacient {
     }
 
     getPacientId() {
-        return this.pacientId;
+        return this.pacientLbo;
     }
 
-    getPacientPlaceOfBirth() {
+    getPacientPlaceOfBirth() {  
         return this.pacientPlace;
     }
 
@@ -29,8 +29,8 @@ class AcceptedPacient {
         return Buffer.from(JSON.stringify(this));
     }
 
-    static createInstance(pacientId, pacientPlace, dateOfPlacement, exceptedWaitingDays, pacientScore) {
-        return new AcceptedPacient({pacientId, pacientPlace, dateOfPlacement, exceptedWaitingDays, pacientScore });
+    static createInstance(pacientLbo, pacientPlace, dateOfPlacement, pacientScore) {
+        return new AcceptedPacient({pacientLbo, pacientPlace, dateOfPlacement, pacientScore });
     }
 }
 module.exports = AcceptedPacient;

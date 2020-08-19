@@ -216,11 +216,11 @@ function configureSharedServiceListners(expressApp) {
             const identityName = req.get("Identity_name");
 
             const hospitalCode = req.query.hospitalCode;
-            const serviceCode = req.query.serviceCode;
             const ordinationCode = req.query.ordinationCode;
+            const serviceCode = req.query.serviceCode;
             const pacientLbo = req.query.pacientLbo;
 
-            const result = await sharedService.getPending(identityName, hospitalCode, serviceCode, ordinationCode, pacientLbo);
+            const result = await sharedService.getPending(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);
@@ -300,10 +300,10 @@ function configureSharedServiceListners(expressApp) {
             const identityName = req.get("Identity_name");
 
             const hospitalCode = req.query.hospitalCode;
-            const serviceCode = req.query.serviceCode;
             const ordinationCode = req.query.ordinationCode;
+            const serviceCode = req.query.serviceCode;
         
-            const result = await sharedService.getWaitingList(identityName, hospitalCode, serviceCode, ordinationCode);
+            const result = await sharedService.getWaitingList(identityName, hospitalCode, ordinationCode, serviceCode);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);

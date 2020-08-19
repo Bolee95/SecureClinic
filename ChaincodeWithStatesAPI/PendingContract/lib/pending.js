@@ -32,6 +32,10 @@ class Pending extends State {
         return this.approvers;
     }
 
+    getIsReviewed() {
+        return this.isReviewed;
+    }
+
     addApprover(approver) {
         return this.approvers.push(approver);
     }

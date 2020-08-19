@@ -6,10 +6,9 @@ const Facility = require('../../ChaincodeWithStatesAPI/FacilityContract/lib/faci
 const Service = require('../../ChaincodeWithStatesAPI/FacilityContract/lib/service.js');
 const changePacientWaitingStatusToWaiting = require('./changePacientStatusToWaiting');
 
-async function addPacientToWaitingList(gateway, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
+async function addPacientToWaitingList(gateway, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
     let pacient;
     let waitingList;
-    let operationService;
     let pendingRemovalRes;
 
     // WAITING LIST RETRIVAL
@@ -71,15 +70,15 @@ async function addPacientToWaitingList(gateway, hospitalCode, serviceCode, ordin
     }
 
     // REMOVING PENDING
-    const pendingRemovalResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'removePending', [hospitalCode, serviceCode, ordinationCode, pacientLbo]);
-    if (updateResult.length > 0) {
-        pendingRemovalRes = JSON.parse(pendingRemovalResult.toString());
-        if (pendingRemovalRes == true) {
-            console.log(`Removal of pending with id ${hospitalCode}:${serviceCode}:${ordinationCode}:${pacientLbo} successful.`);
-        } else {
-            console.log(`Error while removing pending with id ${hospitalCode}:${serviceCode}:${ordinationCode}:${pacientLbo} failed...`);
-        }
-    }
+    // const pendingRemovalResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'removePending', [hospitalCode, serviceCode, ordinationCode, pacientLbo]);
+    // if (updateResult.length > 0) {
+    //     pendingRemovalRes = JSON.parse(pendingRemovalResult.toString());
+    //     if (pendingRemovalRes == true) {
+    //         console.log(`Removal of pending with id ${hospitalCode}:${serviceCode}:${ordinationCode}:${pacientLbo} successful.`);
+    //     } else {
+    //         console.log(`Error while removing pending with id ${hospitalCode}:${serviceCode}:${ordinationCode}:${pacientLbo} failed...`);
+    //     }
+    // }
 
     // UPDATING USER WAITING STATUS 
     await changePacientWaitingStatusToWaiting(gateway, pacientLbo, hospitalCode, waitingList.key, hospitalCode);

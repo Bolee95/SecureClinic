@@ -26,9 +26,9 @@ class PendingContract extends Contract {
     async instantiate(ctx) {
         let approver1 = Approver.createInstance('123456789', 'Director');
         let approver2 = Approver.createInstance('23232145','Doctor');
-        let pending1 = Pending.createInstance('1234','5678', 'Bogdan Ilic', 'Opsta Bolnica Nis', 'Kardiohirurgija', 'Operacija srca', 'AB', 'CD', 'EF', [approver1]);
-        let pending2 = Pending.createInstance('4444','5555', 'Darko Ilic', 'Dom Zdravlja', 'Ortopedija' , 'Operacija kolena' ,'AB', 'CD', 'EF', [approver1, approver2]);
-        let pending3 = Pending.createInstance('4444','5555', 'Gari Nevil', 'Opsta bolnica Nis', 'Virusologija', 'Detoksikacija', 'GG', 'CD', 'EF', [approver1, approver2]);
+        let pending1 = Pending.createInstance('1234','5678', 'Bogdan Ilic', 'Opsta Bolnica Nis', 'Kardiohirurgija', 'Operacija srca', 'AB', 'CD', 'EF', [approver1],false);
+        let pending2 = Pending.createInstance('4444','5555', 'Darko Ilic', 'Dom Zdravlja', 'Ortopedija' , 'Operacija kolena' ,'AB', 'CD', 'EF', [approver1, approver2], false);
+        let pending3 = Pending.createInstance('4444','5555', 'Gari Nevil', 'Opsta bolnica Nis', 'Virusologija', 'Detoksikacija', 'GG', 'CD', 'EF', [approver1, approver2], false);
         await ctx.pendingList.addPending(pending1);
         await ctx.pendingList.addPending(pending2);
         await ctx.pendingList.addPending(pending3);

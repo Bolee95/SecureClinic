@@ -31,6 +31,10 @@ async function approvePending(identityName, licenceId, hospitalCode, serviceCode
         modeledPending.addApprover(approver);
         console.log(modeledPending);
 
+        if (modeledPending.approvers.length >= 3) {
+            modeledPending.isReviewed = true;
+        }
+
         bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'updatePending', modeledPending.stringifyClass());
         if (bufferedResult.length > 0) {
             jsonResult = JSON.parse(bufferedResult.toString());
@@ -38,13 +42,13 @@ async function approvePending(identityName, licenceId, hospitalCode, serviceCode
             console.log(updatingResult);
 
             if (updatingResult == true && modeledPending.approvers.length >= 3) {
-                await AddPacientToWaitingList(gateway,hospitalCode,serviceCode,ordinationCode,pacientLbo);
+                await AddPacientToWaitingList(gateway, hospitalCode, ordinationCode, serviceCode, pacientLbo);
             } else {
                 gateway.disconnect();
             }
         }
     } else {
-        console.log(`Error while approving pending with id ${hospitalCode + ' ' + serviceCode + ' ' + ordinationCode + ' ' + pacientLbo}...`);
+        console.log(`Error while approving pending with id ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}...`);
     }
     return updatingResult;
 };

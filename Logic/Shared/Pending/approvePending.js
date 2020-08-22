@@ -4,7 +4,7 @@ const Pending = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/pen
 const Approver = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/approver.js');
 const AddPacientToWaitingList = require('../../Auto/addPacientToWaitingList.js');
 
-async function approvePending(identityName, licenceId, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
+async function approvePending(identityName, licenceId, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -14,7 +14,7 @@ async function approvePending(identityName, licenceId, hospitalCode, serviceCode
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let updatingResult;
     //[hospitalCode,serviceCode,ordinationCode,pacientLbo]
-    let bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'getPending', [hospitalCode,serviceCode,ordinationCode,pacientLbo]);
+    let bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'getPending', [hospitalCode,ordinationCode,serviceCode,pacientLbo]);
     if (bufferedResult.length > 0) {
         let jsonResult = JSON.parse(bufferedResult.toString());
         modeledPending = new (Pending)(jsonResult);

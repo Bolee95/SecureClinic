@@ -12,7 +12,7 @@ async function addPacientToWaitingList(gateway, hospitalName, ordinationName, se
     let pendingRemovalRes;
 
     // WAITING LIST RETRIVAL
-    const waitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getWaitingList', [hospitalCode,serviceCode,ordinationCode]);
+    const waitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getWaitingList', [hospitalCode, ordinationCode, serviceCode]);
     if (waitingListResult.length > 0) {
         const jsonResult = JSON.parse(waitingListResult.toString());
         waitingList = new (WaitingList)(jsonResult);
@@ -57,7 +57,7 @@ async function addPacientToWaitingList(gateway, hospitalName, ordinationName, se
     // CREATING AND ADDING PACIENT TO WAITNG LIST
     let addedDate = Date.now();
     // TO-DO: Retrieve Service max time 
-    let maxDate = addedDate + (86400 * 50);
+    let maxDate = addedDate + (86400000 * 50);
     const approvedPacient = ApprovedPacient.createInstance(pacient.lbo, pacient.getNameAndSurname(), pacient.city, addedDate, score, maxDate);
     waitingList.addNewPacient(approvedPacient);
 

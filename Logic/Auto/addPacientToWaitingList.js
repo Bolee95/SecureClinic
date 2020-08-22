@@ -6,7 +6,7 @@ const Facility = require('../../ChaincodeWithStatesAPI/FacilityContract/lib/faci
 const Service = require('../../ChaincodeWithStatesAPI/FacilityContract/lib/service.js');
 const changePacientWaitingStatusToWaiting = require('./changePacientStatusToWaiting');
 
-async function addPacientToWaitingList(gateway, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
+async function addPacientToWaitingList(gateway, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
     let pacient;
     let waitingList;
     let pendingRemovalRes;
@@ -18,7 +18,8 @@ async function addPacientToWaitingList(gateway, hospitalCode, ordinationCode, se
         waitingList = new (WaitingList)(jsonResult);
     } else {
         // Waiting list doesn't exist, create one   
-        const newWaitingList = WaitingList.createInstance(hospitalCode, ordinationCode, serviceCode, []);
+        // TO-DO: Retrieve Service max time 
+        const newWaitingList = WaitingList.createInstance(hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, [], 50);
         const createWaitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'addWaitingList', newWaitingList.stringifyClass());
         if (createWaitingListResult.length > 0) {
             // Everything alright, can continue futher
@@ -54,7 +55,10 @@ async function addPacientToWaitingList(gateway, hospitalCode, ordinationCode, se
     //     }
     // }
     // CREATING AND ADDING PACIENT TO WAITNG LIST
-    const approvedPacient = ApprovedPacient.createInstance(pacient.lbo, pacient.city, Date.now(), 10);
+    let addedDate = Date().now();
+    // TO-DO: Retrieve Service max time 
+    let maxDate = addedDate + (86400 * 50);
+    const approvedPacient = ApprovedPacient.createInstance(pacient.lbo, pacient.getNameAndSurname(), pacient.city, addedDate, 10, maxDate);
     waitingList.addNewPacient(approvedPacient);
 
     const updateResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'updateWaitingList', waitingList.stringifyClass());
@@ -70,6 +74,7 @@ async function addPacientToWaitingList(gateway, hospitalCode, ordinationCode, se
     }
 
     // REMOVING PENDING
+    // Previously updated with newly added flag
     // const pendingRemovalResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'removePending', [hospitalCode, serviceCode, ordinationCode, pacientLbo]);
     // if (updateResult.length > 0) {
     //     pendingRemovalRes = JSON.parse(pendingRemovalResult.toString());
@@ -81,7 +86,7 @@ async function addPacientToWaitingList(gateway, hospitalCode, ordinationCode, se
     // }
 
     // UPDATING USER WAITING STATUS 
-    await changePacientWaitingStatusToWaiting(gateway, pacientLbo, hospitalCode, waitingList.key, hospitalCode);
+    await changePacientWaitingStatusToWaiting(gateway, pacientLbo, hospitalName, hospitalCode, ordinationCode, serviceCode);
 
     gateway.disconnect();   
     return pendingRemovalRes;

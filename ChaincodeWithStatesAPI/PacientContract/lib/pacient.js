@@ -24,12 +24,16 @@ class Pacient extends State {
         this.currentWaitingStatus = newWaitingStatus;
     }
 
-    setWaitingListCode(newCode) {
-        this.waitingListCode = newCode;
-    }
-
     setHospitalCode(newCode) {
         this.hospitalCode = newCode;
+    }
+
+    setOrdinationCode(newCode) {
+        this.ordinationCode = newCode;
+    }
+    
+    setServiceCode(newCode) {
+        this.serviceCode = newCode;
     }
 
     setHospitalName(newName) {
@@ -37,7 +41,7 @@ class Pacient extends State {
     }
 
     getNameAndSurname() {
-        return this.name + " " + this.surname;
+        return this.name + ' ' + this.surname;
     }
 
     /**
@@ -72,8 +76,8 @@ class Pacient extends State {
         return State.deserializeClass(data, Pacient);
     }
 
-    static createInstance(name, surname, lbo, jmbg, uniqueId, city, currentWaitingStatus, hospitalName, waitingListCode, hospitalCode) {
-        return new Pacient({name ,surname, lbo, jmbg, uniqueId, city, currentWaitingStatus, hospitalName, waitingListCode, hospitalCode})
+    static createInstance(name, surname, lbo, jmbg, city, currentWaitingStatus, hospitalName, hospitalCode, ordinationCode, serviceCode) {
+        return new Pacient({name ,surname, lbo, jmbg, city, currentWaitingStatus, hospitalName, hospitalCode, ordinationCode, serviceCode})
     }
 
     static getClass() {

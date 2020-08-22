@@ -23,13 +23,13 @@ class WaitingListContract extends Contract {
     }
 
     async instantiate(ctx) {
-        let acceptedPacient1 = AcceptedPacient.createInstance('1234qwerty', 'Leskovac', '01.02.2020', '60', '5.6');
-        let acceptedPacient2 = AcceptedPacient.createInstance('asdfgh1234', 'Beograd', '04.10.2020','40', '10.0');
-        let acceptedPacient3 = AcceptedPacient.createInstance('qzmk231gk', 'Krusevac', '02.02.2020', '10','4.0');
+        let acceptedPacient1 = AcceptedPacient.createInstance('1234', 'Petar Petrovic', 'Nis', '1598006737', '9', '1598784337');
+        let acceptedPacient2 = AcceptedPacient.createInstance('5678', 'Igor Djordjevic', '1598006737','10', '1598784337');
+        let acceptedPacient3 = AcceptedPacient.createInstance('9012', 'Djordje Gavrilovic', '1598006737', '8','1598784337');
 
-        let waitingList1 = WaitingList.createInstance('AB','CD','EF',[acceptedPacient1,acceptedPacient2]);
-        let waitingList2 = WaitingList.createInstance('CD','AB','KG',[acceptedPacient3]);
-        let waitingList3 = WaitingList.createInstance('AB','QQ','WW',[acceptedPacient3]);
+        let waitingList1 = WaitingList.createInstance('Opsta Bolnica, Nis', 'Kardiohirurgija', 'Operacija srca', 'AB','CD','EF',[acceptedPacient1,acceptedPacient2], 30);
+        let waitingList2 = WaitingList.createInstance('Vojno-Medicinska Bolnica, Beograd', 'Ortopedija', 'Operacija kolena','CD','AB','KG',[acceptedPacient3], 120);
+        let waitingList3 = WaitingList.createInstance('Klinicki centar Novi Sad', 'Ortopedija', 'Operacija katarakte', 'AB','QQ','WW',[acceptedPacient3], 300);
         await ctx.waitingLists.addWaitingList(waitingList1);
         await ctx.waitingLists.addWaitingList(waitingList2);
         await ctx.waitingLists.addWaitingList(waitingList3);

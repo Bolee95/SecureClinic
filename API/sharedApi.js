@@ -256,11 +256,15 @@ function configureSharedServiceListners(expressApp) {
             const identityName = req.get("Identity_name");
 
             const formFields = req.fields;
+            const hospitalName = formFields["hospitalName"];
+            const ordinationName = formFields["ordinationName"];
+            const serviceName = formFields["serviceName"];
             const hospitalCode = formFields["hospitalCode"];
-            const serviceCode = formFields["serviceCode"];
             const ordinationCode = formFields["ordinationCode"];
+            const serviceCode = formFields["serviceCode"];
+            const maxWaitingDays = formFields["maxWaitingDays"];
     
-            const result = await sharedService.createWaitingList(identityName, hospitalCode, serviceCode, ordinationCode);
+            const result = await sharedService.createWaitingList(identityName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, maxWaitingDays);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);

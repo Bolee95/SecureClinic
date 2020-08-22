@@ -16,6 +16,18 @@ class Pending extends State {
         return this.pacientLbo;
     }
 
+    getHospitalName() {
+        return this.hospitalName;
+    }
+
+    getOrdinationName() {
+        return this.ordinationName;
+    }
+
+    getServiceName() {
+        return this.serviceName;
+    }
+
     getHospitalCode() {
         return this.hospitalCode;
     }

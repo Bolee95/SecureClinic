@@ -1,7 +1,8 @@
 const SmartContractUtil = require('../utils/js-smart-contract-util');
 const Pacient = require('../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
 
-async function changePacientStatusToWaiting(gateway, pacientLbo, hospitalName, waitingListCode, hospitalCode) {
+// gateway, pacientLbo, hospitalName, hospitalCode, ordinationCode, serviceCode
+async function changePacientStatusToWaiting(gateway, pacientLbo, hospitalName, hospitalCode, ordinationCode, serviceCode) {
     
     let updatingResult;
 
@@ -10,9 +11,10 @@ async function changePacientStatusToWaiting(gateway, pacientLbo, hospitalName, w
         let jsonResult = JSON.parse(bufferedResult.toString());
         const pacient = new (Pacient)(jsonResult);
 
-        pacient.setHospitalCode(hospitalCode);
         pacient.setHospitalName(hospitalName);
-        pacient.setWaitingListCode(waitingListCode);
+        pacient.setHospitalCode(hospitalCode);
+        pacient.setOrdinationCode(ordinationCode);
+        pacient.setServiceCode(serviceCode);
         pacient.setWaitingStatusActive();
 
         bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'updatePacient', pacient.stringifyClass());
@@ -31,11 +33,3 @@ async function changePacientStatusToWaiting(gateway, pacientLbo, hospitalName, w
 };
 
 module.exports = changePacientStatusToWaiting;
-
-// addPacientToWaitingList().then(() => {
-// }).catch((exception) => {
-//     console.log('Updating pacient failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

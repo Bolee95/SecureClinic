@@ -124,8 +124,8 @@ class SharedService {
     }
 
     // Waiting List
-    static async createWaitingList(identityName, hospitalCode, serviceCode, ordinationCode) {
-        const result = await createWaitingList(identityName, hospitalCode, serviceCode, ordinationCode);
+    static async createWaitingList(identityName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, maxWaitingDays) {
+        const result = await createWaitingList(identityName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, maxWaitingDays);
         return result;
     }
 

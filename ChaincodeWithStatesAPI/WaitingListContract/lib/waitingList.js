@@ -47,8 +47,8 @@ class WaitingList extends State {
         return State.deserializeClass(data, WaitingList);
     }
 
-    static createInstance(hospitalCode, ordinationCode, serviceCode, pacients) {
-        return new WaitingList({hospitalCode ,ordinationCode, serviceCode, pacients});
+    static createInstance(hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, pacients, maxWaitingDays) {
+        return new WaitingList({hospitalName, ordinationName, serviceName, hospitalCode , ordinationCode, serviceCode, pacients, maxWaitingDays});
     }
 
     static getClass() {

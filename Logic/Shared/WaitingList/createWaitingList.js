@@ -2,7 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const WaitingList = require('../../../ChaincodeWithStatesAPI/WaitingListContract/lib/waitingList.js');
 
-async function createWaitingList(identityName, hospitalCode, serviceCode, ordinationCode) {
+async function createWaitingList(identityName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, maxWaitingDays) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -11,21 +11,14 @@ async function createWaitingList(identityName, hospitalCode, serviceCode, ordina
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
-    const waitingList = WaitingList.createInstance(hospitalCode,serviceCode,ordinationCode,[]);
+    const waitingList = WaitingList.createInstance(hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, [], maxWaitingDays);
     const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'addWaitingList', waitingList.stringifyClass());
     if (bufferedResult.length > 0) {
         console.log(waitingList.getHospitalCode() + ' ' + waitingList.getServiceCode());
     } else {
-        console.log(`Error while creating new WaitingList...`);
+        console.log(`Error while creating new WaitingList with id ${hospitalCode}:${ordinationCode}:${serviceCode}...`);
     }
     gateway.disconnect();
 };
 
 module.exports = createWaitingList;
-// createWaitingList().then(() => {
-// }).catch((exception) => {
-//     console.log('Creating new waiting list failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

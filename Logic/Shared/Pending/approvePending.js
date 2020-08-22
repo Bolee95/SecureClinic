@@ -42,7 +42,7 @@ async function approvePending(identityName, licenceId, hospitalCode, serviceCode
             console.log(updatingResult);
 
             if (updatingResult == true && modeledPending.approvers.length >= 3) {
-                await AddPacientToWaitingList(gateway, hospitalCode, ordinationCode, serviceCode, pacientLbo);
+                await AddPacientToWaitingList(gateway, modeledPending.getHospitalName(), modeledPending.getOrdinationName(), modeledPending.getServiceName(), hospitalCode, ordinationCode, serviceCode, pacientLbo);
             } else {
                 gateway.disconnect();
             }

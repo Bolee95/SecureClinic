@@ -21,16 +21,24 @@ class AcceptedPacient {
         return this.exceptedWaitingDays;
     }
 
+    getPacientScreenName() {
+        return this.pacientScreenName;
+    }
+
     getPacientScore() {
         return this.pacientScore;
+    }
+
+    getMaxWaitingDate() {
+        return this.maxWaitingDate;
     }
 
     toBuffer() {
         return Buffer.from(JSON.stringify(this));
     }
 
-    static createInstance(pacientLbo, pacientPlace, dateOfPlacement, pacientScore) {
-        return new AcceptedPacient({pacientLbo, pacientPlace, dateOfPlacement, pacientScore });
+    static createInstance(pacientLbo, pacientScreenName, pacientPlace, dateOfPlacement, pacientScore, maxWaitingDate) {
+        return new AcceptedPacient({pacientLbo, pacientScreenName, pacientPlace, dateOfPlacement, pacientScore, maxWaitingDate });
     }
 }
 module.exports = AcceptedPacient;

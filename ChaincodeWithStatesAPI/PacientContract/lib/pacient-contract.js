@@ -27,8 +27,8 @@ class PacientContract extends Contract {
     }
 
     async instantiate(ctx) {
-        let pacient1 = Pacient.createInstance('Bogdan', 'Ilic', '001', '0123456789', 'qwerty1234', 'Leskovac', '','','','');
-        let pacient2 = Pacient.createInstance('Darko','Ilic','002','0123456624','qaqa12', 'Beograd', '1', 'Opsta Bolnica', 'AD1', 'DD2');
+        let pacient1 = Pacient.createInstance('Bogdan', 'Ilic', '001', '012345678', 'Leskovac', '1', '', '', '', '');
+        let pacient2 = Pacient.createInstance('Darko','Ilic','002','0123456624', 'Beograd', '2', 'Opsta Bolnica', 'AB', 'CD', 'EF');
         let pacientPrivateData1 = PacientPrivateData.createInstance('Hello','12355112',[ {'CD':true}, {'AP':false}],['123456ada', 'qwerty1234']);
         await ctx.pacientList.addPacient(pacient1);
         await ctx.pacientList.addPacient(pacient2);

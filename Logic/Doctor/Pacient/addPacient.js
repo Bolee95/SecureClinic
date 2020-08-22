@@ -3,7 +3,8 @@ const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const WaitingState = require('../../utils/js-smart-contact-waiting-status.js');
 const Pacient = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
 
-async function createPacient(identityName, name, surname, lbo, jmbg, uniqueId, city) {
+//name, surname, lbo, jmbg, city, currentWaitingStatus, hospitalName, hospitalCode, ordinationCode, serviceCode
+async function createPacient(identityName, name, surname, lbo, jmbg, city) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -12,7 +13,7 @@ async function createPacient(identityName, name, surname, lbo, jmbg, uniqueId, c
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
-    let pacient = Pacient.createInstance(name, surname, lbo, jmbg, uniqueId, city, WaitingState.NONACTIVE,'','','');
+    let pacient = Pacient.createInstance(name, surname, lbo, jmbg, city, WaitingState.NONACTIVE, '', '', '', '');
     let result;
 
     const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'addPacient', pacient.stringifyClass());
@@ -28,11 +29,3 @@ async function createPacient(identityName, name, surname, lbo, jmbg, uniqueId, c
 };
 
 module.exports = createPacient;
-
-// createPacient().then(() => {
-// }).catch((exception) => {
-//     console.log('Creating pacient failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

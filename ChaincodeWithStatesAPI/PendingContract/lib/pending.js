@@ -48,6 +48,10 @@ class Pending extends State {
         return this.isReviewed;
     }
 
+    getScore() {
+        return this.score;
+    }
+
     addApprover(approver) {
         return this.approvers.push(approver);
     }
@@ -58,6 +62,10 @@ class Pending extends State {
 
     setPacientJmbg(jmbg) {
         this.pacientJmbg = jmbg;
+    }
+
+    setScore(newScore) {
+        this.score = newScore;
     }
 
     static fromBuffer(buffer) {
@@ -76,8 +84,8 @@ class Pending extends State {
     static deserialize(data) {
         return State.deserializeClass(data, Pending);
     }
-    static createInstance(pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, approvers, isReviewed) {
-        return new Pending({pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, approvers, isReviewed});
+    static createInstance(pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, approvers, isReviewed, score) {
+        return new Pending({pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, approvers, isReviewed, score});
     }
 
     static getClass() {

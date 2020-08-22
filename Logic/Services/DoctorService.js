@@ -12,8 +12,8 @@ const createNewPending = require('../Doctor/Pending/createNewPending');
 class DoctorService {
 
     // Pacient
-    static async addPacient(identityName, name, surname, lbo, jmbg, uniqueId, city) {
-        const result = await addPacient(identityName, name, surname, lbo, jmbg, uniqueId, city);
+    static async addPacient(identityName, name, surname, lbo, jmbg, city) {
+        const result = await addPacient(identityName, name, surname, lbo, jmbg, city);
         return result;
     }
 
@@ -38,8 +38,8 @@ class DoctorService {
     }
 
     // Pending 
-    static async createNewPending(identityName, pacientLbo, pacientJmbg, patientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, serviceCode, ordinationCode) {
-        const result = await createNewPending(identityName, pacientLbo, pacientJmbg, patientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, serviceCode, ordinationCode);
+    static async createNewPending(identityName, pacientLbo, pacientJmbg, patientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, score) {
+        const result = await createNewPending(identityName, pacientLbo, pacientJmbg, patientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, score);
         return result;
     }
 }

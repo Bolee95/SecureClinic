@@ -6,7 +6,7 @@ const Facility = require('../../ChaincodeWithStatesAPI/FacilityContract/lib/faci
 const Service = require('../../ChaincodeWithStatesAPI/FacilityContract/lib/service.js');
 const changePacientWaitingStatusToWaiting = require('./changePacientStatusToWaiting');
 
-async function addPacientToWaitingList(gateway, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
+async function addPacientToWaitingList(gateway, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, pacientLbo, score) {
     let pacient;
     let waitingList;
     let pendingRemovalRes;
@@ -55,10 +55,10 @@ async function addPacientToWaitingList(gateway, hospitalName, ordinationName, se
     //     }
     // }
     // CREATING AND ADDING PACIENT TO WAITNG LIST
-    let addedDate = Date().now();
+    let addedDate = Date.now();
     // TO-DO: Retrieve Service max time 
     let maxDate = addedDate + (86400 * 50);
-    const approvedPacient = ApprovedPacient.createInstance(pacient.lbo, pacient.getNameAndSurname(), pacient.city, addedDate, 10, maxDate);
+    const approvedPacient = ApprovedPacient.createInstance(pacient.lbo, pacient.getNameAndSurname(), pacient.city, addedDate, score, maxDate);
     waitingList.addNewPacient(approvedPacient);
 
     const updateResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'updateWaitingList', waitingList.stringifyClass());

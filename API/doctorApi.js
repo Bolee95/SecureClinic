@@ -12,10 +12,9 @@ function configureDoctorServiceListners(expressApp) {
             const surname = formFields["surname"];
             const lbo = formFields["lbo"];
             const jmbg = formFields["jmbg"];
-            const uniqueId = formFields["uniqueId"];
             const city = formFields["city"];
 
-            const result = await doctorService.addPacient(identityName, name, surname, lbo, jmbg, uniqueId, city);
+            const result = await doctorService.addPacient(identityName, name, surname, lbo, jmbg, city);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);
@@ -103,10 +102,11 @@ function configureDoctorServiceListners(expressApp) {
             const serviceName = formFields["serviceName"];
             const ordinationName = formFields["ordinationName"];
             const hospitalCode = formFields["hospitalCode"];
-            const serviceCode = formFields["serviceCode"];
             const ordinationCode = formFields["ordinationCode"];
+            const serviceCode = formFields["serviceCode"];
+            const score = formFields["score"];
 
-            const result = await doctorService.createNewPending(identityName, pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, serviceCode, ordinationCode);
+            const result = await doctorService.createNewPending(identityName, pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, score);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);

@@ -1,8 +1,8 @@
 {
 	"variables": [],
 	"info": {
-		"name": "Secure Clinic",
-		"_postman_id": "bc920136-9e2f-b499-ef94-fb44e87724d3",
+		"name": "Secure Clinic copy",
+		"_postman_id": "f5b626a9-6ba6-0a01-b2b8-878e4256646f",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -23,7 +23,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -77,7 +80,7 @@
 					"name": "Add Service To Facility (query) (TEST)",
 					"request": {
 						"url": {
-							"raw": "{{API_URL}}/admin/addServiceToFacility/test?facilityCode&serviceCode&serviceName&maxWaitTime",
+							"raw": "{{API_URL}}/admin/addServiceToFacility/test?facilityCode=&serviceCode=&serviceName=&maxWaitTime=",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -122,7 +125,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -164,7 +170,7 @@
 					"name": "Create Facility (query) (TEST)",
 					"request": {
 						"url": {
-							"raw": "{{API_URL}}/admin/createFacility/test?facilityName&facilityCode",
+							"raw": "{{API_URL}}/admin/createFacility/test?facilityName=&facilityCode=",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -197,7 +203,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -232,7 +241,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -414,7 +426,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -488,7 +503,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -673,7 +691,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -722,31 +743,61 @@
 							"formdata": [
 								{
 									"key": "pacientLbo",
+									"value": "013",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "pacientJmbg",
 									"value": "12345678",
 									"description": "",
 									"type": "text"
 								},
 								{
-									"key": "pacientJbmg",
-									"value": "12345678",
+									"key": "pacientScreenName",
+									"value": "Darko Ilic",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "hospitalName",
+									"value": "Dom Zdravlja",
 									"description": "",
 									"type": "text"
 								},
 								{
 									"key": "hospitalCode",
-									"value": "AD",
+									"value": "AB",
 									"description": "",
 									"type": "text"
 								},
 								{
-									"key": "serviceCode",
-									"value": "12",
+									"key": "ordinationName",
+									"value": "Kardiohirurgija",
 									"description": "",
 									"type": "text"
 								},
 								{
 									"key": "ordinationCode",
-									"value": "we1",
+									"value": "CD",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "serviceName",
+									"value": "Operacija Srca",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "serviceCode",
+									"value": "EF",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "score",
+									"value": "7.0",
 									"description": "",
 									"type": "text"
 								}
@@ -787,7 +838,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -803,14 +857,14 @@
 					"description": "",
 					"item": [
 						{
-							"name": "Add new Document Id (PRIVATE)",
+							"name": "Add new Document Id",
 							"request": {
 								"url": "{{API_URL}}/shared/privateData/addNewDocumentId",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Identity_name",
-										"value": "",
+										"value": "doctor",
 										"description": ""
 									}
 								],
@@ -818,14 +872,14 @@
 									"mode": "formdata",
 									"formdata": [
 										{
-											"key": "pacientId",
-											"value": "",
+											"key": "pacientLbo",
+											"value": "009",
 											"description": "",
 											"type": "text"
 										},
 										{
 											"key": "documentId",
-											"value": "",
+											"value": "abc123",
 											"description": "",
 											"type": "text"
 										}
@@ -838,12 +892,12 @@
 						{
 							"name": "Add new Entity to Sickness",
 							"request": {
-								"url": "{{API_URL}}/shared/privateData/addNewEntityToSickness",
+								"url": "{{API_URL}}/shared/privateData/addNewDiseaseToSicknessHistory",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Identity_name",
-										"value": "",
+										"value": "doctor",
 										"description": ""
 									}
 								],
@@ -851,14 +905,26 @@
 									"mode": "formdata",
 									"formdata": [
 										{
-											"key": "pacientId",
-											"value": "",
+											"key": "pacientLbo",
+											"value": "009",
 											"description": "",
 											"type": "text"
 										},
 										{
-											"key": "deseaseCode",
-											"value": "",
+											"key": "diseaseCode",
+											"value": "AB",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "diseaseName",
+											"value": "Test",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "isActive",
+											"value": "false",
 											"description": "",
 											"type": "text"
 										}
@@ -876,7 +942,7 @@
 								"header": [
 									{
 										"key": "Identity_name",
-										"value": "",
+										"value": "doctor",
 										"description": ""
 									}
 								],
@@ -884,14 +950,14 @@
 									"mode": "formdata",
 									"formdata": [
 										{
-											"key": "uniqueId",
-											"value": "",
+											"key": "pacientLbo",
+											"value": "009",
 											"description": "",
 											"type": "text"
 										},
 										{
 											"key": "cardId",
-											"value": "",
+											"value": "123456",
 											"description": "",
 											"type": "text"
 										}
@@ -905,19 +971,20 @@
 							"name": "Get Pacient Private Data",
 							"request": {
 								"url": {
-									"raw": "{{API_URL}}shared/privateData/getPacientPrivateData?pacientId",
+									"raw": "{{API_URL}}/shared/privateData/getPacientPrivateData?pacientLbo=009",
 									"host": [
-										"{{API_URL}}shared"
+										"{{API_URL}}"
 									],
 									"path": [
+										"shared",
 										"privateData",
 										"getPacientPrivateData"
 									],
 									"query": [
 										{
-											"key": "pacientId",
-											"value": "",
-											"equals": false,
+											"key": "pacientLbo",
+											"value": "009",
+											"equals": true,
 											"description": ""
 										}
 									],
@@ -927,10 +994,21 @@
 								"header": [
 									{
 										"key": "Identity_name",
-										"value": "",
+										"value": "doctor",
 										"description": ""
 									}
 								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Pacients Private Data",
+							"request": {
+								"url": "",
+								"method": "GET",
+								"header": [],
 								"body": {},
 								"description": ""
 							},
@@ -1039,7 +1117,7 @@
 					"name": "Get all Ammends for Hospital",
 					"request": {
 						"url": {
-							"raw": "{{API_URL}}/shared/getAllAmmendsForHosptial?hospitalCode",
+							"raw": "{{API_URL}}/shared/getAllAmmendsForHosptial?hospitalCode=",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -1065,7 +1143,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -1074,7 +1155,7 @@
 					"name": "Get ammend",
 					"request": {
 						"url": {
-							"raw": "{{API_URL}}/shared/getAmmend?hospitalCode&ammendId",
+							"raw": "{{API_URL}}/shared/getAmmend?hospitalCode=&ammendId=",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -1106,7 +1187,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -1162,7 +1246,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -1171,7 +1258,7 @@
 					"name": "Get Hospital",
 					"request": {
 						"url": {
-							"raw": "{{API_URL}}/shared/getHospital?hospitalCode",
+							"raw": "{{API_URL}}/shared/getHospital?hospitalCode=",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -1197,7 +1284,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -1206,7 +1296,7 @@
 					"name": "Get Pacient",
 					"request": {
 						"url": {
-							"raw": "{{API_URL}}/shared/getPacient?pacientLbo=002",
+							"raw": "{{API_URL}}/shared/getPacient?pacientLbo=011",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -1217,7 +1307,7 @@
 							"query": [
 								{
 									"key": "pacientLbo",
-									"value": "002",
+									"value": "011",
 									"equals": true,
 									"description": ""
 								}
@@ -1245,7 +1335,7 @@
 						"header": [
 							{
 								"key": "Identity_name",
-								"value": "",
+								"value": "director",
 								"description": ""
 							}
 						],
@@ -1254,31 +1344,31 @@
 							"formdata": [
 								{
 									"key": "licenceId",
-									"value": "",
+									"value": "a1",
 									"description": "",
 									"type": "text"
 								},
 								{
 									"key": "hospitalCode",
-									"value": "",
+									"value": "AB",
 									"description": "",
 									"type": "text"
 								},
 								{
 									"key": "serviceCode",
-									"value": "",
+									"value": "CD",
 									"description": "",
 									"type": "text"
 								},
 								{
 									"key": "ordinationCode",
-									"value": "",
+									"value": "EF",
 									"description": "",
 									"type": "text"
 								},
 								{
 									"key": "pacientLbo",
-									"value": "",
+									"value": "103",
 									"description": "",
 									"type": "text"
 								}
@@ -1292,7 +1382,7 @@
 					"name": "Get Pending",
 					"request": {
 						"url": {
-							"raw": "{{API_URL}}/shared/getPending?hospitalCode&serviceCode&ordinationCode&pacientLbo",
+							"raw": "{{API_URL}}/shared/getPending?hospitalCode=AB&ordinationCode=CD&serviceCode=EF&pacientLbo=005",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -1303,26 +1393,26 @@
 							"query": [
 								{
 									"key": "hospitalCode",
-									"value": "",
-									"equals": false,
-									"description": ""
-								},
-								{
-									"key": "serviceCode",
-									"value": "",
-									"equals": false,
+									"value": "AB",
+									"equals": true,
 									"description": ""
 								},
 								{
 									"key": "ordinationCode",
-									"value": "",
-									"equals": false,
+									"value": "CD",
+									"equals": true,
+									"description": ""
+								},
+								{
+									"key": "serviceCode",
+									"value": "EF",
+									"equals": true,
 									"description": ""
 								},
 								{
 									"key": "pacientLbo",
-									"value": "",
-									"equals": false,
+									"value": "005",
+									"equals": true,
 									"description": ""
 								}
 							],
@@ -1332,7 +1422,7 @@
 						"header": [
 							{
 								"key": "Identity_name",
-								"value": "",
+								"value": "doctor",
 								"description": ""
 							}
 						],
@@ -1353,7 +1443,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -1362,7 +1455,7 @@
 					"name": "Get All Pendings For Hospital",
 					"request": {
 						"url": {
-							"raw": "{{API_URL}}/shared/getPendingsForHospital?hospitalCode=AD",
+							"raw": "{{API_URL}}/shared/getPendingsForHospital?hospitalCode=AB",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -1373,7 +1466,7 @@
 							"query": [
 								{
 									"key": "hospitalCode",
-									"value": "AD",
+									"value": "AB",
 									"equals": true,
 									"description": ""
 								}
@@ -1401,7 +1494,7 @@
 						"header": [
 							{
 								"key": "Identity_name",
-								"value": "",
+								"value": "doctor",
 								"description": ""
 							}
 						],
@@ -1409,20 +1502,44 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "hospitalCode",
-									"value": "",
+									"key": "hospitalName",
+									"value": "Opsta bolnica Nis",
 									"description": "",
 									"type": "text"
 								},
 								{
-									"key": "serviceCode",
-									"value": "",
+									"key": "ordinationName",
+									"value": "Ortopedija",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "serviceName",
+									"value": "Operacija kolena",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "hospitalCode",
+									"value": "BB",
 									"description": "",
 									"type": "text"
 								},
 								{
 									"key": "ordinationCode",
-									"value": "",
+									"value": "CD",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "serviceCode",
+									"value": "EF",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "maxWaitingDays",
+									"value": "30",
 									"description": "",
 									"type": "text"
 								}
@@ -1436,7 +1553,7 @@
 					"name": "Get All Pacients for Waiting List",
 					"request": {
 						"url": {
-							"raw": "{{API_URL}}/shared/getAllPacientsForWaitingList?hospitalCode&serviceCode&ordinationCode",
+							"raw": "{{API_URL}}/shared/getAllPacientsForWaitingList?hospitalCode=&serviceCode=&ordinationCode=",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -1474,7 +1591,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -1483,7 +1603,7 @@
 					"name": "Get All Waiting Lists For Hospital",
 					"request": {
 						"url": {
-							"raw": "{{API_URL}}/shared/getAllWaitingListsForHospital?hospitalCode",
+							"raw": "{{API_URL}}/shared/getAllWaitingListsForHospital?hospitalCode=AB",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -1494,8 +1614,8 @@
 							"query": [
 								{
 									"key": "hospitalCode",
-									"value": "",
-									"equals": false,
+									"value": "AB",
+									"equals": true,
 									"description": ""
 								}
 							],
@@ -1505,7 +1625,7 @@
 						"header": [
 							{
 								"key": "Identity_name",
-								"value": "",
+								"value": "doctor",
 								"description": ""
 							}
 						],
@@ -1518,7 +1638,7 @@
 					"name": "Get Waiting List",
 					"request": {
 						"url": {
-							"raw": "{{API_URL}}/shared/getWaitingList?hospitalCode&serviceCode&ordinationCode",
+							"raw": "{{API_URL}}/shared/getWaitingList?hospitalCode=AB&ordinationCode=CD&serviceCode=EF",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -1529,20 +1649,20 @@
 							"query": [
 								{
 									"key": "hospitalCode",
-									"value": "",
-									"equals": false,
-									"description": ""
-								},
-								{
-									"key": "serviceCode",
-									"value": "",
-									"equals": false,
+									"value": "AB",
+									"equals": true,
 									"description": ""
 								},
 								{
 									"key": "ordinationCode",
-									"value": "",
-									"equals": false,
+									"value": "CD",
+									"equals": true,
+									"description": ""
+								},
+								{
+									"key": "serviceCode",
+									"value": "EF",
+									"equals": true,
 									"description": ""
 								}
 							],
@@ -1552,7 +1672,7 @@
 						"header": [
 							{
 								"key": "Identity_name",
-								"value": "",
+								"value": "doctor",
 								"description": ""
 							}
 						],
@@ -1612,7 +1732,10 @@
 								"description": ""
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []

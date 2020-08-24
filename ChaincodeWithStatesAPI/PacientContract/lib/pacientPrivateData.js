@@ -5,12 +5,12 @@ const State = require('./StateApi/state.js');
 class PacientPrivateData extends State {
 
     constructor(obj) {
-        super(PacientPrivateData.getClass(),[obj.uniqueId]);
+        super(PacientPrivateData.getClass(),[obj.lbo]);
         Object.assign(this,obj);
     }
 
     getUniqueId() {
-        return this.uniqueId;
+        return this.lbo;
     }
 
     getCardId() {
@@ -29,8 +29,8 @@ class PacientPrivateData extends State {
         this.documentsIds.push(documentId);
     }
 
-    addNewDiseaseCode(diseaseCode) {
-        this.sicknessHistory.push(diseaseCode);
+    addNewDiseaseCode(disease) {
+        this.sicknessHistory.push(disease);
     }
 
     static fromBuffer(buffer) {
@@ -49,8 +49,8 @@ class PacientPrivateData extends State {
         return State.deserializeClass(data, Pacient);
     }
 
-    static createInstance(uniqueId, cardId, sicknessHistory, documentsIds) {
-        return new PacientPrivateData({uniqueId, cardId, sicknessHistory, documentsIds});
+    static createInstance(lbo, cardId, sicknessHistory, documentsIds) {
+        return new PacientPrivateData({lbo, cardId, sicknessHistory, documentsIds});
     }
 
     static getClass() {

@@ -85,9 +85,15 @@ class PacientContract extends Contract {
         return data;
     }
 
+    async getAllPacientsPrivateData(ctx) {
+        const allPacientsPrivateData = await ctx.pacientPrivateDataList.getAllPacientsPrivateData();
+        return new (PacientPrivateData)(allPacientsPrivateData);
+    }
+
     async getAllPacients(ctx) {
         let allPacients = await ctx.pacientList.getAllPacients();
         return new (Pacient)(allPacients);
     }
+
 }
 module.exports = PacientContract;

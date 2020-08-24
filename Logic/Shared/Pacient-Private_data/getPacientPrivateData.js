@@ -2,7 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const PacientPrivateData = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacientPrivateData.js');
 
-async function getPacientPrivateData(identityName, pacientId) {
+async function getPacientPrivateData(identityName, pacientLbo) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -12,13 +12,13 @@ async function getPacientPrivateData(identityName, pacientId) {
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledPrivateData;
 
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'getPacientPrivateData', pacientId);
+    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'getPacientPrivateData', pacientLbo);
     if (bufferedResult.length > 0) {
         const jsonResult = JSON.parse(bufferedResult.toString());
         modeledPrivateData = new (PacientPrivateData)(jsonResult);
         console.log(modeledPrivateData);
     } else {
-        console.log(`Error while retrieving Pacient private data. Probably there is no data for uniqueID ${pacientId}`);
+        console.log(`Error while retrieving Pacient private data. Probably there is no data for lbo ${pacientLbo}`);
     }
     gateway.disconnect();
     return modeledPrivateData;

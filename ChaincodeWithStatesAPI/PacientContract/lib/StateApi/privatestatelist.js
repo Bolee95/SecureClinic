@@ -68,6 +68,36 @@ class PrivateStateList {
         this.supportedClasses[stateClass.getClass()] = stateClass;
     }
 
-}
+    async getAllPrivateStates(obj) {
+        let partialKey;
+        if (obj == null) {
+            partialKey = [];
+        } else {
+            partialKey = State.splitKey(obj);
+        }
+        
+        const { iterator } = await this.ctx.stub.getPrivateDataByPartialCompositeKey(this.collectionName, this.name, partialKey);
+        const allResults = [];
+        while (true) {
+
+                const res = await iterator.next();
+                if (res.value && res.value.key) {
+                    let Record;
+                    try {
+                        console.log(res.value.value.toString('utf8'));
+                        Record = JSON.parse(res.value.value.toString('utf8'));
+                    } catch (err) {
+                        console.log(err);
+                        Record = res.value.value.toString();
+                    }
+                    allResults.push(Record);
+                }
+                if (res.done) {
+                    await iterator.close();
+                    return allResults;
+                }
+            } 
+        }
+    }
 
 module.exports = PrivateStateList;

@@ -26,6 +26,10 @@ class PacientPrivateDataList extends PrivateStateList {
     async privateDataExists(pacientKey) {
         return this.privateStateExists(pacientKey);
     }
+
+    async getAllPacientsPrivateData() {
+        return this.getAllPrivateStates();
+    }
 }
 
 module.exports = PacientPrivateDataList;

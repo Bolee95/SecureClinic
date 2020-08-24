@@ -139,25 +139,27 @@ function configureSharedServiceListners(expressApp) {
             const identityName = req.get("Identity_name");
 
             const formFields = req.fields;
-            const pacientId = formFields["pacientId"];
+            const pacientLbo = formFields["pacientLbo"];
             const documentId = formFields["documentId"];
     
-            const result = await sharedService.addNewDocumentId(identityName, pacientId, documentId);
+            const result = await sharedService.addNewDocumentId(identityName, pacientLbo, documentId);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);
         }
     });
 
-    expressApp.post("/shared/privateData/addNewEntityToSickness", async (req, res, err) => {
+    expressApp.post("/shared/privateData/addNewDiseaseToSicknessHistory", async (req, res, err) => {
         try {
             const identityName = req.get("Identity_name");
 
             const formFields = req.fields;
-            const pacientId = formFields["pacientId"];
-            const deseaseCode = formFields["deseaseCode"];
+            const pacientLbo = formFields["pacientLbo"];
+            const diseaseCode = formFields["diseaseCode"];
+            const diseaseName = formFields["diseaseName"];
+            const isActive = formFields["isActive"];
     
-            const result = await sharedService.addNewEntityToSickness(identityName, pacientId, deseaseCode);
+            const result = await sharedService.addNewDiseaseToSicknessHistory(identityName, pacientLbo, diseaseCode, diseaseName, isActive);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);
@@ -169,28 +171,39 @@ function configureSharedServiceListners(expressApp) {
             const identityName = req.get("Identity_name");
 
             const formFields = req.fields;
-            const uniqueId = formFields["uniqueId"];
+            const pacientLbo = formFields["pacientLbo"];
             const cardId = formFields["cardId"];
     
-            const result = await sharedService.addPacientPrivateData(identityName, uniqueId, cardId);
+            const result = await sharedService.addPacientPrivateData(identityName, pacientLbo, cardId);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);
         }
     });
 
-    expressApp.get("shared/privateData/getPacientPrivateData", async (req, res, err) => {
+    expressApp.get("/shared/privateData/getPacientPrivateData", async (req, res, err) => {
         try {
             const identityName = req.get("Identity_name");
 
-            const pacientId = req.query.pacientId;
+            const pacientLbo = req.query.pacientLbo;
     
-            const result = await sharedService.getPacientPrivateData(identityName, pacientId);
+            const result = await sharedService.getPacientPrivateData(identityName, pacientLbo);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);
         }
     });
+
+    expressApp.get("/shared/privateData/getPacientPrivateData/all", async (req, res, err) => {
+        try {
+            const identityName = req.get("Identity_name");
+
+            const result = await sharedService.getAllPacientsPrivateData(identityName);
+            res.status(200).json(result);
+        } catch(error) {
+            res.status(400).json(error);
+        }
+    })
 
     // Pending
     expressApp.post("/shared/approvePending", async (req, res, err) => {

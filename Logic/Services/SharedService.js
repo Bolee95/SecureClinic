@@ -14,9 +14,10 @@ const getHospital = require('../Shared/Hospital/getHospital');
 const getPacient = require('../Shared/Pacient/getPacient');
 // Pacient Private Data
 const addNewDocumentId = require('../Shared/Pacient-Private_data/addNewDocumentId');
-const addNewEntityToSickness = require('../Shared/Pacient-Private_data/addNewEntityToSickness');
+const addNewDiseaseToSicknessHistory = require('../Shared/Pacient-Private_data/addNewDiseaseToSicknessHistory');
 const addPacientPrivateData = require('../Shared/Pacient-Private_data/addPacientPrivateData');
 const getPacientPrivateData = require('../Shared/Pacient-Private_data/getPacientPrivateData');
+const getAllPacientsPrivateData = require('../Shared/Pacient-Private_data/getAllPacientsPrivateData');
 // Pending
 const approvePending = require('../Shared/Pending/approvePending');
 const getPending = require('../Shared/Pending/getPending');
@@ -82,23 +83,28 @@ class SharedService {
     }
 
     // Pacient Private Data
-    static async addNewDocumentId(identityName, pacientId, documentId) {
-        const result = await addNewDocumentId(identityName, pacientId, documentId);
+    static async addNewDocumentId(identityName, pacientLbo, documentId) {
+        const result = await addNewDocumentId(identityName, pacientLbo, documentId);
         return result;
     }
 
-    static async addNewEntityToSickness(identityName, pacientId, deseaseCode) {
-        const result = await addNewEntityToSickness(identityName, pacientId, deseaseCode);
+    static async addNewDiseaseToSicknessHistory(identityName, pacientLbo, diseaseCode, diseaseName, isActive) {
+        const result = await addNewDiseaseToSicknessHistory(identityName, pacientLbo, diseaseCode, diseaseName, isActive);
         return result;
     }
 
-    static async addPacientPrivateData(identityName, uniqueId, cardId) {
-        const result = await addPacientPrivateData(identityName, uniqueId, cardId);
+    static async addPacientPrivateData(identityName, pacientLbo, cardId) {
+        const result = await addPacientPrivateData(identityName, pacientLbo, cardId);
         return result;
     }
 
-    static async getPacientPrivateData(identityName, pacientId) {
-        const result = await getPacientPrivateData(identityName, pacientId);
+    static async getPacientPrivateData(identityName, pacientLbo) {
+        const result = await getPacientPrivateData(identityName, pacientLbo);
+        return result;
+    }
+
+    static async getAllPacientsPrivateData(identityName) {
+        const result = await getAllPacientsPrivateData(identityName);
         return result;
     }
 

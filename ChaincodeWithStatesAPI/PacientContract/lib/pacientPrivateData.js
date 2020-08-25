@@ -9,8 +9,12 @@ class PacientPrivateData extends State {
         Object.assign(this,obj);
     }
 
-    getUniqueId() {
+    getLbo() {
         return this.lbo;
+    }
+
+    getScreenName() {
+        return this.screenName;
     }
 
     getCardId() {
@@ -49,8 +53,8 @@ class PacientPrivateData extends State {
         return State.deserializeClass(data, Pacient);
     }
 
-    static createInstance(lbo, cardId, sicknessHistory, documentsIds) {
-        return new PacientPrivateData({lbo, cardId, sicknessHistory, documentsIds});
+    static createInstance(lbo, cardId, screenName, sicknessHistory, documentsIds) {
+        return new PacientPrivateData({lbo, cardId, screenName, sicknessHistory, documentsIds});
     }
 
     static getClass() {

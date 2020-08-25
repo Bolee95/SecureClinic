@@ -29,7 +29,7 @@ class PacientContract extends Contract {
     async instantiate(ctx) {
         let pacient1 = Pacient.createInstance('Bogdan', 'Ilic', '001', '012345678', 'Leskovac', '1', '', '', '', '');
         let pacient2 = Pacient.createInstance('Darko','Ilic','002','0123456624', 'Beograd', '2', 'Opsta Bolnica', 'AB', 'CD', 'EF');
-        let pacientPrivateData1 = PacientPrivateData.createInstance('Hello','12355112',[ {'CD':true}, {'AP':false}],['123456ada', 'qwerty1234']);
+        let pacientPrivateData1 = PacientPrivateData.createInstance('002', '12345', 'Darko Ilic',[], []);
         await ctx.pacientList.addPacient(pacient1);
         await ctx.pacientList.addPacient(pacient2);
         await ctx.pacientPrivateDataList.addPacientPrivateData(pacientPrivateData1);
@@ -65,7 +65,7 @@ class PacientContract extends Contract {
     async addPacientPrivateData(ctx, pacientData) {
 
         const modeledPrivateData = PacientPrivateData.fromJSON(pacientData, PacientPrivateData);
-        const privateDataExists = await ctx.pacientPrivateDataList.privateDataExists(modeledPrivateData.getUniqueId());
+        const privateDataExists = await ctx.pacientPrivateDataList.privateDataExists(modeledPrivateData.getLbo());
         if (!privateDataExists) {
             const privateData = await ctx.pacientPrivateDataList.addPacientPrivateData(modeledPrivateData);
             return privateData;

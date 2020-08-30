@@ -9,8 +9,9 @@
   "author": "Bogdan Ilic",
   "license": "ISC",
   "dependencies": {
+    "md5": "^2.3.0",
     "request": "^2.88.2",
     "uid-generator": "^2.0.0",
-    "uuid": "^7.0.2"
+    "uuid": "^7.0.3"
   }
 }

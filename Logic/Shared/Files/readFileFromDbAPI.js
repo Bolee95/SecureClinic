@@ -12,22 +12,19 @@ async function readFileFromDb(fileId) {
     console.log(requestUrl);
     request(requestUrl, function(err,res,body) {
         if (err == null) {
-            console.log(body);
-
             const jsonResult = JSON.parse(body);
             const bufferedResult = Buffer.from(jsonResult['file']['file'],'base64');
             const filename = jsonResult['file']['name'];
-            const extension =  jsonResult['file']['extension'];
-            const version = jsonResult['file']['version'];
-
-            fs.writeFileSync(filename + '1' + extension, bufferedResult);
+            // const extension =  jsonResult['file']['extension'];
+            // const version = jsonResult['file']['version'];
             console.log('File successfully read');
-            return bufferedResult;
+            fs.writeFileSync(filename, bufferedResult);
+            return {'buffer': bufferedResult,'filename': filename};
         }
         else {
             throw new Error(`Error while reading file with id ${fileId}: ${err}`);
         }
-    })
+    });
 };
 
-readFileFromDb(process.argv[2]);
+module.exports = readFileFromDb;

@@ -20,7 +20,6 @@ async function readFileFromDb(fileId) {
             const extension =  jsonResult['file']['extension'];
             const version = jsonResult['file']['version'];
 
-            fs.writeFileSync(filename + '1' + extension, bufferedResult);
             console.log('File successfully read');
             return bufferedResult;
         }
@@ -29,5 +28,3 @@ async function readFileFromDb(fileId) {
         }
     })
 };
-
-readFileFromDb(process.argv[2]);

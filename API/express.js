@@ -22,7 +22,7 @@ function startServer() {
 
 	app.use(function (req, res, next) {
 		// Can be used for logging data
-		console.log('Time: ', Date.now());
+		console.log('Time: ', Date.now().toString());
 		next();
 	});
 
@@ -35,10 +35,6 @@ function startServer() {
 	app.get("/url", (req, res, next) => {
 		res.json(["Tony","Lisa","Michael","Ginger","Food"]);
 		next();
-	});
-
-	app.get("/url", (req, res) => {
-		console.log(req.method);
 	});
 }
 

@@ -30,6 +30,10 @@ const getAllWaitingListsForHospital = require('../Shared/WaitingList/getAllWaiti
 const getWaitingList = require('../Shared/WaitingList/getWaitingList');
 // Entity
 const getEntity = require('../Shared/Entity/getEntity');
+// Files
+const uploadFile = require('../Shared/Files/writeFileToDbAPI');
+const getFile = require('../Shared/Files/readFileFromDbAPI');
+const uploadMultipleFiles = require('../Shared/Files/writeMultipleFiles');
 
 class SharedService {
 
@@ -152,6 +156,22 @@ class SharedService {
     // Entity
     static async getEntity(identityName, licenceId) {
         const result = await getEntity(identityName, licenceId);
+        return result;
+    }
+
+    // Files
+    static async uploadFile(identityName, file) {
+        const result = await uploadFile(file);
+        return result;
+    }
+
+    static async readFile(identityName, fileId) {
+        const result = await getFile(fileId);
+        return result;
+    }
+
+    static async uploadMultipleFiles(identityName, files) {
+        const result = await uploadMultipleFiles(identityName, files);
         return result;
     }
 }

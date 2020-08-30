@@ -7,40 +7,40 @@ var username = 'admin';
 var pswrd = 'admin';
 var url = '127.0.0.1:5984';
 var db = '/db/';
-
 var uidGenerator = require('uid-generator');
 
-async function writeFileToDb(filepath) {
+async function writeFileToDb(file) {
 
     const uidgen = new uidGenerator(128);
 
-    const fileBuffer = fs.readFileSync(filepath);
+    const fileData = fs.readFileSync(file.path);
+    const fileBuffer = Buffer.from(fileData);
     const fileBase64 = fileBuffer.toString('base64');
-    const extension = path.extname(filepath);
+    const filename = file.name;
+    const extension = path.extname(filename);
 
     const body = {
         'file': fileBase64,
         'version': 1,
-        'name': path.basename(filepath, extension),
+        'name': filename,
         'extension': extension
     }
 
-    // Should check if id is unique before writing to db
-    //const uid = await md5(fileBase64);//uidgen.generate();
     const uid = await uidgen.generate();
+
     const requestUrl = protocol + username + ':' + pswrd + '@' + url + db + uid;
-    console.log(requestUrl);
 
     request.put({
         url: requestUrl,
         body: { file: body },
-        json:true,
-    }, function(err,resp,body) {
+        json: true,
+    }, function(err, resp, body) {
         if (err == null) {
-            console.log(body);
             return uid;
+        } else {
+            return null;
         }
     })
 };
 
-writeFileToDb(process.argv[2]);
+module.exports = writeFileToDb;

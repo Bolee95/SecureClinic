@@ -2,7 +2,6 @@ const sharedService = require("../Logic/Services/SharedService");
 
 function configureSharedServiceListners(expressApp) {
 
-
     // Shared
     expressApp.post("/shared/login", async (req, res, err) => {
         try {
@@ -334,6 +333,53 @@ function configureSharedServiceListners(expressApp) {
             const licenceId = req.query.licenceId;
 
             const result = await sharedService.getEntity(identityName, licenceId);
+            res.status(200).json(result);
+        } catch(error) {
+            res.status(400).json(error);
+        }
+    });
+
+    // Files
+    // https://attacomsian.com/blog/uploading-files-nodejs-express
+    expressApp.post("/shared/uploadFiles", async (req, res, err) => {
+        try {
+            const identityName = req.get("Identity_name");
+
+            if(!(req.files)) {
+                res.send({
+                    message: "No file uploaded"
+                });
+            } else {
+                let uids = await sharedService.uploadMultipleFiles(identityName, req.files);
+                res.status(200).json(uids);
+            }
+                // var uids = [];
+                // var index = 0;
+                // while(true) {
+                //     let file = req.files['file[' + index + ']'];
+                //     if (file === undefined) {
+                //         break;
+                //     } else {
+                //         let uid = await sharedService.uploadFile(identityName, file, file.name);
+
+                //         if (uid !== null) {
+                //             uids.push(uid);
+                //             index++;
+                //         } else {
+                //             throw new Error(`File with name ${file.name} wasn\'t uploaded. Terminated.`);
+                //         }
+                //     }
+        } catch(error) {
+            res.status(400).json(error);
+        }
+    });
+
+    expressApp.get("/shared/getFile", async (req, res, err) => {
+        try {
+            const identityName = req.get("Identity_name");
+            const fileId = req.query.fileId;
+
+            let result = await sharedService.readFile(identityName, fileId);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);

@@ -1,4 +1,4 @@
-var request = require('request');
+var request = require('request-promise');
 var path = require('path');
 const fs = require('fs');
 var md5 = require('md5');
@@ -17,20 +17,22 @@ async function writeFileToDb(file) {
     const fileBuffer = Buffer.from(fileData);
     const fileBase64 = fileBuffer.toString('base64');
     const filename = file.name;
+    const mimeType = file.type;
     const extension = path.extname(filename);
 
     const body = {
         'file': fileBase64,
         'version': 1,
         'name': filename,
-        'extension': extension
+        'extension': extension,
+        'mime': mimeType
     }
 
     const uid = await uidgen.generate();
 
     const requestUrl = protocol + username + ':' + pswrd + '@' + url + db + uid;
 
-    request.put({
+    const result = await request.put({
         url: requestUrl,
         body: { file: body },
         json: true,
@@ -40,7 +42,8 @@ async function writeFileToDb(file) {
         } else {
             return null;
         }
-    })
+    });
+    return result;
 };
 
 module.exports = writeFileToDb;

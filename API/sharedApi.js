@@ -172,8 +172,9 @@ function configureSharedServiceListners(expressApp) {
             const formFields = req.fields;
             const pacientLbo = formFields["pacientLbo"];
             const cardId = formFields["cardId"];
+            const screenname = formFields["screenname"];
     
-            const result = await sharedService.addPacientPrivateData(identityName, pacientLbo, cardId);
+            const result = await sharedService.addPacientPrivateData(identityName, pacientLbo, cardId, screenname);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);
@@ -380,7 +381,17 @@ function configureSharedServiceListners(expressApp) {
             const fileId = req.query.fileId;
 
             let result = await sharedService.readFile(identityName, fileId);
-            res.status(200).json(result);
+            res.set('filename', result['filename']);
+            res.set('mimeType', result['mime']);
+            res.download(result['tempPath'], function(err){
+                if(err) {
+                    if(res.headersSent) {
+
+                    } else {
+                        res.set('filename', result['filename']);
+                    }
+                }
+            });       
         } catch(error) {
             res.status(400).json(error);
         }

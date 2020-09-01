@@ -97,8 +97,8 @@ class SharedService {
         return result;
     }
 
-    static async addPacientPrivateData(identityName, pacientLbo, cardId) {
-        const result = await addPacientPrivateData(identityName, pacientLbo, cardId);
+    static async addPacientPrivateData(identityName, pacientLbo, cardId, screenname) {
+        const result = await addPacientPrivateData(identityName, pacientLbo, cardId, screenname);
         return result;
     }
 

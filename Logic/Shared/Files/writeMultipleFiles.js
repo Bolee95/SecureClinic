@@ -1,22 +1,22 @@
 var uploadFile = require('../Files/writeFileToDbAPI');
+
 async function uploadMultipleFiles(identityName, files) {
 
     var uids = [];
     var index = 0;
-    while(true) {
+    var shouldReturn = false;
+    for(let i = 0; i < 100; i++) {
         let file = files['file[' + index + ']'];
         if (file === undefined) {
-            break;
-        } else {
-            let uid = await uploadFile(file);
-
-            if (uid !== null) {
-                uids.push(uid);
-                index++;
-            } else {
-                throw new Error(`File with name ${file.name} wasn\'t uploaded. Terminated.`);
+            return uids;
+        } else { 
+            const result = await uploadFile(file);
+            uids.push(result['id']);
+            index++;
+            if (shouldReturn) {
+                return uids;
             }
-        }
+        };
     }
 }
 

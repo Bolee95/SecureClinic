@@ -48,6 +48,10 @@ class Pending extends State {
         return this.isReviewed;
     }
 
+    getDocumentIds() {
+        return this.documentIds;
+    }
+
     getScore() {
         return this.score;
     }
@@ -84,8 +88,8 @@ class Pending extends State {
     static deserialize(data) {
         return State.deserializeClass(data, Pending);
     }
-    static createInstance(pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, approvers, isReviewed, score) {
-        return new Pending({pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, approvers, isReviewed, score});
+    static createInstance(pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, approvers, isReviewed, score, documentIds) {
+        return new Pending({pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, approvers, isReviewed, score, documentIds});
     }
 
     static getClass() {

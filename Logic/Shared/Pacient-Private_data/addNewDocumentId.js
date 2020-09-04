@@ -2,7 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const PacientPrivateData = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacientPrivateData.js');
 
-async function addNewDocumentId(identityName, pacientLbo, documentId) {
+async function addNewDocumentId(identityName, pacientLbo, documentsId) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -17,8 +17,11 @@ async function addNewDocumentId(identityName, pacientLbo, documentId) {
         let jsonResult = JSON.parse(bufferedResult.toString());
         modeledPrivateData = new (PacientPrivateData)(jsonResult);
 
-        modeledPrivateData.addNewDocumentId(documentId);
-
+        let documents = documentsId.split(',');
+        documents.forEach(documentId => {
+            modeledPrivateData.addNewDocumentId(documentId);
+        });
+   
         bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'updatePacientPrivateData', modeledPrivateData.stringifyClass());
         if (bufferedResult.length > 0) {
             jsonResult = JSON.parse(bufferedResult.toString());

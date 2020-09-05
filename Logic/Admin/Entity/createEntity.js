@@ -14,11 +14,12 @@ async function createEntity(identityName, licenceId, role, name, surname, hospit
     const entity = Entity.createInstance(licenceId, role, name, surname, hospitalName, hospitalCode);
     const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Entity', 'addEntity', entity.stringifyClass());
     if (bufferedResult.length > 0) {
-        console.log(entity.getLicenceId());
+        gateway.disconnect();   
+        return true;
     } else {
-        console.log(`Error while creating Entity...`);
+        throw new Error(`Error while creating Entity ${entity.getLicenceId()}...`);
     }  
-    gateway.disconnect();   
+    
 };
 
 module.exports = createEntity;

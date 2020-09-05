@@ -9,28 +9,34 @@ var db = '/db/';
 
 async function readFileFromDb(fileId) {
 
-    const requestUrl = protocol + username + ':' + pswrd + '@' + url + db + fileId;
+    try {
+        const requestUrl = protocol + username + ':' + pswrd + '@' + url + db + fileId;
 
-    var filepath;
-    let result = await request(requestUrl, function(err, res, body) {
-        if (err == null) {
-            const jsonResult = JSON.parse(body);
-            const bufferedResult = Buffer.from(jsonResult['file']['file'],'base64');
-            const filename = jsonResult['file']['name'];
-            const extension =  jsonResult['file']['extension'];
-            const mime = jsonResult['file']['mime'];
-            // const version = jsonResult['file']['version'];
-            console.log('File successfully read');
-            var tempFile = temp.fileSync({ prefix: filename, postfix: extension });
-            fs.writeFileSync(tempFile.name, bufferedResult);
+        var filepath;
+        let result = await request(requestUrl, function(err, res, body) {
+            if (err == null) {
+                const jsonResult = JSON.parse(body);
+                const bufferedResult = Buffer.from(jsonResult['file']['file'],'base64');
+                const filename = jsonResult['file']['name'];
+                const extension =  jsonResult['file']['extension'];
+                const mime = jsonResult['file']['mime'];
+                // const version = jsonResult['file']['version'];
+                console.log('File successfully read');
+                var tempFile = temp.fileSync({ prefix: filename, postfix: extension });
+                fs.writeFileSync(tempFile.name, bufferedResult);
 
-            filepath = { 'tempPath': tempFile.name, 'filename': filename, 'mime': mime}; //'filename': filename, 'file': bufferedResult };
-        }
-        else {
-            throw new Error(`Error while reading file with id ${fileId}: ${err}`);
-        }
-    });
-    return filepath;
+                filepath = { 'tempPath': tempFile.name, 'filename': filename, 'mime': mime};
+            }
+            else {
+                //throw new Error(`Error while reading file with id ${fileId}: ${err}`);
+
+                return `Error while reading file with id ${fileId}`;
+            }
+        });
+        return filepath;
+    } catch(erorr) {
+        return `Error while reading file with id ${fileId}`;
+    }
 };
 
 module.exports = readFileFromDb;

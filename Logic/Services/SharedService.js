@@ -113,8 +113,8 @@ class SharedService {
     }
 
     // Pending
-    static async approvePending(identityName, licenceId, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
-        const result = await approvePending(identityName, licenceId, hospitalCode, serviceCode, ordinationCode, pacientLbo);
+    static async approvePending(identityName, licenceId, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
+        const result = await approvePending(identityName, licenceId, hospitalCode, ordinationCode, serviceCode, pacientLbo);
         return result;
     }
 
@@ -139,8 +139,8 @@ class SharedService {
         return result;
     }
 
-    static async getAllPacientsForWaitingList(identityName, hospitalCode, serviceCode, ordinationCode) {
-        const result = await getAllPacientsForWaitingList(identityName, hospitalCode, serviceCode, ordinationCode);
+    static async getAllPacientsForWaitingList(identityName, hospitalCode, ordinationCode, serviceCode) {
+        const result = await getAllPacientsForWaitingList(identityName, hospitalCode, ordinationCode, serviceCode);
         return result;
     }
 

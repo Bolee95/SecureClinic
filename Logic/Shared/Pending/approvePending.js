@@ -13,7 +13,7 @@ async function approvePending(identityName, licenceId, hospitalCode, ordinationC
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let updatingResult;
-    //[hospitalCode,serviceCode,ordinationCode,pacientLbo]
+
     let bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'getPending', [hospitalCode,ordinationCode,serviceCode,pacientLbo]);
     if (bufferedResult.length > 0) {
         let jsonResult = JSON.parse(bufferedResult.toString());
@@ -48,8 +48,9 @@ async function approvePending(identityName, licenceId, hospitalCode, ordinationC
             }
         }
     } else {
-        console.log(`Error while approving pending with id ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}...`);
+        throw new Error(`Error while approving pending with id ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}...`);
     }
+
     return updatingResult;
 };
 

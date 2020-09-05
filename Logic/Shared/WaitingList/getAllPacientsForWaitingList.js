@@ -3,7 +3,7 @@ const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const WaitingList = require('../../../ChaincodeWithStatesAPI/WaitingListContract/lib/waitingList.js');
 const AcceptedPacient = require('../../../ChaincodeWithStatesAPI/WaitingListContract/lib/acceptedPacient.js');
 
-async function getAllPacientsForWaitingList(identityName, hospitalCode, serviceCode, ordinationCode) {
+async function getAllPacientsForWaitingList(identityName, hospitalCode, ordinationCode, serviceCode) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -12,7 +12,7 @@ async function getAllPacientsForWaitingList(identityName, hospitalCode, serviceC
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledAcceptedPacients = [];
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getWaitingList', [hospitalCode, serviceCode, ordinationCode]);
+    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getWaitingList', [hospitalCode, ordinationCode, serviceCode]);
     if (bufferedResult.length > 0) {
         const jsonResult = JSON.parse(bufferedResult.toString());
         let modeledWaitingList = new (WaitingList)(jsonResult);

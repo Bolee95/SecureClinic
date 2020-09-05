@@ -213,11 +213,11 @@ function configureSharedServiceListners(expressApp) {
             const formFields = req.fields;
             const licenceId = formFields["licenceId"];
             const hospitalCode = formFields["hospitalCode"];
-            const serviceCode = formFields["serviceCode"];
             const ordinationCode = formFields["ordinationCode"];
+            const serviceCode = formFields["serviceCode"];
             const pacientLbo = formFields["pacientLbo"];
     
-            const result = await sharedService.approvePending(identityName, licenceId, hospitalCode, serviceCode, ordinationCode, pacientLbo);
+            const result = await sharedService.approvePending(identityName, licenceId, hospitalCode, ordinationCode, serviceCode, pacientLbo);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);
@@ -292,7 +292,7 @@ function configureSharedServiceListners(expressApp) {
             const serviceCode = req.query.serviceCode;
             const ordinationCode = req.query.ordinationCode;
         
-            const result = await sharedService.getAllPacientsForWaitingList(identityName, hospitalCode, serviceCode, ordinationCode);
+            const result = await sharedService.getAllPacientsForWaitingList(identityName, hospitalCode, ordinationCode, serviceCode );
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);
@@ -383,15 +383,19 @@ function configureSharedServiceListners(expressApp) {
             let result = await sharedService.readFile(identityName, fileId);
             res.set('filename', result['filename']);
             res.set('mimeType', result['mime']);
-            res.download(result['tempPath'], function(err){
-                if(err) {
-                    if(res.headersSent) {
+            if (result['tempPath'] !== undefined) {
+                res.download(result['tempPath'], function(err){
+                    if(err) {
+                        if(res.headersSent) {
 
-                    } else {
-                        res.set('filename', result['filename']);
+                        } else {
+                            res.set('filename', result['filename']);
+                        }
                     }
-                }
-            });       
+                });      
+            } else {
+                res.status(400).json({'message': `couldn\'t load file with id ${fileId}. Maybe the server is down...`})
+            }
         } catch(error) {
             res.status(400).json(error);
         }

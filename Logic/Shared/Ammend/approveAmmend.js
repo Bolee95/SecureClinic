@@ -4,7 +4,7 @@ const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammen
 const Approver = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/approver.js');
 const RemovePacientFromWList = require('../../Auto/removePacientFromWaitingList.js');
 
-async function signAmmend(identityName, workingLicence, hospitalCode, ammendId) {
+async function approveAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, licenceId) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -14,44 +14,46 @@ async function signAmmend(identityName, workingLicence, hospitalCode, ammendId) 
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
     const role = getRole(identityName);
-    const approver = Approver.createInstance(role,workingLicence);
+    const approver = Approver.createInstance( role, licenceId);
     let updateRes;
 
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAmmend', [hospitalCode,ammendId]);
+    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAmmend', [hospitalCode, ordinationCode, serviceCode, pacientLbo]);
     if (bufferedResult.length > 0) {
         const ammend = JSON.parse(bufferedResult.toString());
         const modeledAmmend = new (Ammend)(ammend);
 
+        for (const approver of modeledAmmend.approvers) {
+            const modeledApprover = new (Approver)(approver);
+            if (modeledApprover.getRole() == role) {
+                throw new Error(`Approver with role ${role} and licence Id  ${licenceId} already approved this pending!`);
+            } 
+        }
+
         modeledAmmend.addApprover(approver);
+
+        if (modeledAmmend.approvers.length >= 3) {
+            modeledAmmend.isReviewed = true;
+        }
 
         const updateResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'updateAmmend', modeledAmmend.stringifyClass());
         if (updateResult.length > 0) {
             const result = JSON.parse(updateResult.toString());
             updateRes = (Boolean)(result);
             if (updateRes == true) {
-                console.log(`New sign ${hospitalCode + '-' + ammendId} successfully added!`);
-
-                if (modeledAmmend.getListOfApprovers().length > modeledAmmend.getNumberOfNeededEndrsments()) {
-                    // await RemovePacientFromWList(gateway,hospitalCode,modeledAmmend.)
+                if (modeledAmmend.getListOfApprovers().length >= 3) {
+                     await RemovePacientFromWList(gateway, hospitalCode, ordinationCode, serviceCode, pacientLbo);
                 } else {
                     gateway.disconnect(); 
                 }
             }
         } else {
-            console.log(`Error while signing Ammend with id ${hospitalCode + ':' + ammendId}...`);
+            throw new Error(`Error while signing Ammend with id ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}!`);
         }
     }  
     return updateRes;
 };
 
-module.exports = signAmmend;
-// signAmmend().then(() => {
-// }).catch((exception) => {
-//     console.log('Signing Ammend failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });
+module.exports = approveAmmend;
 
 function getRole(identityName) {
     if (identityName.includes(IdentityRole.DIRECTOR)) {

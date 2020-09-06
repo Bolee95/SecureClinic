@@ -10,7 +10,7 @@ const AmmendType = {
 
 class Ammend extends State {
     constructor(obj) {
-        super(Ammend.getClass(), [obj.hospitalCode, obj.ammendId]);
+        super(Ammend.getClass(), [obj.hospitalCode, obj.ordinationCode, obj.serviceCode, obj.pacientLbo]);
         Object.assign(this,obj);
     }
 
@@ -18,44 +18,44 @@ class Ammend extends State {
         return this.hospitalCode;
     }
 
-    getAmmendId() {
-        return this.ammendId;
+    getOrdinationCode() {
+        return this.ordinationCode;
     }
 
-    getPacientJmbg() {
-        return this.pacientJmbg;
+    getServiceCode() {
+        return this.ordinationCode;
+    }
+
+    getPacientLbo() {
+        return this.pacientLbo;
     }
 
     getAction() {
         return this.action;
     }
 
-    getNumberOfNeededEndrsments() {
-        return this.neededEndorsments;
-    }
-
-    setNumberOfNeededEndorsments(endorsmentsValue) {
-        this.neededEndorsments = endorsmentsValue;
-    }
-
-    getListId() {
-        return this.getListId;
+    addEvicence(evidence) {
+        this.evidences.push(evidence);
     }
 
     getEvidencesIds() {
-        return this.evidencesList;
-    }
-
-    addEvicence(evidence) {
-         this.evidencesList.push(evidence);
+        return this.evidences;
     }
 
     getListOfApprovers() {
-        return this.approversList;
+        return this.approvers;
+    }
+
+    getDescription() {
+        return this.description;
+    }
+
+    getIsReviewed() {
+        return this.isReviewed;
     }
 
     addApprover(approver) {
-         this.approversList.push(approver);
+         this.approvers.push(approver);
     }
 
     // Ammend Type Methods
@@ -94,8 +94,8 @@ class Ammend extends State {
         return State.deserializeClass(data, Ammend);
     }
 
-    static createInstance(ammendId, hospitalCode, pacientJmbg, action, neededEndorsments, listId, evidencesList, approversList) {
-        return new Ammend({ ammendId, hospitalCode, pacientJmbg, action, neededEndorsments, listId, evidencesList, approversList});
+    static createInstance(hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidences, approvers, isReviewed) {
+        return new Ammend({ hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidences, approvers, isReviewed });
     }
 
     static getClass() {

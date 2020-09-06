@@ -26,8 +26,9 @@ class AmmendListContract extends Contract {
         let approver1 = Approver.createInstance('Doctor', 'qwerty1234');
         let approver2 = Approver.createInstance('Director', 'asdfgzx122');
 
-        let ammend1 = Ammend.createInstance('aba123', 'AB', '12345123', 'Delete', '2', '', [], [approver1, approver2]);
-        let ammend2 = Ammend.createInstance('eer123', 'FF', '12345678', 'DELETE', '3', 'qazaqd', [], [approver1, approver2]);
+        //hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidencesList, approversList
+        let ammend1 = Ammend.createInstance('AB', 'AA', 'AC1', '001', 1, 'Description', [], [approver1, approver2], false);
+        let ammend2 = Ammend.createInstance('AB', 'AA', 'AD', '002', 2, 'Description', [], [approver1, approver2], false);
 
         await ctx.ammendList.addAmmend(ammend1);
         await ctx.ammendList.addAmmend(ammend2);
@@ -35,17 +36,17 @@ class AmmendListContract extends Contract {
 
     async addAmmend(ctx, ammend) {
         const modeledAmmend = Ammend.fromJSON(ammend, Ammend);
-        const ammendExists = await ctx.ammendList.ammendExists([modeledAmmend.hospitalCode, modeledAmmend.ammendId]);
+        const ammendExists = await ctx.ammendList.ammendExists([modeledAmmend.hospitalCode, modeledAmmend.ordinationCode, modeledAmmend.serviceCode, modeledAmmend.pacientLbo]);
         if (!ammendExists) {
             const ammendData = await ctx.ammendList.addAmmend(modeledAmmend);
             return ammendData;
         } else {
-            throw new Error(`ammend with key ${[modeledammend.hospitalCode, modeledammend.ammendId]} already exists!`);
+            throw new Error(`Ammend with key ${modeledAmmend.hospitalCode}:${modeledAmmend.ordinationCode}:${modeledAmmend.serviceCode}:${modeledAmmend.pacientLbo} already exists!`);
         }
     }
 
-    async getAmmend(ctx, hospitalCode, ammendId) {
-        const ammendData = await ctx.ammendList.getAmmend([hospitalCode, ammendId]);
+    async getAmmend(ctx, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
+        const ammendData = await ctx.ammendList.getAmmend([hospitalCode, ordinationCode, serviceCode, pacientLbo]);
         return ammendData;
     }
 

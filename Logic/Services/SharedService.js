@@ -6,7 +6,8 @@ const addNewEvidenceToAmmend = require('../Shared/Ammend/addNewEvidenceToAmmend'
 const createAmmend = require('../Shared/Ammend/createAmmend');
 const getAllAmmendsForHosptial = require('../Shared/Ammend/getAllAmmendsForHosptial');
 const getAmmend = require('../Shared/Ammend/getAmmend');
-const signAmmend = require('../Shared/Ammend/signAmmend');
+const getAllAmmends = require('../Shared/Ammend/getAllAmmeds');
+const approveAmmend = require('../Shared/Ammend/approveAmmend');
 // Hospital
 const getAllHospitals = require('../Shared/Hospital/getAllHospitals');
 const getHospital = require('../Shared/Hospital/getHospital');
@@ -49,8 +50,8 @@ class SharedService {
         return result;
     }
 
-    static async createAmmend(identityName, ammendId, hospitalCode, pacientJmbg, action, neededEndors, listId) {
-        const result = await createAmmend(identityName, ammendId, hospitalCode, pacientJmbg, action, neededEndors, listId);
+    static async createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidencesIds) {
+        const result = await createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidencesIds);
         return result;
     }
 
@@ -59,13 +60,18 @@ class SharedService {
         return result;
     }
 
-    static async getAmmend(identityName, hospitalCode, ammendId) {
-        const result = await getAmmend(identityName, hospitalCode, ammendId);
+    static async getAllAmmends(identityName) {
+        const result = await getAllAmmends(identityName);
         return result;
     }
 
-    static async signAmmend(identityName, workingLicence, hospitalCode, ammendId) {
-        const result = await signAmmend(identityName, workingLicence, hospitalCode, ammendId);
+    static async getAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
+        const result = await getAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo);
+        return result;
+    }
+
+    static async approveAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, licenceId) {
+        const result = await approveAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, licenceId);
         return result;
     }
 

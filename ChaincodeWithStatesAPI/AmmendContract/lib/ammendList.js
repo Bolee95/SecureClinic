@@ -34,7 +34,7 @@ class AmmendList extends StateList {
     }
 
     async getAllAmmendsForHospital(hospitalCode) {
-        return this.getAllAmmends(hospitalCode);
+        return this.getAllStates(hospitalCode);
     }
 }
 module.exports = AmmendList;

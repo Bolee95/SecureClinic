@@ -3,8 +3,7 @@ const AmmendType = require('../../utils/js-smart-contract-ammend-type.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend.js');
 
-//let ammend1 = Ammend.createInstance('aba123', 'AB', '12345123', 'Delete', '2', '', [], [approver1, approver2]);
-async function createAmmend(identityName, ammendId, hospitalCode, pacientJmbg, action, neededEndors, listId) {
+async function createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidencesIds) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -13,28 +12,27 @@ async function createAmmend(identityName, ammendId, hospitalCode, pacientJmbg, a
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
-    const ammend = Ammend.createInstance(ammendId, hospitalCode, pacientJmbg, action, neededEndors, listId, [], []);
-
-    checkAndSetAmmendType(ammend, identityName);
-
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'addAmmend', ammend.stringifyClass());
-    if (bufferedResult.length > 0) {
-        console.log(ammend.getAmmendId());
+    var evidences;
+    if (evidencesIds === "") {
+        evidences = [];
     } else {
-        console.log(`Error while creating Ammend...`);
-    }  
+        evidences = evidencesIds.split(',');
+    }
+
+    const newAmmend = Ammend.createInstance(hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidences, [], false);
+
+    //checkAndSetAmmendType(ammend, identityName);
+    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'addAmmend', newAmmend.stringifyClass());
     gateway.disconnect();   
+
+    if (bufferedResult.length > 0) {
+        return true;
+    } else {
+        throw new Error(`Error while creating Ammend with id -- ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}!`);
+    }  ;   
 };
 
 module.exports = createAmmend;
-
-// createAmmend().then(() => {
-// }).catch((exception) => {
-//     console.log('Creating new ammend failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });
 
 function checkAndSetAmmendType(ammend, identityName) 
 {

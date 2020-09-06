@@ -32,10 +32,3 @@ async function addNewEvidenceToAmmend(identityName, evidenceId, hospitalCode, am
 };
 
 module.exports = addNewEvidenceToAmmend;
-// addNewEvidenceToAmmend().then(() => {
-// }).catch((exception) => {
-//     console.log('Signing Ammend failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

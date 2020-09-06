@@ -16,34 +16,35 @@ function configureSharedServiceListners(expressApp) {
     });
 
     // Ammend
-    expressApp.post("/shared/addNewEvidenceToAmmend", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const formFields = req.fields;
-            const evidenceId = formFields["evidenceId"];
-            const hospitalCode = formFields["hospitalCode"];
-            const ammendId = formFields["ammendId"];
+    // expressApp.post("/shared/addNewEvidenceToAmmend", async (req, res, err) => {
+    //     try {
+    //         const identityName = req.get("Identity_name");
+    //         const formFields = req.fields;
+    //         const evidenceId = formFields["evidenceId"];
+    //         const hospitalCode = formFields["hospitalCode"];
+    //         const ammendId = formFields["ammendId"];
 
-            const result = await sharedService.addNewEvidenceToAmmend(identityName, evidenceId, hospitalCode, ammendId);
-            res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
-        }
-    });
+    //         const result = await sharedService.addNewEvidenceToAmmend(identityName, evidenceId, hospitalCode, ammendId);
+    //         res.status(200).json(result);
+    //     } catch(error) {
+    //         res.status(400).json(error);
+    //     }
+    // });
 
     expressApp.post("/shared/createAmmend", async (req, res, err) => {
         try {
             const identityName = req.get("Identity_name");
 
             const formFields = req.fields;
-            const ammendId = formFields["ammendId"];
             const hospitalCode = formFields["hospitalCode"];
-            const pacientJmbg = formFields["pacientJmbg"];
+            const ordinationCode = formFields["ordinationCode"];
+            const serviceCode = formFields["serviceCode"];
+            const pacientLbo = formFields["pacientLbo"];
             const action = formFields["action"];
-            const neededEndors = formFields["neededEndors"];
-            const listId = formFields["listId"];
+            const description = formFields["description"];
+            const evidencesIds = formFields["evidencesIds"];
 
-            const result = await sharedService.createAmmend(identityName, ammendId, hospitalCode, pacientJmbg, action, neededEndors, listId);
+            const result = await sharedService.createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidencesIds);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);
@@ -63,30 +64,45 @@ function configureSharedServiceListners(expressApp) {
         }
     });
 
-    expressApp.get("/shared/getAmmend", async (req, res, err) => {
+    expressApp.get("/shared/getAmmend/all", async (req, res, err) => {
         try {
             const identityName = req.get("Identity_name");
 
-            const hospitalCode = req.query.hospitalCode;
-            const ammendId = req.query.ammendId;
-
-            const result = await sharedService.getAmmend(identityName, hospitalCode, ammendId);
+            const result = await sharedService.getAllAmmends(identityName);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);
         }
     });
 
-    expressApp.post("/shared/signAmmend", async (req, res, err) => {
+    expressApp.get("/shared/getAmmend", async (req, res, err) => {
+        try {
+            const identityName = req.get("Identity_name");
+
+            const hospitalCode = req.query.hospitalCode;
+            const ordinationCode = req.query.ordinationCode;
+            const serviceCode = req.query.serviceCode;
+            const pacientLbo = req.query.pacientLbo;
+
+            const result = await sharedService.getAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo);
+            res.status(200).json(result);
+        } catch(error) {
+            res.status(400).json(error);
+        }
+    });
+
+    expressApp.post("/shared/approveAmmend", async (req, res, err) => {
         try {
             const identityName = req.get("Identity_name");
 
             const formFields = req.fields;
-            const workingLicence = formFields["workingLicence"];
             const hospitalCode = formFields["hospitalCode"];
-            const ammendId = formFields["ammendId"];
+            const ordinationCode = formFields["ordinationCode"];
+            const serviceCode = formFields["serviceCode"];
+            const pacientLbo = formFields["pacientLbo"];
+            const licenceId = formFields["licenceId"];
 
-            const result = await sharedService.signAmmend(identityName, workingLicence, hospitalCode, ammendId);
+            const result = await sharedService.approveAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, licenceId);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);

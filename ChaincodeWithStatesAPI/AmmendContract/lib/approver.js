@@ -10,15 +10,15 @@ class Approver {
     }
 
     getWorkingLicenceId() {
-        return this.workingLicenceId;
+        return this.licenceId;
     }
 
     toBuffer() {
         return Buffer.from(JSON.stringify(this));
     }
 
-    static createInstance(role, workingLicenceId) {
-        return new Approver({ role, workingLicenceId });
+    static createInstance(role, licenceId) {
+        return new Approver({ role, licenceId });
     }
 }
 module.exports = Approver;

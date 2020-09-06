@@ -2,7 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Ammend = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/pending.js');
 
-async function getAmmend(identityName, hospitalCode, ammendId) {
+async function getAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -12,23 +12,16 @@ async function getAmmend(identityName, hospitalCode, ammendId) {
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledAmmend;
     //[hospitalCode,serviceCode,ordinationCode,pacientLbo]
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAmmend', [hospitalCode, ammendId]);
+    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAmmend', [hospitalCode, ordinationCode, serviceCode, pacientLbo]);
     if (bufferedResult.length > 0) {
         const jsonResult = JSON.parse(bufferedResult.toString());
         modeledAmmend = new (Ammend)(jsonResult);
         console.log(modeledAmmend);
     } else {
-        console.log(`Error while retriving ammend with id ${hospitalCode + ':' + ammendId}...`);
+        throw new Error(`Error while retriving ammend with id ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}.`);
     }
     gateway.disconnect();
     return modeledAmmend;
 };
 
 module.exports = getAmmend;
-// getAmmend().then(() => {
-// }).catch((exception) => {
-//     console.log('Retriving ammend failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

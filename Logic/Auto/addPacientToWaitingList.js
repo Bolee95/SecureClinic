@@ -9,7 +9,6 @@ const changePacientWaitingStatusToWaiting = require('./changePacientStatusToWait
 async function addPacientToWaitingList(gateway, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, pacientLbo, score) {
     let pacient;
     let waitingList;
-    let pendingRemovalRes;
 
     // WAITING LIST RETRIVAL
     const waitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getWaitingList', [hospitalCode, ordinationCode, serviceCode]);
@@ -70,7 +69,7 @@ async function addPacientToWaitingList(gateway, hospitalName, ordinationName, se
             console.log(`Fail while adding pacient with lbo ${pacientLbo} to waiting list with id ${waitingList.getKey()}...`);
         }
     } else {
-        console.log(`Error while adding pacient with lbo ${pacientLbo} to waiting list with id ${waitingList.getKey()}...`);
+        throw new Error(`Error while adding pacient with lbo ${pacientLbo} to waiting list with id ${waitingList.getKey()}...`);
     }
 
     // REMOVING PENDING
@@ -89,7 +88,7 @@ async function addPacientToWaitingList(gateway, hospitalName, ordinationName, se
     await changePacientWaitingStatusToWaiting(gateway, pacientLbo, hospitalName, hospitalCode, ordinationCode, serviceCode);
 
     gateway.disconnect();   
-    return pendingRemovalRes;
+    return true;
 };
 
 module.exports = addPacientToWaitingList;

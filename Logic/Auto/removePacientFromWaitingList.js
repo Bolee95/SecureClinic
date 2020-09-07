@@ -1,8 +1,8 @@
 const SmartContractUtil = require('../utils/js-smart-contract-util');
-const Pacient = require('../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
+const AcceptedPacient = require('../../ChaincodeWithStatesAPI/WaitingListContract/lib/acceptedPacient.js');
 const WaitingList = require('../../ChaincodeWithStatesAPI/WaitingListContract/lib/waitingList.js');
 
-async function removePacientFromWaitingList(gateway, hospitalCode, serviceCode, ordinationCode, pacientLbo) {
+async function removePacientFromWaitingList(gateway, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
     let waitingList;
     let updateRes;
 
@@ -12,8 +12,8 @@ async function removePacientFromWaitingList(gateway, hospitalCode, serviceCode, 
         waitingList = new (WaitingList)(jsonResult);
 
         for (const pacient of waitingList.getAllPacients()) {
-            let modeledPacient = new (Pacient)(pacient);
-            if (modeledPacient.lbo === pacientLbo) {
+            let modeledPacient = new (AcceptedPacient)(pacient);
+            if (modeledPacient.pacientLbo === pacientLbo) {
                 const index = waitingList.pacients.indexOf(pacient);
                 if (index > -1) {
                     waitingList.pacients.splice(index,1);
@@ -26,7 +26,7 @@ async function removePacientFromWaitingList(gateway, hospitalCode, serviceCode, 
             const jsonResult = JSON.parse(updateResult.toString());
             updateRes = (Boolean)(jsonResult);
 
-            if (updateResult == true) {
+            if (updateRes == true) {
                 return true;
             } else {
                 throw new Error(`Removing pacient with id ${pacientLbo} from waiting list with id ${hospitalCode}:${ordinationCode}:${serviceCode} unsuccessful!`);

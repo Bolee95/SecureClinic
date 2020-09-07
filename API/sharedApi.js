@@ -300,6 +300,20 @@ function configureSharedServiceListners(expressApp) {
         }
    });
 
+   expressApp.post("/shared/addPacientToWaitingListTest", async (req, res, err) => {
+       try {
+            const formFields = req.fields;
+            const pacientLbo = formFields["pacientLbo"];
+            const name = formFields["name"];
+            const surname = formFields["surname"];
+
+            const result = await sharedService.addPacientToWaitingListTest(pacientLbo, name, surname);
+            res.status(200).json(result);
+       } catch(error) {
+            res.status(400).json(error);
+       }
+   });
+
     expressApp.get("/shared/getAllPacientsForWaitingList", async (req, res, err) => {
         try {
             const identityName = req.get("Identity_name");

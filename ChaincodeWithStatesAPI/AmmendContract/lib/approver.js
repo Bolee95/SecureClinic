@@ -9,7 +9,7 @@ class Approver {
         return this.role;
     }
 
-    getWorkingLicenceId() {
+    getLicenceId() {
         return this.licenceId;
     }
 

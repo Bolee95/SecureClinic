@@ -41,9 +41,8 @@ async function getPendingsForHospital(identityName, hospitalCode) {
                 index++;
            }    
         };
-        console.log(modeledPendings);
     } else {
-        console.log(`Error while retriving all pendings for hospital with HospitalCode ${hospitalCode}`);
+        throw new Error(`Error while retriving all pendings for hospital with HospitalCode ${hospitalCode}`);
     }
     gateway.disconnect();
     return modeledPendings;

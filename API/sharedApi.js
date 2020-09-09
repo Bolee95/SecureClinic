@@ -39,12 +39,16 @@ function configureSharedServiceListners(expressApp) {
             const hospitalCode = formFields["hospitalCode"];
             const ordinationCode = formFields["ordinationCode"];
             const serviceCode = formFields["serviceCode"];
+            const hospitalName = formFields["hospitalName"];
+            const ordinationName = formFields["ordinationName"];
+            const serviceName = formFields["serviceName"];
             const pacientLbo = formFields["pacientLbo"];
+            const screenname = formFields["screenname"];
             const action = formFields["action"];
             const description = formFields["description"];
             const evidencesIds = formFields["evidencesIds"];
 
-            const result = await sharedService.createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidencesIds);
+            const result = await sharedService.createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screenname, action, description, evidencesIds);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);

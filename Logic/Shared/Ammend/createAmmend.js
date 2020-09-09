@@ -3,7 +3,7 @@ const AmmendType = require('../../utils/js-smart-contract-ammend-type.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend.js');
 
-async function createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidencesIds) {
+async function createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screename, action, description, evidencesIds) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -19,7 +19,7 @@ async function createAmmend(identityName, hospitalCode, ordinationCode, serviceC
         evidences = evidencesIds.split(',');
     }
 
-    const newAmmend = Ammend.createInstance(hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidences, [], false);
+    const newAmmend = Ammend.createInstance(hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screename, action, description, evidences, [], false);
 
     //checkAndSetAmmendType(ammend, identityName);
     const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'addAmmend', newAmmend.stringifyClass());

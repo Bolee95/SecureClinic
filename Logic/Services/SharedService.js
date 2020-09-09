@@ -51,8 +51,8 @@ class SharedService {
         return result;
     }
 
-    static async createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidencesIds) {
-        const result = await createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidencesIds);
+    static async createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screenname, action, description, evidencesIds) {
+        const result = await createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screenname, action, description, evidencesIds);
         return result;
     }
 

@@ -26,9 +26,8 @@ class AmmendListContract extends Contract {
         let approver1 = Approver.createInstance('Doctor', 'qwerty1234');
         let approver2 = Approver.createInstance('Director', 'asdfgzx122');
 
-        //hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidencesList, approversList
-        let ammend1 = Ammend.createInstance('AB', 'AA', 'AC1', '001', 1, 'Description', [], [approver1, approver2], false);
-        let ammend2 = Ammend.createInstance('AB', 'AA', 'AD', '002', 2, 'Description', [], [approver1, approver2], false);
+        let ammend1 = Ammend.createInstance('AB', 'AA', 'AC1', 'Opsta bolnica', 'Kardiohirurgija', 'Operacija srca', '001', 'Bogdan Ilic', 1, 'Description', [], [approver1, approver2], false);
+        let ammend2 = Ammend.createInstance('AB', 'AA', 'AD', 'Opsta bolnica Beograd', 'Ordotpedija', 'Operacija kolena', '002', 'Darko Ilic', 2, 'Description', [], [approver1, approver2], false);
 
         await ctx.ammendList.addAmmend(ammend1);
         await ctx.ammendList.addAmmend(ammend2);

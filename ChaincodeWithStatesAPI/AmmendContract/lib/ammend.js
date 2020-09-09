@@ -94,8 +94,8 @@ class Ammend extends State {
         return State.deserializeClass(data, Ammend);
     }
 
-    static createInstance(hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidences, approvers, isReviewed) {
-        return new Ammend({ hospitalCode, ordinationCode, serviceCode, pacientLbo, action, description, evidences, approvers, isReviewed });
+    static createInstance(hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screenName, action, description, evidences, approvers, isReviewed) {
+        return new Ammend({ hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screenName, action, description, evidences, approvers, isReviewed });
     }
 
     static getClass() {

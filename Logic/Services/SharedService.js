@@ -56,8 +56,8 @@ class SharedService {
         return result;
     }
 
-    static async getAllAmmendsForHosptial(identityName, hospitalCode) {
-        const result = await getAllAmmendsForHosptial(identityName, hospitalCode);
+    static async getAllAmmendsForHosptial(identityName, hospitalCode, licenceId) {
+        const result = await getAllAmmendsForHosptial(identityName, hospitalCode, licenceId);
         return result;
     }
 

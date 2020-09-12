@@ -21,17 +21,7 @@ async function registerUser(identityName, username) {
     await fabricWallet.import(username, userIdentity);
     console.log(`User with id ${username} registered`);
     gateway.disconnect();
+    return true;
 };
 
 module.exports = registerUser;
-
-// registerUser().then(() => {
-//     //console.log('RegisterUser function started!');
-// }).catch((exception) => {
-//     console.log('Registering new user failed... Error:\n!');
-//     console.log(exception);
-//     //console.log(exception.stack);
-//     process.exit(-1);
-// }).finally(() => {
-//     //console.log('RegisterUser fucniton call ended!');
-// })

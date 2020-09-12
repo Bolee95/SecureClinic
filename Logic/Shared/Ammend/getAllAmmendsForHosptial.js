@@ -3,7 +3,7 @@ const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend.js');
 const Approver = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/approver.js');
 
-async function getAllAmmendsForHospital(identityName, hospitalCode) {
+async function getAllAmmendsForHospital(identityName, hospitalCode, licenceId) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -16,8 +16,6 @@ async function getAllAmmendsForHospital(identityName, hospitalCode) {
     if (bufferedResult.length > 0) {
         const jsonResult = JSON.parse(bufferedResult.toString());
         
-        // TO-DO: Should be reconsidered and fixed, replaced with something else
-        const role = getRole(identityName);
         let index = 0;
         while(index != null) {
             const ammendElement = jsonResult[index];
@@ -33,7 +31,7 @@ async function getAllAmmendsForHospital(identityName, hospitalCode) {
 
                 for (const approver of modeledAmmend.approvers) {
                     const modeledApprover = new (Approver)(approver);
-                    if (modeledApprover.getRole() == role) {
+                    if (modeledApprover.licenceId == licenceId) {
                         alreadyApproved = true;
                     } 
                 }
@@ -51,14 +49,3 @@ async function getAllAmmendsForHospital(identityName, hospitalCode) {
 };
 
 module.exports = getAllAmmendsForHospital;
-
-// TO-DO: Should be replaced and fixed, not good implementation
-function getRole(identityName) {
-    if (identityName.includes(IdentityRole.DIRECTOR)) {
-        return IdentityRole.DIRECTOR;
-    } else if (identityName.includes(IdentityRole.DOCTOR)) {
-        return IdentityRole.DOCTOR;
-    } else if (identityName.includes(IdentityRole.TEHNICAL)) {
-        return IdentityRole.TEHNICAL;
-    }
-}

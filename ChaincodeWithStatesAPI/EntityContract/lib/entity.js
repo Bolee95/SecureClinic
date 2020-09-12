@@ -37,7 +37,7 @@ class Entity extends State {
     }
 
     static getClass() {
-        return 'org.secureclinic.pacient';
+        return 'org.secureclinic.entity';
     }
 }
 

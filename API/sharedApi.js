@@ -60,8 +60,9 @@ function configureSharedServiceListners(expressApp) {
             const identityName = req.get("Identity_name");
 
             const hospitalCode = req.query.hospitalCode;
+            const licenceId = req.query.licenceId;
 
-            const result = await sharedService.getAllAmmendsForHosptial(identityName, hospitalCode);
+            const result = await sharedService.getAllAmmendsForHosptial(identityName, hospitalCode, licenceId);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);

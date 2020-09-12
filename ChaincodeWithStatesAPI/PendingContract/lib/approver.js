@@ -5,11 +5,11 @@ class Approver {
         Object.assign(this,obj);
     }
 
-    getApproverLicenceId() {
+    getLicenceId() {
         return this.licenceId;
     }
 
-    getApproverRole() {
+    getRole() {
         return this.role;
     }
 

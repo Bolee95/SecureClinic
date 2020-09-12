@@ -2,6 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Pending = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/pending.js');
 const Approver = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/approver.js');
+const Entity = require('../../../ChaincodeWithStatesAPI/EntityContract/lib/entity.js');
 const AddPacientToWaitingList = require('../../Auto/addPacientToWaitingList.js');
 
 async function approvePending(identityName, licenceId, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
@@ -18,11 +19,15 @@ async function approvePending(identityName, licenceId, hospitalCode, ordinationC
     if (bufferedResult.length > 0) {
         let jsonResult = JSON.parse(bufferedResult.toString());
         modeledPending = new (Pending)(jsonResult);
-        const role = getRole(identityName);
+        const role = await getRole(gateway, licenceId);
+        
+        if (role === undefined) {
+            throw new Error(`Entity with licenceId ${licenceId} does not exist!`);
+        }
  
         for (const approver of modeledPending.approvers) {
             const modeledApprover = new (Approver)(approver);
-            if (modeledApprover.getApproverRole() == role) {
+            if (modeledApprover.licenceId == licenceId) {
                 throw new Error(`Approver with role ${role} and licence Id  ${licenceId} already approved this pending!`);
             } 
         }
@@ -56,12 +61,13 @@ async function approvePending(identityName, licenceId, hospitalCode, ordinationC
 
 module.exports = approvePending;
 
-function getRole(identityName) {
-    if (identityName.includes(IdentityRole.DIRECTOR)) {
-        return IdentityRole.DIRECTOR;
-    } else if (identityName.includes(IdentityRole.DOCTOR)) {
-        return IdentityRole.DOCTOR;
-    } else if (identityName.includes(IdentityRole.TEHNICAL)) {
-        return IdentityRole.TEHNICAL;
+async function getRole(gateway, licenceId) {
+    let bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Entity', 'getEntity', licenceId);
+    if (bufferedResult.length > 0) {
+        let jsonResult = JSON.parse(bufferedResult.toString());
+        let modeledEntity = new (Entity)(jsonResult);
+        return modeledEntity.role;
+    } else {
+        return undefined;
     }
 }

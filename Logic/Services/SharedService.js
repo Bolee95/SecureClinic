@@ -135,8 +135,8 @@ class SharedService {
         return result;
     }
 
-    static async getPendingsForHospital(identityName, hospitalCode) {
-        const result = await getPendingsForHospital(identityName, hospitalCode);
+    static async getPendingsForHospital(identityName, hospitalCode, licenceId) {
+        const result = await getPendingsForHospital(identityName, hospitalCode, licenceId);
         return result;
     }
 

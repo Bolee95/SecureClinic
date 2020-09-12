@@ -2,6 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend.js');
 const Approver = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/approver.js');
+const Entity = require('../../../ChaincodeWithStatesAPI/EntityContract/lib/entity.js');
 const RemovePacientFromWList = require('../../Auto/removePacientFromWaitingList.js');
 
 async function approveAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, licenceId) {
@@ -13,8 +14,13 @@ async function approveAmmend(identityName, hospitalCode, ordinationCode, service
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
-    const role = getRole(identityName);
-    const approver = Approver.createInstance( role, licenceId);
+    const role = await getRole(gateway, licenceId);
+
+    if (role === undefined) {
+        throw new Error(`Entity with licenceId ${licenceId} does not exist!`);
+    }
+
+    const approver = Approver.createInstance(role, licenceId);
     let updateRes;
 
     const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAmmend', [hospitalCode, ordinationCode, serviceCode, pacientLbo]);
@@ -24,7 +30,7 @@ async function approveAmmend(identityName, hospitalCode, ordinationCode, service
 
         for (const approver of modeledAmmend.approvers) {
             const modeledApprover = new (Approver)(approver);
-            if (modeledApprover.getRole() == role) {
+            if (modeledApprover.licenceId == licenceId) {
                 throw new Error(`Approver with role ${role} and licence Id  ${licenceId} already approved this pending!`);
             } 
         }
@@ -55,12 +61,13 @@ async function approveAmmend(identityName, hospitalCode, ordinationCode, service
 
 module.exports = approveAmmend;
 
-function getRole(identityName) {
-    if (identityName.includes(IdentityRole.DIRECTOR)) {
-        return IdentityRole.DIRECTOR;
-    } else if (identityName.includes(IdentityRole.DOCTOR)) {
-        return IdentityRole.DOCTOR;
-    } else if (identityName.includes(IdentityRole.TEHNICAL)) {
-        return IdentityRole.TEHNICAL;
+async function getRole(gateway, licenceId) {
+    let bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Entity', 'getEntity', licenceId);
+    if (bufferedResult.length > 0) {
+        let jsonResult = JSON.parse(bufferedResult.toString());
+        let modeledEntity = new (Entity)(jsonResult);
+        return modeledEntity.role;
+    } else {
+        return undefined;
     }
 }

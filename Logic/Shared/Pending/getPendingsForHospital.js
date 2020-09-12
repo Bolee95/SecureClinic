@@ -3,7 +3,7 @@ const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Pending = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/pending.js');
 const Approver = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/approver.js');
 
-async function getPendingsForHospital(identityName, hospitalCode) {
+async function getPendingsForHospital(identityName, hospitalCode, licenceId) {
     // Using Utility class to setup everything
     const fabricWallet = await SmartContractUtil.getFileSystemWallet();
     // Check if user exists in wallets
@@ -14,7 +14,6 @@ async function getPendingsForHospital(identityName, hospitalCode) {
     let modeledPendings = [];
     const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'getAllPendingsForHospitalCode', hospitalCode);
 
-    const role = getRole(identityName);
     if (bufferedResult.length > 0) {
         const jsonResult = JSON.parse(bufferedResult.toString());
         
@@ -30,7 +29,7 @@ async function getPendingsForHospital(identityName, hospitalCode) {
 
                 for (const approver of modeledPending.approvers) {
                     const modeledApprover = new (Approver)(approver);
-                    if (modeledApprover.getApproverRole() == role) {
+                    if (modeledApprover.licenceId == licenceId) {
                         alreadyApproved = true;
                     } 
                 }
@@ -49,13 +48,3 @@ async function getPendingsForHospital(identityName, hospitalCode) {
 };
 
 module.exports = getPendingsForHospital;
-
-function getRole(identityName) {
-    if (identityName.includes(IdentityRole.DIRECTOR)) {
-        return IdentityRole.DIRECTOR;
-    } else if (identityName.includes(IdentityRole.DOCTOR)) {
-        return IdentityRole.DOCTOR;
-    } else if (identityName.includes(IdentityRole.TEHNICAL)) {
-        return IdentityRole.TEHNICAL;
-    }
-}

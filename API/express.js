@@ -1,5 +1,6 @@
 const express = require('express');
 const formidableMiddleware = require('express-formidable');
+const winston = require('winston');
 
 const initTestMethods = require('./testAPI');
 const configureAdminServiceListeners = require('./adminApi');
@@ -10,6 +11,15 @@ const configureSharedServiceListners = require('./sharedApi');
 const app = express();
 app.use(formidableMiddleware());
 
+const logger = winston.createLogger({
+	level: 'info',
+	format: winston.format.simple(),
+	transports: [
+		new winston.transports.Console(),
+		new winston.transports.File({ filename: 'apiLogging.log', level: 'info' })
+	]
+});
+
 function startServer() {
 	var port = process.argv[2];
 	if (port === null) {
@@ -17,12 +27,20 @@ function startServer() {
 	}
 
 	app.listen(port, () => {
-		console.log("Server running on port " + port);
+		logger.log('info', `  +++++++++++++++++++++++++++++++\n\
+	EXPRESS SERVER STARTED\n\
+	Running on port ${port}\n\
+	Time: ${Date().toString()}\n\
+	+++++++++++++++++++++++++++++++`);
 	});
 
 	app.use(function (req, res, next) {
-		// Can be used for logging data
-		console.log('Time: ', Date.now().toString());
+		logger.log('info', `  -----------------------------------\n\
+	Time: ${Date().toString()}\n\
+	Req URL: ${req.originalUrl}\n\
+	Req query: ${req.query}\n\
+	Req caller identity: ${req.headers.identity_name}\n\
+	-----------------------------------`);
 		next();
 	});
 

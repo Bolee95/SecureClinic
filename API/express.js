@@ -38,7 +38,7 @@ function startServer() {
 		logger.log('info', `  -----------------------------------\n\
 	Time: ${Date().toString()}\n\
 	Req URL: ${req.originalUrl}\n\
-	Req query: ${req.query}\n\
+	Req query: ${JSON.stringify(req.query)}\n\
 	Req caller identity: ${req.headers.identity_name}\n\
 	-----------------------------------`);
 		next();

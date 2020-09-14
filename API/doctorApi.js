@@ -13,8 +13,10 @@ function configureDoctorServiceListners(expressApp) {
             const lbo = formFields["lbo"];
             const jmbg = formFields["jmbg"];
             const city = formFields["city"];
+            const hospitalCode = formFields["hospitalCode"];
+            const hospitalName = formFields["hospitalName"];
 
-            const result = await doctorService.addPacient(identityName, name, surname, lbo, jmbg, city);
+            const result = await doctorService.addPacient(identityName, name, surname, lbo, jmbg, city, hospitalCode, hospitalName);
             res.status(200).json(result);
         } catch(error) {
             res.status(400).json(error);

@@ -2,7 +2,6 @@
 // Pacient
 const addPacient = require('../Doctor/Pacient/addPacient');
 const changePacientStatusToPending = require('../Doctor/Pacient/changePacientStatusToPending');
-// const changePacientStatusToWaiting = require('../Doctor/Pacient/changePacientStatusToWaiting');
 const getAllPacients = require('../Doctor/Pacient/getAllPacients');
 const getAllPacientsForHospital = require('../Doctor/Pacient/getAllPacientsForHospital');
 const resetPacientWaitingStatus = require('../Doctor/Pacient/resetPacientWaitingStatus');
@@ -12,8 +11,8 @@ const createNewPending = require('../Doctor/Pending/createNewPending');
 class DoctorService {
 
     // Pacient
-    static async addPacient(identityName, name, surname, lbo, jmbg, city) {
-        const result = await addPacient(identityName, name, surname, lbo, jmbg, city);
+    static async addPacient(identityName, name, surname, lbo, jmbg, city, hospitalCode, hospitalName) {
+        const result = await addPacient(identityName, name, surname, lbo, jmbg, city, hospitalCode, hospitalName);
         return result;
     }
 

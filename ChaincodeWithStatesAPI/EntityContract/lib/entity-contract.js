@@ -15,7 +15,7 @@ class EntityContext extends Context {
 class EntityContract extends Contract {
 
     constructor() {
-        super('org.secureclinic.pacient');
+        super('org.secureclinic.entity');
     }
 
     createContext() {

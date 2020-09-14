@@ -44,7 +44,6 @@ async function approvePending(identityName, licenceId, hospitalCode, ordinationC
         if (bufferedResult.length > 0) {
             jsonResult = JSON.parse(bufferedResult.toString());
             updatingResult = (Boolean)(jsonResult);
-            console.log(updatingResult);
 
             if (updatingResult == true && modeledPending.approvers.length >= 3) {
                 await AddPacientToWaitingList(gateway, modeledPending.getHospitalName(), modeledPending.getOrdinationName(), modeledPending.getServiceName(), hospitalCode, ordinationCode, serviceCode, pacientLbo, modeledPending.getScore());

@@ -11,7 +11,12 @@ async function createPending(identityName, pacientLbo, pacientJmbg, pacientScree
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
-    let documents = documentIds.split(',');
+    var documents;
+    if (documentIds === "") {
+        documents = [];
+    } else {
+        documents = documentIds.split(',');
+    }
 
     const pending = Pending.createInstance(pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, [], false, score, documents);
     let addingResult;
@@ -22,7 +27,7 @@ async function createPending(identityName, pacientLbo, pacientJmbg, pacientScree
         addingResult = (Boolean)(jsonResult);
         console.log(addingResult);
     } else {
-        console.log(`Error while creating new Pending...`);
+        throw new Error(`Error while creating new Pending...`);
     }
     gateway.disconnect();
     return addingResult;

@@ -16,16 +16,18 @@ async function readFileFromDb(fileId) {
         let result = await request(requestUrl, function(err, res, body) {
             if (err == null) {
                 const jsonResult = JSON.parse(body);
-                const bufferedResult = Buffer.from(jsonResult['file']['file'],'base64');
-                const filename = jsonResult['file']['name'];
-                const extension =  jsonResult['file']['extension'];
-                const mime = jsonResult['file']['mime'];
-                // const version = jsonResult['file']['version'];
-                console.log('File successfully read');
-                var tempFile = temp.fileSync({ prefix: filename, postfix: extension });
-                fs.writeFileSync(tempFile.name, bufferedResult);
+                if (jsonResult['file'] !== undefined) {
+                    const bufferedResult = Buffer.from(jsonResult['file']['file'],'base64');
+                    const filename = jsonResult['file']['name'];
+                    const extension =  jsonResult['file']['extension'];
+                    const mime = jsonResult['file']['mime'];
+                    // const version = jsonResult['file']['version'];
+                    console.log('File successfully read');
+                    var tempFile = temp.fileSync({ prefix: filename, postfix: extension });
+                    fs.writeFileSync(tempFile.name, bufferedResult);
 
-                filepath = { 'tempPath': tempFile.name, 'filename': filename, 'mime': mime};
+                    filepath = { 'tempPath': tempFile.name, 'filename': filename, 'mime': mime};
+                }
             }
             else {
                 //throw new Error(`Error while reading file with id ${fileId}: ${err}`);

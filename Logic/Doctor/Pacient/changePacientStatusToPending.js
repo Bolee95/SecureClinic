@@ -23,23 +23,14 @@ async function changePacientStatusToPending(identityName, pacientLbo) {
         if (bufferedResult.length > 0) {
             jsonResult = JSON.parse(bufferedResult.toString());
             updatingResult = (Boolean)(jsonResult);
-            console.log(updatingResult);
         } else {
-            console.log(`Error while updating Pacient status to Pending..`);
+            throw new Error(`Error while updating Pacient status to Pending..`);
         }
     } else {
-        console.log(`Error while updating Pacient status to Pending..`);
+        throw new Error(`Error while updating Pacient status to Pending..`);
     }
     gateway.disconnect();
     return updatingResult;
 };
 
 module.exports = changePacientStatusToPending;
-
-// addPacientToPending().then(() => {
-// }).catch((exception) => {
-//     console.log('Updating pacient failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

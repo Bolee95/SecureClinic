@@ -18,7 +18,7 @@ async function addPacientToWaitingList(gateway, hospitalName, ordinationName, se
     } else {
         // Waiting list doesn't exist, create one   
         // TO-DO: Retrieve Service max time 
-        const newWaitingList = WaitingList.createInstance(hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, [], 50);
+        waitingList = WaitingList.createInstance(hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, [], 60);
         const createWaitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'addWaitingList', newWaitingList.stringifyClass());
         if (createWaitingListResult.length > 0) {
             // Everything alright, can continue futher

@@ -1,6 +1,7 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Pending = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/pending.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function createPending(identityName, pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, score, documentIds) {
     // Using Utility class to setup everything
@@ -11,7 +12,7 @@ async function createPending(identityName, pacientLbo, pacientJmbg, pacientScree
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
-    var documents;
+    var documents = [];
     if (documentIds === "") {
         documents = [];
     } else {
@@ -20,14 +21,16 @@ async function createPending(identityName, pacientLbo, pacientJmbg, pacientScree
 
     const pending = Pending.createInstance(pacientLbo, pacientJmbg, pacientScreenName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, [], false, score, documents);
     let addingResult;
-
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'addPending', pending.stringifyClass());
-    if (bufferedResult.length > 0) {
-        const jsonResult = JSON.parse(bufferedResult.toString());
-        addingResult = (Boolean)(jsonResult);
-        console.log(addingResult);
-    } else {
-        throw new Error(`Error while creating new Pending...`);
+    try {
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'addPending', pending.stringifyClass());
+        if (bufferedResult.length > 0) {
+            const jsonResult = JSON.parse(bufferedResult.toString());
+            addingResult = (Boolean)(jsonResult);
+        } else {
+            throw new Error(`Error while creating new Pending...`);
+        }
+    } catch(error) {
+        return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();
     return addingResult;

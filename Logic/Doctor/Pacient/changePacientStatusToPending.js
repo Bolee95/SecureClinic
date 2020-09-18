@@ -1,6 +1,7 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Pacient = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function changePacientStatusToPending(identityName, pacientLbo) {
     // Using Utility class to setup everything
@@ -11,23 +12,26 @@ async function changePacientStatusToPending(identityName, pacientLbo) {
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let updatingResult;
-
-    let bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'getPacient', pacientLbo);
-    if (bufferedResult.length > 0) {
-        let jsonResult = JSON.parse(bufferedResult.toString());
-        const pacient = new (Pacient)(jsonResult);
-
-        pacient.setWaitingStatusPending();
-
-        bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'updatePacient', pacient.stringifyClass());
+    try {
+        let bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'getPacient', pacientLbo);
         if (bufferedResult.length > 0) {
-            jsonResult = JSON.parse(bufferedResult.toString());
-            updatingResult = (Boolean)(jsonResult);
+            let jsonResult = JSON.parse(bufferedResult.toString());
+            const pacient = new (Pacient)(jsonResult);
+
+            pacient.setWaitingStatusPending();
+
+            bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'updatePacient', pacient.stringifyClass());
+            if (bufferedResult.length > 0) {
+                jsonResult = JSON.parse(bufferedResult.toString());
+                updatingResult = (Boolean)(jsonResult);
+            } else {
+                throw new Error(`Error while updating Pacient status to Pending..`);
+            }
         } else {
             throw new Error(`Error while updating Pacient status to Pending..`);
         }
-    } else {
-        throw new Error(`Error while updating Pacient status to Pending..`);
+    } catch(error) {
+        return ResponseError.createError(400,getErrorFromResponse(error));
     }
     gateway.disconnect();
     return updatingResult;

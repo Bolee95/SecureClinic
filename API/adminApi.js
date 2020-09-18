@@ -4,198 +4,198 @@ function configureAdminServiceListeners(expressApp) {
 
     //Ammends
     expressApp.get("/admin/getAmmend/all", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const result = await adminService.retrieveAllAmmends(identityName);
+        const identityName = req.get("Identity_name");
+        const result = await adminService.retrieveAllAmmends(identityName);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     // Facility 
     expressApp.post("/admin/addServiceToFacility", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const formFields = req.fields;
-            // TODO extract data from body
-            const facilityCode = formFields["facilityCode"];
-            const serviceCode = formFields["serviceCode"];
-            const serviceName = formFields["serviceName"];
-            const maxWaitTime = formFields["maxWaitTime"];
+        const identityName = req.get("Identity_name");
+        const formFields = req.fields;
+        // TODO extract data from body
+        const facilityCode = formFields["facilityCode"];
+        const serviceCode = formFields["serviceCode"];
+        const serviceName = formFields["serviceName"];
+        const maxWaitTime = formFields["maxWaitTime"];
 
-            const result = await adminService.addServiceToFacility(identityName, facilityCode, serviceCode, serviceName, maxWaitTime);
+        const result = await adminService.addServiceToFacility(identityName, facilityCode, serviceCode, serviceName, maxWaitTime);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.post("/admin/addServiceToFacility/test", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const facilityCode = req.query.facilityCode;
-            const serviceCode = req.query.serviceCode;
-            const serviceName = req.query.serviceName;
-            const maxWaitTime = req.query.maxWaitTime;
+        const identityName = req.get("Identity_name");
+        const facilityCode = req.query.facilityCode;
+        const serviceCode = req.query.serviceCode;
+        const serviceName = req.query.serviceName;
+        const maxWaitTime = req.query.maxWaitTime;
 
-            const result = await adminService.addServiceToFacility(identityName, facilityCode, serviceCode, serviceName, maxWaitTime);
+        const result = await adminService.addServiceToFacility(identityName, facilityCode, serviceCode, serviceName, maxWaitTime);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.post("/admin/createFacility", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const formFields = req.fields;
-            const facilityName = formFields["facilityName"];
-            const facilityCode = formFields["facilityCode"];
+        const identityName = req.get("Identity_name");
+        const formFields = req.fields;
+        const facilityName = formFields["facilityName"];
+        const facilityCode = formFields["facilityCode"];
 
-            const result = await adminService.createFacility(identityName, facilityName, facilityCode);
+        const result = await adminService.createFacility(identityName, facilityName, facilityCode);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch (error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.post("/admin/createFacility/test", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const facilityName = req.query.facilityName;
-            const facilityCode = req.query.facilityCode;
+        const identityName = req.get("Identity_name");
+        const facilityName = req.query.facilityName;
+        const facilityCode = req.query.facilityCode;
 
-            const result = await adminService.createFacility(identityName, facilityName, facilityCode);
+        const result = await adminService.createFacility(identityName, facilityName, facilityCode);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.get("/admin/getFacility", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const facilityCode = req.query.facilityCode;
-            const result = await adminService.getFacility(identityName,facilityCode);
+        const identityName = req.get("Identity_name");
+        const facilityCode = req.query.facilityCode;
+        const result = await adminService.getFacility(identityName,facilityCode);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     // Hospital
     expressApp.post("/admin/addOrdinationToHospital", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const formFields = req.fields;
-            const hospitalCode = formFields["hospitalCode"];
-            const ordinationCode = formFields["ordinationCode"];
+        const identityName = req.get("Identity_name");
+        const formFields = req.fields;
+        const hospitalCode = formFields["hospitalCode"];
+        const ordinationCode = formFields["ordinationCode"];
 
-            const result = await adminService.addNewOrdiantionToHospital(identityName, hospitalCode, ordinationCode);
+        const result = await adminService.addNewOrdiantionToHospital(identityName, hospitalCode, ordinationCode);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.post("/admin/addServiceToHospital", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const formFields = req.fields;
-            const hospitalCode = formFields["hospitalCode"];
-            const serviceCode = formFields["serviceCode"];
+        const identityName = req.get("Identity_name");
+        const formFields = req.fields;
+        const hospitalCode = formFields["hospitalCode"];
+        const serviceCode = formFields["serviceCode"];
 
-            const result = await adminService.addNewServiceToHospital(identityName, hospitalCode, serviceCode);
+        const result = await adminService.addNewServiceToHospital(identityName, hospitalCode, serviceCode);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.post("/admin/createHospital", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const formFields = req.fields;
-            const hospitalName = formFields["hospitalName"];
-            const hospitalCode = formFields["hospitalCode"];
-            const privateOrPublic = formFields["privateOrPublic"];
-            const city = formFields["city"];
+        const identityName = req.get("Identity_name");
+        const formFields = req.fields;
+        const hospitalName = formFields["hospitalName"];
+        const hospitalCode = formFields["hospitalCode"];
+        const privateOrPublic = formFields["privateOrPublic"];
+        const city = formFields["city"];
 
-            const result = await adminService.createHospital(identityName, hospitalName, hospitalCode, privateOrPublic, city);
+        const result = await adminService.createHospital(identityName, hospitalName, hospitalCode, privateOrPublic, city);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     // Network
     expressApp.post("/admin/registerUserWallet", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const formFields = req.fields;
-            const userName = formFields["userName"];
+        const identityName = req.get("Identity_name");
+        const formFields = req.fields;
+        const userName = formFields["userName"];
 
-            const result = await adminService.registerUser(identityName, userName);
+        const result = await adminService.registerUser(identityName, userName);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.delete("/admin/deleteUserWallet", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const formFields = req.fields;
-            const username = formFields["username"];
+        const identityName = req.get("Identity_name");
+        const formFields = req.fields;
+        const username = formFields["username"];
 
-            const result = await adminService.removeUser(identityName, username);
+        const result = await adminService.removeUser(identityName, username);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     // Pending
     expressApp.get("/admin/getPending/all", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const result = await adminService.retrieveAllAmmends(identityName);
+        const result = await adminService.retrieveAllAmmends(identityName);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     // Entity
     expressApp.get("/admin/getEntity/all", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const result = await adminService.getAllEntities(identityName);
-            res.status(200).json(result); 
-        } catch(error) {
-            res.status(400).json(error);
+        const identityName = req.get("Identity_name");
+        const result = await adminService.getAllEntities(identityName);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
+            res.status(200).json(result);
         }
     });
 
     expressApp.post("/admin/createEntity", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const formFields = req.fields;
-            const licenceId = formFields["licenceId"];
-            const name = formFields["name"];
-            const surname = formFields["surname"];
-            const hospitalName = formFields["hospitalName"];
-            const hospitalCode = formFields["hospitalCode"];
-            const role = formFields["role"];
+        const identityName = req.get("Identity_name");
+        const formFields = req.fields;
+        const licenceId = formFields["licenceId"];
+        const name = formFields["name"];
+        const surname = formFields["surname"];
+        const hospitalName = formFields["hospitalName"];
+        const hospitalCode = formFields["hospitalCode"];
+        const role = formFields["role"];
 
-            const result = await adminService.createEntity(identityName, licenceId, name, surname, hospitalName, hospitalCode, role);
+        const result = await adminService.createEntity(identityName, licenceId, name, surname, hospitalName, hospitalCode, role);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
-    })
+    });
 }
 
 module.exports = configureAdminServiceListeners;

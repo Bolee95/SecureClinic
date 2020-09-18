@@ -1,7 +1,7 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
-const WaitingState = require('../../utils/js-smart-contact-waiting-status.js');
 const Pacient = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function resetPacientWaitingStatus(identityName, pacientLbo) {
     // Using Utility class to setup everything
@@ -12,38 +12,38 @@ async function resetPacientWaitingStatus(identityName, pacientLbo) {
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let updatingResult;
-
-    let bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'getPacient', pacientLbo);
-    if (bufferedResult.length > 0) {
-        let jsonResult = JSON.parse(bufferedResult.toString());
-        const pacient = new (Pacient)(jsonResult);
-
-        pacient.setHospitalCode('');
-        pacient.setHospitalName('');
-        pacient.setWaitingListCode('');
-        pacient.setWaitingStatusNonactive();
-
-        bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'updatePacient', pacient.stringifyClass());
+    var returnError = false;
+    try {
+        let bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'getPacient', pacientLbo);
         if (bufferedResult.length > 0) {
-            jsonResult = JSON.parse(bufferedResult.toString());
-            updatingResult = (Boolean)(jsonResult);
-            console.log(updatingResult);
+            let jsonResult = JSON.parse(bufferedResult.toString());
+            const pacient = new (Pacient)(jsonResult);
+
+            pacient.setHospitalCode('');
+            pacient.setHospitalName('');
+            pacient.setOrdinationCode('');
+            pacient.setServiceCode('');
+            pacient.setWaitingStatusNonactive();
+
+            bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'updatePacient', pacient.stringifyClass());
+            if (bufferedResult.length > 0) {
+                jsonResult = JSON.parse(bufferedResult.toString());
+                updatingResult = (Boolean)(jsonResult);
+            } else {
+                returnError = true;
+            }
         } else {
-            console.log(`Error while updating Pacient to reseted waiting status...`);
+            returnError = true;
         }
-    } else {
-        console.log(`Error while updating Pacient to reseted waiting status...`);
+
+        if (returnError) {
+            throw new Error(`Error while updating Pacient with id ${pacientLbo} to reseted waiting status...`);
+        }
+    } catch(error) {
+        return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();
     return updatingResult;
 };
 
 module.exports = resetPacientWaitingStatus;
-
-// resetPacientWaitingStatus().then(() => {
-// }).catch((exception) => {
-//     console.log('Updating pacient failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

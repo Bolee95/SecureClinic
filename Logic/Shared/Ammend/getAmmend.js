@@ -1,6 +1,7 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Ammend = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/pending.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
     // Using Utility class to setup everything
@@ -11,14 +12,17 @@ async function getAmmend(identityName, hospitalCode, ordinationCode, serviceCode
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledAmmend;
-    //[hospitalCode,serviceCode,ordinationCode,pacientLbo]
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAmmend', [hospitalCode, ordinationCode, serviceCode, pacientLbo]);
-    if (bufferedResult.length > 0) {
-        const jsonResult = JSON.parse(bufferedResult.toString());
-        modeledAmmend = new (Ammend)(jsonResult);
-        console.log(modeledAmmend);
-    } else {
-        throw new Error(`Error while retriving ammend with id ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}.`);
+    
+    try {
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAmmend', [hospitalCode, ordinationCode, serviceCode, pacientLbo]);
+        if (bufferedResult.length > 0) {
+            const jsonResult = JSON.parse(bufferedResult.toString());
+            modeledAmmend = new (Ammend)(jsonResult);
+        } else {
+            throw new Error(`Error while retriving ammend with id ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}.`);
+        }
+    } catch(error) {
+        return ResponseError.createError(400,getErrorFromResponse(error));
     }
     gateway.disconnect();
     return modeledAmmend;

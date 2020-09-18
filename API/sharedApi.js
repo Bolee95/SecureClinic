@@ -4,14 +4,14 @@ function configureSharedServiceListners(expressApp) {
 
     // Shared
     expressApp.post("/shared/login", async (req, res, err) => {
-        try {
-            const formFields = req.fields;
-            const userId = formFields["userId"];
+        const formFields = req.fields;
+        const userId = formFields["userId"];
 
-            const result = await sharedService.login(userId);
+        const result = await sharedService.login(userId);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
@@ -32,347 +32,348 @@ function configureSharedServiceListners(expressApp) {
     // });
 
     expressApp.post("/shared/createAmmend", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const formFields = req.fields;
-            const hospitalCode = formFields["hospitalCode"];
-            const ordinationCode = formFields["ordinationCode"];
-            const serviceCode = formFields["serviceCode"];
-            const hospitalName = formFields["hospitalName"];
-            const ordinationName = formFields["ordinationName"];
-            const serviceName = formFields["serviceName"];
-            const pacientLbo = formFields["pacientLbo"];
-            const screenname = formFields["screenname"];
-            const action = formFields["action"];
-            const description = formFields["description"];
-            const evidencesIds = formFields["evidencesIds"];
+        const formFields = req.fields;
+        const hospitalCode = formFields["hospitalCode"];
+        const ordinationCode = formFields["ordinationCode"];
+        const serviceCode = formFields["serviceCode"];
+        const hospitalName = formFields["hospitalName"];
+        const ordinationName = formFields["ordinationName"];
+        const serviceName = formFields["serviceName"];
+        const pacientLbo = formFields["pacientLbo"];
+        const screenname = formFields["screenname"];
+        const action = formFields["action"];
+        const description = formFields["description"];
+        const evidencesIds = formFields["evidencesIds"];
 
-            const result = await sharedService.createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screenname, action, description, evidencesIds);
+        const result = await sharedService.createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screenname, action, description, evidencesIds);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.get("/shared/getAllAmmendsForHosptial", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const hospitalCode = req.query.hospitalCode;
-            const licenceId = req.query.licenceId;
+        const hospitalCode = req.query.hospitalCode;
+        const licenceId = req.query.licenceId;
 
-            const result = await sharedService.getAllAmmendsForHosptial(identityName, hospitalCode, licenceId);
+        const result = await sharedService.getAllAmmendsForHosptial(identityName, hospitalCode, licenceId);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.get("/shared/getAmmend/all", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const result = await sharedService.getAllAmmends(identityName);
+        const result = await sharedService.getAllAmmends(identityName);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.get("/shared/getAmmend", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const hospitalCode = req.query.hospitalCode;
-            const ordinationCode = req.query.ordinationCode;
-            const serviceCode = req.query.serviceCode;
-            const pacientLbo = req.query.pacientLbo;
+        const hospitalCode = req.query.hospitalCode;
+        const ordinationCode = req.query.ordinationCode;
+        const serviceCode = req.query.serviceCode;
+        const pacientLbo = req.query.pacientLbo;
 
-            const result = await sharedService.getAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo);
+        const result = await sharedService.getAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.post("/shared/approveAmmend", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const formFields = req.fields;
-            const hospitalCode = formFields["hospitalCode"];
-            const ordinationCode = formFields["ordinationCode"];
-            const serviceCode = formFields["serviceCode"];
-            const pacientLbo = formFields["pacientLbo"];
-            const licenceId = formFields["licenceId"];
+        const formFields = req.fields;
+        const hospitalCode = formFields["hospitalCode"];
+        const ordinationCode = formFields["ordinationCode"];
+        const serviceCode = formFields["serviceCode"];
+        const pacientLbo = formFields["pacientLbo"];
+        const licenceId = formFields["licenceId"];
 
-            const result = await sharedService.approveAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, licenceId);
+        const result = await sharedService.approveAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, licenceId);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     // Hospital
     expressApp.get("/shared/getHospital/all", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const result = await sharedService.getAllHospitals(identityName);
+        const result = await sharedService.getAllHospitals(identityName);
+        res.status(200).json(result);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.get("/shared/getHospital", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const hospitalCode = req.query.hospitalCode;
-    
-            const result = await sharedService.getHospital(identityName, hospitalCode);
+        const hospitalCode = req.query.hospitalCode;
+
+        const result = await sharedService.getHospital(identityName, hospitalCode);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     // Pacient
     expressApp.get("/shared/getPacient", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const pacientLbo = req.query.pacientLbo;
-    
-            const result = await sharedService.getPacient(identityName, pacientLbo);
+        const pacientLbo = req.query.pacientLbo;
+
+        const result = await sharedService.getPacient(identityName, pacientLbo);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     // Pacient Private Data 
     expressApp.post("/shared/privateData/addNewDocumentId", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const formFields = req.fields;
-            const pacientLbo = formFields["pacientLbo"];
-            const documentId = formFields["documentId"];
-    
-            const result = await sharedService.addNewDocumentId(identityName, pacientLbo, documentId);
+        const formFields = req.fields;
+        const pacientLbo = formFields["pacientLbo"];
+        const documentId = formFields["documentId"];
+
+        const result = await sharedService.addNewDocumentId(identityName, pacientLbo, documentId);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.post("/shared/privateData/addNewDiseaseToSicknessHistory", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const formFields = req.fields;
-            const pacientLbo = formFields["pacientLbo"];
-            const diseaseCode = formFields["diseaseCode"];
-            const diseaseName = formFields["diseaseName"];
-            const isActive = formFields["isActive"];
-    
-            const result = await sharedService.addNewDiseaseToSicknessHistory(identityName, pacientLbo, diseaseCode, diseaseName, isActive);
+        const formFields = req.fields;
+        const pacientLbo = formFields["pacientLbo"];
+        const diseaseCode = formFields["diseaseCode"];
+        const diseaseName = formFields["diseaseName"];
+        const isActive = formFields["isActive"];
+
+        const result = await sharedService.addNewDiseaseToSicknessHistory(identityName, pacientLbo, diseaseCode, diseaseName, isActive);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.post("/shared/privateData/addPacientPrivateData", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const formFields = req.fields;
-            const pacientLbo = formFields["pacientLbo"];
-            const cardId = formFields["cardId"];
-            const screenname = formFields["screenname"];
-    
-            const result = await sharedService.addPacientPrivateData(identityName, pacientLbo, cardId, screenname);
+        const formFields = req.fields;
+        const pacientLbo = formFields["pacientLbo"];
+        const cardId = formFields["cardId"];
+        const screenname = formFields["screenname"];
+
+        const result = await sharedService.addPacientPrivateData(identityName, pacientLbo, cardId, screenname);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.get("/shared/privateData/getPacientPrivateData", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const pacientLbo = req.query.pacientLbo;
-    
-            const result = await sharedService.getPacientPrivateData(identityName, pacientLbo);
+        const pacientLbo = req.query.pacientLbo;
+
+        const result = await sharedService.getPacientPrivateData(identityName, pacientLbo);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.get("/shared/privateData/getPacientPrivateData/all", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const result = await sharedService.getAllPacientsPrivateData(identityName);
+        const result = await sharedService.getAllPacientsPrivateData(identityName);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     })
 
     // Pending
     expressApp.post("/shared/approvePending", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const formFields = req.fields;
-            const licenceId = formFields["licenceId"];
-            const hospitalCode = formFields["hospitalCode"];
-            const ordinationCode = formFields["ordinationCode"];
-            const serviceCode = formFields["serviceCode"];
-            const pacientLbo = formFields["pacientLbo"];
-    
-            const result = await sharedService.approvePending(identityName, licenceId, hospitalCode, ordinationCode, serviceCode, pacientLbo);
+        const formFields = req.fields;
+        const licenceId = formFields["licenceId"];
+        const hospitalCode = formFields["hospitalCode"];
+        const ordinationCode = formFields["ordinationCode"];
+        const serviceCode = formFields["serviceCode"];
+        const pacientLbo = formFields["pacientLbo"];
+
+        const result = await sharedService.approvePending(identityName, licenceId, hospitalCode, ordinationCode, serviceCode, pacientLbo);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.get("/shared/getPending", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const hospitalCode = req.query.hospitalCode;
-            const ordinationCode = req.query.ordinationCode;
-            const serviceCode = req.query.serviceCode;
-            const pacientLbo = req.query.pacientLbo;
+        const hospitalCode = req.query.hospitalCode;
+        const ordinationCode = req.query.ordinationCode;
+        const serviceCode = req.query.serviceCode;
+        const pacientLbo = req.query.pacientLbo;
 
-            const result = await sharedService.getPending(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo);
+        const result = await sharedService.getPending(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.get("/shared/getAllPendings", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const result = await sharedService.getAllPendings(identityName);
+        const identityName = req.get("Identity_name");
+        const result = await sharedService.getAllPendings(identityName);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
-    })
+    });
 
     expressApp.get("/shared/getPendingsForHospital", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const hospitalCode = req.query.hospitalCode;
-            const licenceId = req.query.licenceId;
-        
-            const result = await sharedService.getPendingsForHospital(identityName, hospitalCode, licenceId);
+        const hospitalCode = req.query.hospitalCode;
+        const licenceId = req.query.licenceId;
+    
+        const result = await sharedService.getPendingsForHospital(identityName, hospitalCode, licenceId);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     // Waiting List
     expressApp.post("/shared/createWaitingList", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const formFields = req.fields;
-            const hospitalName = formFields["hospitalName"];
-            const ordinationName = formFields["ordinationName"];
-            const serviceName = formFields["serviceName"];
-            const hospitalCode = formFields["hospitalCode"];
-            const ordinationCode = formFields["ordinationCode"];
-            const serviceCode = formFields["serviceCode"];
-            const maxWaitingDays = formFields["maxWaitingDays"];
-    
-            const result = await sharedService.createWaitingList(identityName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, maxWaitingDays);
+        const formFields = req.fields;
+        const hospitalName = formFields["hospitalName"];
+        const ordinationName = formFields["ordinationName"];
+        const serviceName = formFields["serviceName"];
+        const hospitalCode = formFields["hospitalCode"];
+        const ordinationCode = formFields["ordinationCode"];
+        const serviceCode = formFields["serviceCode"];
+        const maxWaitingDays = formFields["maxWaitingDays"];
+
+        const result = await sharedService.createWaitingList(identityName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, maxWaitingDays);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
    });
 
    expressApp.post("/shared/addPacientToWaitingListTest", async (req, res, err) => {
-       try {
-            const formFields = req.fields;
-            const pacientLbo = formFields["pacientLbo"];
-            const name = formFields["name"];
-            const surname = formFields["surname"];
+        const formFields = req.fields;
+        const pacientLbo = formFields["pacientLbo"];
+        const name = formFields["name"];
+        const surname = formFields["surname"];
 
-            const result = await sharedService.addPacientToWaitingListTest(pacientLbo, name, surname);
+        const result = await sharedService.addPacientToWaitingListTest(pacientLbo, name, surname);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-       } catch(error) {
-            res.status(400).json(error);
-       }
+        }
    });
 
     expressApp.get("/shared/getAllPacientsForWaitingList", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const hospitalCode = req.query.hospitalCode;
-            const serviceCode = req.query.serviceCode;
-            const ordinationCode = req.query.ordinationCode;
-        
-            const result = await sharedService.getAllPacientsForWaitingList(identityName, hospitalCode, ordinationCode, serviceCode );
+        const hospitalCode = req.query.hospitalCode;
+        const serviceCode = req.query.serviceCode;
+        const ordinationCode = req.query.ordinationCode;
+    
+        const result = await sharedService.getAllPacientsForWaitingList(identityName, hospitalCode, ordinationCode, serviceCode );
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     expressApp.get("/shared/getAllWaitingListsForHospital", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const hospitalCode = req.query.hospitalCode;
-        
-            const result = await sharedService.getAllWaitingListsForHospital(identityName, hospitalCode);
+        const hospitalCode = req.query.hospitalCode;
+    
+        const result = await sharedService.getAllWaitingListsForHospital(identityName, hospitalCode);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
     
     expressApp.get("/shared/getWaitingList", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
+        const identityName = req.get("Identity_name");
 
-            const hospitalCode = req.query.hospitalCode;
-            const ordinationCode = req.query.ordinationCode;
-            const serviceCode = req.query.serviceCode;
-        
-            const result = await sharedService.getWaitingList(identityName, hospitalCode, ordinationCode, serviceCode);
+        const hospitalCode = req.query.hospitalCode;
+        const ordinationCode = req.query.ordinationCode;
+        const serviceCode = req.query.serviceCode;
+    
+        const result = await sharedService.getWaitingList(identityName, hospitalCode, ordinationCode, serviceCode);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
     // Entity
     expressApp.get("/shared/getEntity", async (req, res, err) => {
-        try {
-            const identityName = req.get("Identity_name");
-            const licenceId = req.query.licenceId;
+        const identityName = req.get("Identity_name");
+        const licenceId = req.query.licenceId;
 
-            const result = await sharedService.getEntity(identityName, licenceId);
+        const result = await sharedService.getEntity(identityName, licenceId);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
             res.status(200).json(result);
-        } catch(error) {
-            res.status(400).json(error);
         }
     });
 
@@ -390,22 +391,6 @@ function configureSharedServiceListners(expressApp) {
                 let uids = await sharedService.uploadMultipleFiles(identityName, req.files);
                 res.status(200).json(uids);
             }
-                // var uids = [];
-                // var index = 0;
-                // while(true) {
-                //     let file = req.files['file[' + index + ']'];
-                //     if (file === undefined) {
-                //         break;
-                //     } else {
-                //         let uid = await sharedService.uploadFile(identityName, file, file.name);
-
-                //         if (uid !== null) {
-                //             uids.push(uid);
-                //             index++;
-                //         } else {
-                //             throw new Error(`File with name ${file.name} wasn\'t uploaded. Terminated.`);
-                //         }
-                //     }
         } catch(error) {
             res.status(400).json(error);
         }

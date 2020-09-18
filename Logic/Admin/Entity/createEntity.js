@@ -1,6 +1,7 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Entity = require('../../../ChaincodeWithStatesAPI/EntityContract/lib/entity.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function createEntity(identityName, licenceId, role, name, surname, hospitalName, hospitalCode) {
     // Using Utility class to setup everything
@@ -12,13 +13,18 @@ async function createEntity(identityName, licenceId, role, name, surname, hospit
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     
     const entity = Entity.createInstance(licenceId, role, name, surname, hospitalName, hospitalCode);
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Entity', 'addEntity', entity.stringifyClass());
-    if (bufferedResult.length > 0) {
-        gateway.disconnect();   
-        return true;
-    } else {
-        throw new Error(`Error while creating Entity ${entity.getLicenceId()}...`);
-    }  
+    try {
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Entity', 'addEntity', entity.stringifyClass());
+        if (bufferedResult.length > 0) { 
+            gateway.disconnect();  
+            return entity;
+        } else {
+            throw new Error(`Error while creating Entity ${entity.getLicenceId()}...`);
+        }  
+    } catch(error) {
+        return ResponseError.createError(400, getErrorFromResponse(error));
+    }
+
     
 };
 

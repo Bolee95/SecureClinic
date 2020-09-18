@@ -1,6 +1,7 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Hospital = require('../../../ChaincodeWithStatesAPI/HospitalContract/lib/hospital.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getHospital(identityName, hospitalCode) {
     // Using Utility class to setup everything
@@ -11,24 +12,19 @@ async function getHospital(identityName, hospitalCode) {
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledHospital;
-
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'getHospital', hospitalCode);
-    if (bufferedResult.length > 0) {
-        const jsonResult = JSON.parse(bufferedResult.toString());
-        const modeledHospital = new (Hospital)(jsonResult);
-        console.log(modeledHospital);
-    } else {
-        console.log(`Error while retriving hospital with hospitalCode ${hospitalCode}...`);
+    try {
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'getHospital', hospitalCode);
+        if (bufferedResult.length > 0) {
+            const jsonResult = JSON.parse(bufferedResult.toString());
+            const modeledHospital = new (Hospital)(jsonResult);
+        } else {
+            throw new Error(`Error while retriving hospital with hospitalCode ${hospitalCode}...`);
+        }
+    } catch(error) {
+        return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();
     return modeledHospital;
 };
 
 module.exports = getHospital;
-// getHospital().then(() => {
-// }).catch((exception) => {
-//     console.log('Retriving hospital failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

@@ -4,6 +4,7 @@ const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammen
 const Approver = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/approver.js');
 const Entity = require('../../../ChaincodeWithStatesAPI/EntityContract/lib/entity.js');
 const RemovePacientFromWList = require('../../Auto/removePacientFromWaitingList.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function approveAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, licenceId) {
     // Using Utility class to setup everything
@@ -15,47 +16,50 @@ async function approveAmmend(identityName, hospitalCode, ordinationCode, service
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
     const role = await getRole(gateway, licenceId);
-
-    if (role === undefined) {
-        throw new Error(`Entity with licenceId ${licenceId} does not exist!`);
-    }
-
-    const approver = Approver.createInstance(role, licenceId);
-    let updateRes;
-
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAmmend', [hospitalCode, ordinationCode, serviceCode, pacientLbo]);
-    if (bufferedResult.length > 0) {
-        const ammend = JSON.parse(bufferedResult.toString());
-        const modeledAmmend = new (Ammend)(ammend);
-
-        for (const approver of modeledAmmend.approvers) {
-            const modeledApprover = new (Approver)(approver);
-            if (modeledApprover.licenceId == licenceId) {
-                throw new Error(`Approver with role ${role} and licence Id  ${licenceId} already approved this pending!`);
-            } 
+    try {
+        if (role === undefined) {
+            throw new Error(`Entity with licenceId ${licenceId} does not exist!`);
         }
 
-        modeledAmmend.addApprover(approver);
+        const approver = Approver.createInstance(role, licenceId);
+        let updateRes;
 
-        if (modeledAmmend.approvers.length >= 3) {
-            modeledAmmend.isReviewed = true;
-        }
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAmmend', [hospitalCode, ordinationCode, serviceCode, pacientLbo]);
+        if (bufferedResult.length > 0) {
+            const ammend = JSON.parse(bufferedResult.toString());
+            const modeledAmmend = new (Ammend)(ammend);
 
-        const updateResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'updateAmmend', modeledAmmend.stringifyClass());
-        if (updateResult.length > 0) {
-            const result = JSON.parse(updateResult.toString());
-            updateRes = (Boolean)(result);
-            if (updateRes == true) {
-                if (modeledAmmend.getListOfApprovers().length >= 3) {
-                     await RemovePacientFromWList(gateway, hospitalCode, ordinationCode, serviceCode, pacientLbo);
-                } else {
-                    gateway.disconnect(); 
-                }
+            for (const approver of modeledAmmend.approvers) {
+                const modeledApprover = new (Approver)(approver);
+                if (modeledApprover.licenceId == licenceId) {
+                    throw new Error(`Approver with role ${role} and licence Id  ${licenceId} already approved this pending!`);
+                } 
             }
-        } else {
-            throw new Error(`Error while signing Ammend with id ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}!`);
-        }
-    }  
+
+            modeledAmmend.addApprover(approver);
+
+            if (modeledAmmend.approvers.length >= 3) {
+                modeledAmmend.isReviewed = true;
+            }
+
+            const updateResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'updateAmmend', modeledAmmend.stringifyClass());
+            if (updateResult.length > 0) {
+                const result = JSON.parse(updateResult.toString());
+                updateRes = (Boolean)(result);
+                if (updateRes == true) {
+                    if (modeledAmmend.getListOfApprovers().length >= 3) {
+                        await RemovePacientFromWList(gateway, hospitalCode, ordinationCode, serviceCode, pacientLbo);
+                    } else {
+                        gateway.disconnect(); 
+                    }
+                }
+            } else {
+                throw new Error(`Error while signing Ammend with id ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}!`);
+            }
+        }  
+    } catch(error) {
+        return ResponseError.createError(400,getErrorFromResponse(error));
+    }
     return updateRes;
 };
 

@@ -1,6 +1,7 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Entity = require('../../../ChaincodeWithStatesAPI/EntityContract/lib/entity');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getEntity(identityName, licenceId) {
     // Using Utility class to setup everything
@@ -12,13 +13,16 @@ async function getEntity(identityName, licenceId) {
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledEntity;
 
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Entity', 'getEntity', licenceId);
-    if (bufferedResult.length > 0) {
-        const jsonResult = JSON.parse(bufferedResult.toString());
-        modeledEntity = new (Entity)(jsonResult);
-        console.log(modeledEntity);
-    } else {
-        console.log(`Error while retriving entity with licenceId ${licenceId}...`);
+    try {
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Entity', 'getEntity', licenceId);
+        if (bufferedResult.length > 0) {
+            const jsonResult = JSON.parse(bufferedResult.toString());
+            modeledEntity = new (Entity)(jsonResult);
+        } else {
+            throw new Error(`Error while retriving entity with licenceId ${licenceId}...`);
+        }
+    } catch(error) {
+        return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();
     return modeledEntity;

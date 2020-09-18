@@ -1,6 +1,7 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Pending = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/pending.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getPending(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
     // Using Utility class to setup everything
@@ -11,14 +12,17 @@ async function getPending(identityName, hospitalCode, ordinationCode, serviceCod
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledPending;
-    //[hospitalCode,serviceCode,ordinationCode,pacientLbo]
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'getPending', [hospitalCode,ordinationCode,serviceCode,pacientLbo]);
-    if (bufferedResult.length > 0) {
-        const jsonResult = JSON.parse(bufferedResult.toString());
-        modeledPending = new (Pending)(jsonResult);
-        console.log(modeledPending);
-    } else {
-        console.log(`Error while retriving pending with id ${hospitalCode + ':' + ordinationCode + ':' + serviceCode + ':' + pacientLbo}...`);
+    
+    try {
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'getPending', [hospitalCode,ordinationCode,serviceCode,pacientLbo]);
+        if (bufferedResult.length > 0) {
+            const jsonResult = JSON.parse(bufferedResult.toString());
+            modeledPending = new (Pending)(jsonResult);
+        } else {
+            throw new Error(`Error while retriving pending with id ${hospitalCode + ':' + ordinationCode + ':' + serviceCode + ':' + pacientLbo}...`);
+        }
+    } catch(error) {
+        return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();
     return modeledPending;

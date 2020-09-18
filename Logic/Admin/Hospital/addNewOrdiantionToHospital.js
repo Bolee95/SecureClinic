@@ -3,6 +3,7 @@ const SmartContractUtil = require('../../utils/js-smart-contract-util.js');
 const Hospital = require('../../../ChaincodeWithStatesAPI/HospitalContract/lib/hospital.js');
 const Facility = require('../../../ChaincodeWithStatesAPI/FacilityContract/lib/facility.js');
 const Service = require('../../../ChaincodeWithStatesAPI/FacilityContract/lib/service.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function addNewOrdinationToHospital(identityName, hospitalCode, ordinationCode) {
      // Using Utility class to setup everything
@@ -13,25 +14,22 @@ async function addNewOrdinationToHospital(identityName, hospitalCode, ordination
      // Connecting to Gateway
      const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
-     const ordination = await SmartContractUtil.submitTransaction(gateway, 'Facility', 'getFacility', ordinationCode);
-     const hospital = await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'getHospital', hospitalCode);
-     if(hospital.length > 0 && ordination.length > 0) {
-        const modeledHospital = Hospital.deserialize(hospital, Hospital);
-        const modeledOrdination = Facility.deserialize(ordination, Facility);
+     try {
+         const ordination = await SmartContractUtil.submitTransaction(gateway, 'Facility', 'getFacility', ordinationCode);
+         const hospital = await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'getHospital', hospitalCode);
+         if(hospital.length > 0 && ordination.length > 0) {
+            const modeledHospital = Hospital.deserialize(hospital, Hospital);
+            const modeledOrdination = Facility.deserialize(ordination, Facility);
 
-        modeledHospital.addNewOrdination(modeledOrdination);
+            modeledHospital.addNewOrdination(modeledOrdination);
 
-        await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'updateHospital', modeledHospital.stringifyClass());
-     }
+            await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'updateHospital', modeledHospital.stringifyClass());
+         }
+      } catch(error) {
+            ResponseError.createError(400, getErrorFromResponse(error));
+      }
 
      gateway.disconnect();
 };
 
 module.exports = addNewOrdinationToHospital;
-// addNewOrdinationToHospital().then(() => {
-// }).catch((exception) => {
-//     console.log('Adding new ordination to Hospital failed...Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

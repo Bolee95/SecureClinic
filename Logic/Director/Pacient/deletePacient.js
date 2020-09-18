@@ -1,6 +1,6 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
-const Pacient = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function deletePacient(identityName, pacientLbo) {
     // Using Utility class to setup everything
@@ -12,24 +12,19 @@ async function deletePacient(identityName, pacientLbo) {
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let deletetingResult;
 
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'removePacient', pacientLbo);
-    if (bufferedResult.length > 0) {
-        const jsonResult = JSON.parse(bufferedResult.toString());
-        deletetingResult = (Boolean)(jsonResult);
-        console.log(deletePacient);
-    } else {
-        console.log(`Error while deleting pacient with lbo ${pacientLbo}...`);
+    try {
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'removePacient', pacientLbo);
+        if (bufferedResult.length > 0) {
+            const jsonResult = JSON.parse(bufferedResult.toString());
+            deletetingResult = (Boolean)(jsonResult);
+        } else {
+            throw new Error(`Error while deleting pacient with lbo ${pacientLbo}...`);
+        }
+    } catch(error) {
+        return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();
     return deletetingResult;
 };
 
 module.exports = deletePacient;
-
-// deletePacient().then(() => {
-// }).catch((exception) => {
-//     console.log('Deleting pacient failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

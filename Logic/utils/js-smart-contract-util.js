@@ -106,8 +106,6 @@ class SmartContractUtil {
     static async submitTransactionMultipleArgs(contract, functionName, args) {
         let result;
         if (args.length == 2) {
-            console.log(args[0]);
-            console.log(args[1]);
             result = await contract.submitTransaction(functionName, args[0], args[1]);
         } else if (args.length == 3) {
             result = await contract.submitTransaction(functionName, args[0], args[1], args[2]);
@@ -126,7 +124,6 @@ class SmartContractUtil {
         } else {
             throw new Error('There is no such user in system!');
         };
-        return true;
     }
     
 

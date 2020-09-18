@@ -1,5 +1,6 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function registerUser(identityName, username) {
     // Using Utility class to setup everything
@@ -9,26 +10,19 @@ async function registerUser(identityName, username) {
     await SmartContractUtil.checkIdentityNameWithRole(identityName, IdentityRole.ADMIN);
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+    try {
+        const ca = gateway.getClient().getCertificateAuthority();
+        const adminIdentity = gateway.getCurrentIdentity();
 
-    const ca = gateway.getClient().getCertificateAuthority();
-    const adminIdentity = gateway.getCurrentIdentity();
-
-    // Remove user of system
-    await ca.revoke({ enrollmentID: username }, adminIdentity);
-    await fabricWallet.delete(username);
-    console.log(`User with id ${username} removed from wallet.`);
+        // Remove user of system
+        await ca.revoke({ enrollmentID: username }, adminIdentity);
+        await fabricWallet.delete(username);
+        console.log(`User with id ${username} removed from wallet.`);
+    } catch (error) {
+        return ResponseError.createError(400, getErrorFromResponse(error));
+    }
     gateway.disconnect();
+    return true;
 };
 
 module.exports = registerUser;
-
-// registerUser().then(() => {
-//     //console.log('RemoveUser function started!');
-// }).catch((exception) => {
-//     console.log('Removing new user failed... Error:\n!');
-//     console.log(exception);
-//     //console.log(exception.stack);
-//     process.exit(-1);
-// }).finally(() => {
-//     //console.log('RemoveUser fucniton call ended!');
-// })

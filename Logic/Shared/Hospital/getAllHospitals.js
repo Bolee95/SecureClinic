@@ -1,6 +1,7 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Hospital = require('../../../ChaincodeWithStatesAPI/HospitalContract/lib/hospital.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getAllHospitals(identityName) {
     // Using Utility class to setup everything
@@ -12,35 +13,32 @@ async function getAllHospitals(identityName) {
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledHospitals = [];
 
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'getAllHospitals');
-    if (bufferedResult.length > 0) {
-        const jsonResult = JSON.parse(bufferedResult.toString());
-        
-        let index = 0;
-        while(index != null) {
-            const hospitalElement = jsonResult[index];
-            if (hospitalElement == undefined) {
-                index = null;
-            } else {
-                const modeledHospital = new (Hospital)(hospitalElement);
-                modeledHospitals.push(modeledHospital);
-                index++;
-           }    
-        };
+    try {
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'getAllHospitals');
+        if (bufferedResult.length > 0) {
+            const jsonResult = JSON.parse(bufferedResult.toString());
+            
+            let index = 0;
+            while(index != null) {
+                const hospitalElement = jsonResult[index];
+                if (hospitalElement == undefined) {
+                    index = null;
+                } else {
+                    const modeledHospital = new (Hospital)(hospitalElement);
+                    modeledHospitals.push(modeledHospital);
+                    index++;
+            }    
+            };
 
-        console.log(modeledHospitals);
-    } else {
-        console.log(`Error while retriving all hospitals...`);
+            console.log(modeledHospitals);
+        } else {
+            throw new Error(`Error while retriving all hospitals...`);
+        }
+    } catch(error) {
+        return ResponseError.createError(400,getErrorFromResponse(error));
     }
     gateway.disconnect();
     return modeledHospitals;
 };
 
 module.exports = getAllHospitals;
-// getHospital().then(() => {
-// }).catch((exception) => {
-//     console.log('Retriving hospitals failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

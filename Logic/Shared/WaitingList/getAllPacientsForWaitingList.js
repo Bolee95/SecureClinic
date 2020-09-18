@@ -2,6 +2,7 @@ const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const WaitingList = require('../../../ChaincodeWithStatesAPI/WaitingListContract/lib/waitingList.js');
 const AcceptedPacient = require('../../../ChaincodeWithStatesAPI/WaitingListContract/lib/acceptedPacient.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getAllPacientsForWaitingList(identityName, hospitalCode, ordinationCode, serviceCode) {
     // Using Utility class to setup everything
@@ -12,29 +13,25 @@ async function getAllPacientsForWaitingList(identityName, hospitalCode, ordinati
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledAcceptedPacients = [];
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getWaitingList', [hospitalCode, ordinationCode, serviceCode]);
-    if (bufferedResult.length > 0) {
-        const jsonResult = JSON.parse(bufferedResult.toString());
-        let modeledWaitingList = new (WaitingList)(jsonResult);
 
-        for (const pacient of modeledWaitingList.getAllPacients()) {
-            const acceptedPacient = new (AcceptedPacient)(pacient);
-            modeledAcceptedPacients.push(acceptedPacient);
+    try {
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getWaitingList', [hospitalCode, ordinationCode, serviceCode]);
+        if (bufferedResult.length > 0) {
+            const jsonResult = JSON.parse(bufferedResult.toString());
+            let modeledWaitingList = new (WaitingList)(jsonResult);
+
+            for (const pacient of modeledWaitingList.getAllPacients()) {
+                const acceptedPacient = new (AcceptedPacient)(pacient);
+                modeledAcceptedPacients.push(acceptedPacient);
+            }
+        } else {
+            throw new Error(`Error while retriving all pacients for waiting list with HospitalCode ${hospitalCode} ServiceCode ${serviceCode} OrdinationCode ${ordinationCode}`);
         }
-
-        console.log(modeledAcceptedPacients);
-    } else {
-        console.log(`Error while retriving all pacients for waiting list with HospitalCode ${hospitalCode} ServiceCode ${serviceCode} OrdinationCode ${ordinationCode}`);
+    } catch(error) {
+        return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();
     return modeledAcceptedPacients;
 };
 
 module.exports = getAllPacientsForWaitingList;
-// getAllPacientsForWaitingList().then(() => {
-// }).catch((exception) => {
-//     console.log('Retriving pacients of Waiting List failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

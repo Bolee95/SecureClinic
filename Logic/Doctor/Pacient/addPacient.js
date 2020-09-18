@@ -3,6 +3,7 @@ const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const WaitingState = require('../../utils/js-smart-contact-waiting-status.js');
 const Pacient = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
 const PacientPrivateData = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pacientPrivateData.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function createPacient(identityName, name, surname, lbo, jmbg, city, hospitalCode, hospitalName) {
     // Using Utility class to setup everything
@@ -15,21 +16,24 @@ async function createPacient(identityName, name, surname, lbo, jmbg, city, hospi
 
     let pacient = Pacient.createInstance(name, surname, lbo, jmbg, city, WaitingState.NONACTIVE, hospitalName, hospitalCode, '', '');
     let result;
-
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'addPacient', pacient.stringifyClass());
-    if (bufferedResult.length > 0) {
-        const jsonResult = JSON.parse(bufferedResult.toString());
-        result = (Boolean)(jsonResult);
-        if (result) {
-            let pacientPrivateData = PacientPrivateData.createInstance(lbo, jmbg, name + ' ' + surname, [], []);
-            const bufferedRes = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'addPacientPrivateData', pacientPrivateData.stringifyClass());
-            if (bufferedRes.length > 0) {
-                const finalResult = JSON.parse(bufferedResult.toString());
-                result = finalResult;
+    try {
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'addPacient', pacient.stringifyClass());
+        if (bufferedResult.length > 0) {
+            const jsonResult = JSON.parse(bufferedResult.toString());
+            result = (Boolean)(jsonResult);
+            if (result) {
+                let pacientPrivateData = PacientPrivateData.createInstance(lbo, jmbg, name + ' ' + surname, [], []);
+                const bufferedRes = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'addPacientPrivateData', pacientPrivateData.stringifyClass());
+                if (bufferedRes.length > 0) {
+                } else {
+                    throw new Error(`Error while creating new Private Data for Pacient with lbo ${lbo}...`);
+                }
             }
+        } else {
+            throw new Error(`Error while creating new Pacient with lbo ${lbo}...`);
         }
-    } else {
-        console.log(`Error while creating new Pacient with lbo ${lbo}...`);
+    } catch(error) {
+        return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();
     return result;

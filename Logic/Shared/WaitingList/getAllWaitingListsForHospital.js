@@ -1,6 +1,7 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const WaitingList = require('../../../ChaincodeWithStatesAPI/WaitingListContract/lib/waitingList.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getWaitingListsForHospital(identityName, hospitalCode) {
     // Using Utility class to setup everything
@@ -11,24 +12,28 @@ async function getWaitingListsForHospital(identityName, hospitalCode) {
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledWLists = [];
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getAllWaitingListsForHospital', hospitalCode);
-    if (bufferedResult.length > 0) {
-        const jsonResult = JSON.parse(bufferedResult.toString());
-        
-        let index = 0;
-        while(index != null) {
-            const wlistElement = jsonResult[index];
-            if (wlistElement == undefined) {
-                index = null;
-            } else {
-                const modeledWList = new (WaitingList)(wlistElement);
-                modeledWLists.push(modeledWList);
-                index++;
-           }    
-        };
-        console.log(modeledWLists);
-    } else {
-        console.log(`Error while retriving all waitingLists for hospital with HospitalCode ${hospitalCode}`);
+
+    try {
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getAllWaitingListsForHospital', hospitalCode);
+        if (bufferedResult.length > 0) {
+            const jsonResult = JSON.parse(bufferedResult.toString());
+            
+            let index = 0;
+            while(index != null) {
+                const wlistElement = jsonResult[index];
+                if (wlistElement == undefined) {
+                    index = null;
+                } else {
+                    const modeledWList = new (WaitingList)(wlistElement);
+                    modeledWLists.push(modeledWList);
+                    index++;
+                }    
+            };
+        } else {
+            throw new Error(`Error while retriving all waitingLists for hospital with HospitalCode ${hospitalCode}`);
+        }
+    } catch(error) {
+        return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();
     return modeledWLists;

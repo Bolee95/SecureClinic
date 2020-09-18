@@ -1,7 +1,7 @@
 const IdentityRole = require('../../utils/js-smart-contract-globals.js');
-const AmmendType = require('../../utils/js-smart-contract-ammend-type.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screename, action, description, evidencesIds) {
     // Using Utility class to setup everything
@@ -12,7 +12,7 @@ async function createAmmend(identityName, hospitalCode, ordinationCode, serviceC
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
 
-    var evidences;
+    var evidences = [];
     if (evidencesIds === "") {
         evidences = [];
     } else {
@@ -21,15 +21,18 @@ async function createAmmend(identityName, hospitalCode, ordinationCode, serviceC
 
     const newAmmend = Ammend.createInstance(hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screename, action, description, evidences, [], false);
 
-    //checkAndSetAmmendType(ammend, identityName);
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'addAmmend', newAmmend.stringifyClass());
-    gateway.disconnect();   
-
-    if (bufferedResult.length > 0) {
-        return true;
-    } else {
-        throw new Error(`Error while creating Ammend with id -- ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}!`);
-    }  ;   
+    try {
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'addAmmend', newAmmend.stringifyClass());
+        if (bufferedResult.length > 0) {
+            gateway.disconnect();
+            return newAmmend;
+        } else {
+            throw new Error(`Error while creating Ammend with id -- ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}!`);
+        }
+    } catch(error) {
+        gateway.disconnect();
+        return ResponseError.createError(400, getErrorFromResponse(error));
+    }
 };
 
 module.exports = createAmmend;

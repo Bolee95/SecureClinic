@@ -1,6 +1,7 @@
 const IdentityRole = require ('../../utils/js-smart-contract-globals.js');
 const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend.js');
+const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getAllAmmends(identityName) {
     // Using Utility class to setup everything
@@ -11,23 +12,28 @@ async function getAllAmmends(identityName) {
     // Connecting to Gateway
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledAmmends = [];
-    const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAllAmmends');
-    if (bufferedResult.length > 0) {
-        const jsonResult = JSON.parse(bufferedResult.toString());
-        
-        let index = 0;
-        while(index != null) {
-            const ammendElement = jsonResult[index];
-            if (ammendElement == undefined) {
-                index = null;
-            } else {
-                const modeledAmmend = new (Ammend)(ammendElement);
-                modeledAmmends.push(modeledAmmend);
-                index++;
-           }    
-        };
-    } else {
-        throw new Error(`Error while retriving all ammends for hospital with HospitalCode ${hospitalCode}`);
+
+    try {
+        const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAllAmmends');
+        if (bufferedResult.length > 0) {
+            const jsonResult = JSON.parse(bufferedResult.toString());
+            
+            let index = 0;
+            while(index != null) {
+                const ammendElement = jsonResult[index];
+                if (ammendElement == undefined) {
+                    index = null;
+                } else {
+                    const modeledAmmend = new (Ammend)(ammendElement);
+                    modeledAmmends.push(modeledAmmend);
+                    index++;
+                }    
+            };
+        } else {
+            throw new Error(`Error while retriving all ammends for hospital with HospitalCode ${hospitalCode}`);
+        }
+    } catch(error) {
+        return ResponseError.createError(400,getErrorFromResponse(error));
     }
     gateway.disconnect();
     return modeledAmmends;

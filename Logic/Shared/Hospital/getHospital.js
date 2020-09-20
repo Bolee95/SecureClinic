@@ -4,27 +4,29 @@ const Hospital = require('../../../ChaincodeWithStatesAPI/HospitalContract/lib/h
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getHospital(identityName, hospitalCode) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.USER, IdentityRole.TEHNICAL]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
-    let modeledHospital;
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.USER, IdentityRole.TEHNICAL]);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'getHospital', hospitalCode);
         if (bufferedResult.length > 0) {
             const jsonResult = JSON.parse(bufferedResult.toString());
             const modeledHospital = new (Hospital)(jsonResult);
+
+            gateway.disconnect();
+            return modeledHospital;
         } else {
             throw new Error(`Error while retriving hospital with hospitalCode ${hospitalCode}...`);
         }
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
-    gateway.disconnect();
-    return modeledHospital;
 };
 
 module.exports = getHospital;

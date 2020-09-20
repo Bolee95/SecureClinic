@@ -4,16 +4,16 @@ const WaitingList = require('../../../ChaincodeWithStatesAPI/WaitingListContract
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function createWaitingList(identityName, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, maxWaitingDays) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.ADMIN, IdentityRole.DIRECTOR]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
-
-    const waitingList = WaitingList.createInstance(hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, [], maxWaitingDays);
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+    
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.ADMIN, IdentityRole.DIRECTOR]);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+        const waitingList = WaitingList.createInstance(hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, [], maxWaitingDays);
+   
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'addWaitingList', waitingList.stringifyClass());
         if (bufferedResult.length > 0) {
             gateway.disconnect();

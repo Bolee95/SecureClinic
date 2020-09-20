@@ -4,16 +4,16 @@ const Entity = require('../../../ChaincodeWithStatesAPI/EntityContract/lib/entit
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function createEntity(identityName, licenceId, role, name, surname, hospitalName, hospitalCode) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, IdentityRole.ADMIN);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
-    
-    const entity = Entity.createInstance(licenceId, role, name, surname, hospitalName, hospitalCode);
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, IdentityRole.ADMIN);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+        
+        const entity = Entity.createInstance(licenceId, role, name, surname, hospitalName, hospitalCode);
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Entity', 'addEntity', entity.stringifyClass());
         if (bufferedResult.length > 0) { 
             gateway.disconnect();  
@@ -22,10 +22,9 @@ async function createEntity(identityName, licenceId, role, name, surname, hospit
             throw new Error(`Error while creating Entity ${entity.getLicenceId()}...`);
         }  
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
-
-    
 };
 
 module.exports = createEntity;

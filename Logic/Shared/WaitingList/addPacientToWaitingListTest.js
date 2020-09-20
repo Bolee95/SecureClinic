@@ -15,15 +15,15 @@ async function addPacientToWaitingListTest(pacientLbo, name, surname) {
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, adminIdName);
     try {
         // WAITING LIST RETRIVAL
-        const waitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getWaitingList', ['AA', 'BB', 'CC']);
+        const waitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getWaitingList', ['AD', 'BB', 'CC']);
         if (waitingListResult.length > 0) {
             const jsonResult = JSON.parse(waitingListResult.toString());
             waitingList = new (WaitingList)(jsonResult);
         } else {
             // Waiting list doesn't exist, create one   
             // TO-DO: Retrieve Service max time 
-            waitingList = WaitingList.createInstance('Test bolnica', 'Test ordinacija', 'Test servis', 'AA', 'BB', 'CC', [], 50);
-            const createWaitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'addWaitingList', newWaitingList.stringifyClass());
+            waitingList = WaitingList.createInstance('Test bolnica', 'Test ordinacija', 'Test servis', 'AD', 'BB', 'CC', [], 50);
+            const createWaitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'addWaitingList', waitingList.stringifyClass());
             if (createWaitingListResult.length > 0) {
                 // Everything alright, can continue futher
             } 

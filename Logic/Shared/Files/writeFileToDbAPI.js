@@ -9,9 +9,10 @@ var url = '127.0.0.1:5984';
 var db = '/db/';
 var uidGenerator = require('uid-generator');
 
+const { ResponseError } = require('../../../Logic/Response/Error');
+
 async function writeFileToDb(file) {
     try {
-
         const uidgen = new uidGenerator(128);
 
         const fileData = fs.readFileSync(file.path);
@@ -46,7 +47,7 @@ async function writeFileToDb(file) {
         });
         return result;
     } catch(error) {
-        return error;
+        return ResponseError.createError(400, error);s
     }
 };
 

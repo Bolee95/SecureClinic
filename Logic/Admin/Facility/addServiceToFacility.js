@@ -5,14 +5,15 @@ const Service = require('../../../ChaincodeWithStatesAPI/FacilityContract/lib/se
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function addServiceToFacility(identityName, facilityCode, serviceCode, serviceName, maxWaitTime) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, IdentityRole.ADMIN);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, IdentityRole.ADMIN);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+    
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Facility', 'getFacility', facilityCode);
         if (bufferedResult.length > 0) {
             const facility = JSON.parse(bufferedResult.toString());
@@ -25,6 +26,7 @@ async function addServiceToFacility(identityName, facilityCode, serviceCode, ser
             if (updateResult.length > 0) {
                 const result = JSON.parse(updateResult.toString());
                 if (result == true) {
+                    gateway.disconnect();   
                     return modeledFacility;
                 }
             } else {
@@ -34,9 +36,9 @@ async function addServiceToFacility(identityName, facilityCode, serviceCode, ser
             throw new Error(`Error while retrieving facility with code ${facilityCode}`);
         }  
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400, getErrorFromResponse(error));
     }   
-    gateway.disconnect();   
 };
 
 module.exports = addServiceToFacility;

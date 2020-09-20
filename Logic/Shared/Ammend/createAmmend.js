@@ -4,30 +4,30 @@ const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammen
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function createAmmend(identityName, hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screename, action, description, evidencesIds) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.TEHNICAL, IdentityRole.DOCTOR, IdentityRole.DIRECTOR]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
-
-    var evidences = [];
-    if (evidencesIds === "") {
-        evidences = [];
-    } else {
-        evidences = evidencesIds.split(',');
-    }
-
-    const newAmmend = Ammend.createInstance(hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screename, action, description, evidences, [], false);
-
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+    
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.TEHNICAL, IdentityRole.DOCTOR, IdentityRole.DIRECTOR]);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+
+        var evidences = [];
+        if (evidencesIds === "") {
+            evidences = [];
+        } else {
+            evidences = evidencesIds.split(',');
+        }
+
+        const newAmmend = Ammend.createInstance(hospitalCode, ordinationCode, serviceCode, hospitalName, ordinationName, serviceName, pacientLbo, screename, action, description, evidences, [], false);
+
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'addAmmend', newAmmend.stringifyClass());
         if (bufferedResult.length > 0) {
             gateway.disconnect();
             return newAmmend;
         } else {
-            throw new Error(`Error while creating Ammend with id -- ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}!`);
+            throw new Error(`Error while creating Ammend with id: ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}!`);
         }
     } catch(error) {
         gateway.disconnect();

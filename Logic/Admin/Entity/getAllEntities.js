@@ -4,16 +4,15 @@ const Entity = require('../../../ChaincodeWithStatesAPI/EntityContract/lib/entit
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getAllEntities(identityName) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.ADMIN]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
-
+    var gateway;
     var modeletedEntities = [];
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.ADMIN]);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Entity', 'getAllEntities');
         if (bufferedResult.length > 0) {
             jsonResult = JSON.parse(bufferedResult.toString());
@@ -29,11 +28,11 @@ async function getAllEntities(identityName) {
                     index++;
                }    
             };
-
         } else {
             throw new Error(`Error while reading all entities...`);
         }
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();

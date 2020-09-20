@@ -1,8 +1,3 @@
-/*
-* This file contains functions for the use of your test file.
-* It doesn't require any changes for immediate use.
-*/
-
 
 'use strict';
 

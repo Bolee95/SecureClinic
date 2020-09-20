@@ -4,16 +4,17 @@ const Hospital = require('../../../ChaincodeWithStatesAPI/HospitalContract/lib/h
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getAllHospitals(identityName) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.USER, IdentityRole.DOCTOR]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledHospitals = [];
+    var gateway;
 
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.USER, IdentityRole.DOCTOR]);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'getAllHospitals');
         if (bufferedResult.length > 0) {
             const jsonResult = JSON.parse(bufferedResult.toString());
@@ -27,14 +28,13 @@ async function getAllHospitals(identityName) {
                     const modeledHospital = new (Hospital)(hospitalElement);
                     modeledHospitals.push(modeledHospital);
                     index++;
-            }    
+                }    
             };
-
-            console.log(modeledHospitals);
         } else {
             throw new Error(`Error while retriving all hospitals...`);
         }
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400,getErrorFromResponse(error));
     }
     gateway.disconnect();

@@ -4,15 +4,15 @@ const PacientPrivateData = require('../../../ChaincodeWithStatesAPI/PacientContr
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function addNewDocumentId(identityName, pacientLbo, documentsId) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.DIRECTOR]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
-    let updateResult;
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.DIRECTOR]);
+
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+
         let bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'getPacientPrivateData', pacientLbo);
         if (bufferedResult.length > 0) {
             let jsonResult = JSON.parse(bufferedResult.toString());
@@ -26,16 +26,22 @@ async function addNewDocumentId(identityName, pacientLbo, documentsId) {
             bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'updatePacientPrivateData', modeledPrivateData.stringifyClass());
             if (bufferedResult.length > 0) {
                 jsonResult = JSON.parse(bufferedResult.toString());
-                updateResult = new (Boolean)(jsonResult);
+                const updateResult = new (Boolean)(jsonResult);
+
+                gateway.disconnect();
+                if (updateResult == true) {
+                   return modeledPrivateData;
+                } else {
+                    throw new Error(`Error while adding new DocumentId to pacient with lbo ${pacientLbo}..`);
+                }
             }
         } else {
             throw new Error(`Error while updating Pacient private data.`);
         }
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
-    gateway.disconnect();
-    return updateResult;
 };
 
 module.exports = addNewDocumentId;

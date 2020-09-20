@@ -4,28 +4,29 @@ const PacientPrivateData = require('../../../ChaincodeWithStatesAPI/PacientContr
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getPacientPrivateData(identityName, pacientLbo) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.DIRECTOR]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
-    let modeledPrivateData;
-
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.DIRECTOR]);
+
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+       
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'getPacientPrivateData', pacientLbo);
         if (bufferedResult.length > 0) {
             const jsonResult = JSON.parse(bufferedResult.toString());
-            modeledPrivateData = new (PacientPrivateData)(jsonResult);
+            const modeledPrivateData = new (PacientPrivateData)(jsonResult);
+
+            gateway.disconnect();
+            return modeledPrivateData;
         } else {
             throw new Error(`Error while retrieving Pacient private data. Probably there is no data for lbo ${pacientLbo}`);
         }
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
-    gateway.disconnect();
-    return modeledPrivateData;
 };
 
 module.exports = getPacientPrivateData;

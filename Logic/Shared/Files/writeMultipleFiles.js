@@ -1,4 +1,5 @@
 var uploadFile = require('../Files/writeFileToDbAPI');
+const { ResponseError } = require('../../../Logic/Response/Error');
 
 async function uploadMultipleFiles(identityName, files) {
     try {
@@ -19,7 +20,7 @@ async function uploadMultipleFiles(identityName, files) {
             };
         }
     } catch (error) {
-        return error;
+        return ResponseError.createError(400, error);
     }
 }
 

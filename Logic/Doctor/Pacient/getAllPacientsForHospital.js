@@ -5,15 +5,15 @@ const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response
 
 
 async function getAllPacientsForHospital(identityName, hospitalCode) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledPacients = [];
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+    
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR]);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'getAllPacients');
         if (bufferedResult.length > 0) {
             const jsonResult = JSON.parse(bufferedResult.toString());
@@ -35,6 +35,7 @@ async function getAllPacientsForHospital(identityName, hospitalCode) {
             throw new Error(`Error while retriving all pacients for specific hospital...`);
         }
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();

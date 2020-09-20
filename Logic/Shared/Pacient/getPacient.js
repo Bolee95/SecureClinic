@@ -4,29 +4,29 @@ const Pacient = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pac
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getPacient(identityName, pacientLbo) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.DIRECTOR]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
-    let modeledPacient;
-
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.DIRECTOR]);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+    
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'getPacient', pacientLbo);
         if (bufferedResult.length > 0) {
             const jsonResult = JSON.parse(bufferedResult.toString());
-            modeledPacient = new (Pacient)(jsonResult);
-            console.log(modeledPacient);
+            const modeledPacient = new (Pacient)(jsonResult);
+            
+            gateway.disconnect();
+            return modeledPacient;
         } else {
             throw new Error(`Error while retriving pacient with lbo ${pacientLbo}...`);
         }
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
-    gateway.disconnect();
-    return modeledPacient;
 };
 
 module.exports = getPacient;

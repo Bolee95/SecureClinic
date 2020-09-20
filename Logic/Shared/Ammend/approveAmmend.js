@@ -7,22 +7,23 @@ const RemovePacientFromWList = require('../../Auto/removePacientFromWaitingList.
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function approveAmmend(identityName, hospitalCode, ordinationCode, serviceCode, pacientLbo, licenceId) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.TEHNICAL, IdentityRole.DIRECTOR]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
-
-    const role = await getRole(gateway, licenceId);
+    var gateway;
+    var updateRes;
+    var finalResult;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.TEHNICAL, IdentityRole.DIRECTOR]);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+
+        const role = await getRole(gateway, licenceId);
         if (role === undefined) {
             throw new Error(`Entity with licenceId ${licenceId} does not exist!`);
         }
 
         const approver = Approver.createInstance(role, licenceId);
-        let updateRes;
 
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAmmend', [hospitalCode, ordinationCode, serviceCode, pacientLbo]);
         if (bufferedResult.length > 0) {
@@ -48,9 +49,7 @@ async function approveAmmend(identityName, hospitalCode, ordinationCode, service
                 updateRes = (Boolean)(result);
                 if (updateRes == true) {
                     if (modeledAmmend.getListOfApprovers().length >= 3) {
-                        await RemovePacientFromWList(gateway, hospitalCode, ordinationCode, serviceCode, pacientLbo);
-                    } else {
-                        gateway.disconnect(); 
+                        finalResult = await RemovePacientFromWList(gateway, hospitalCode, ordinationCode, serviceCode, pacientLbo);
                     }
                 }
             } else {
@@ -58,9 +57,15 @@ async function approveAmmend(identityName, hospitalCode, ordinationCode, service
             }
         }  
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400,getErrorFromResponse(error));
     }
-    return updateRes;
+    gateway.disconnect();
+    if (finalResult === undefined) {
+        return updateRes;
+    } else {
+        return finalResult;
+    }
 };
 
 module.exports = approveAmmend;

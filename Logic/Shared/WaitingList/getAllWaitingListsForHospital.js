@@ -4,16 +4,16 @@ const WaitingList = require('../../../ChaincodeWithStatesAPI/WaitingListContract
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getWaitingListsForHospital(identityName, hospitalCode) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DIRECTOR, identityName.DOCTOR]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
     let modeledWLists = [];
-
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DIRECTOR, identityName.DOCTOR]);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+    
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getAllWaitingListsForHospital', hospitalCode);
         if (bufferedResult.length > 0) {
             const jsonResult = JSON.parse(bufferedResult.toString());
@@ -33,6 +33,7 @@ async function getWaitingListsForHospital(identityName, hospitalCode) {
             throw new Error(`Error while retriving all waitingLists for hospital with HospitalCode ${hospitalCode}`);
         }
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();
@@ -40,10 +41,3 @@ async function getWaitingListsForHospital(identityName, hospitalCode) {
 };
 
 module.exports = getWaitingListsForHospital;
-// getWaitingListsForHospital().then(() => {
-// }).catch((exception) => {
-//     console.log('Retriving Waiting Lists for hospital failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

@@ -4,15 +4,16 @@ const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammen
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function retrieveAllAmmends(identityName) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, IdentityRole.ADMIN);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+    var gateway;
     let modeledAmmends = [];
+
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, IdentityRole.ADMIN);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAllAmmends');
         if (bufferedResult.length > 0) {
             jsonResult = JSON.parse(bufferedResult.toString());
@@ -33,6 +34,7 @@ async function retrieveAllAmmends(identityName) {
             return new Error("Error while retrieving all Ammends...");
         }
     } catch(error) {
+    	gateway.disconnect();
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();

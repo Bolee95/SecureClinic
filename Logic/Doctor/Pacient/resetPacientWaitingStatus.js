@@ -4,16 +4,16 @@ const Pacient = require('../../../ChaincodeWithStatesAPI/PacientContract/lib/pac
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function resetPacientWaitingStatus(identityName, pacientLbo) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
-    let updatingResult;
-    var returnError = false;
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR]);
+            
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+        var returnError = false;
+    
         let bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'getPacient', pacientLbo);
         if (bufferedResult.length > 0) {
             let jsonResult = JSON.parse(bufferedResult.toString());
@@ -28,7 +28,10 @@ async function resetPacientWaitingStatus(identityName, pacientLbo) {
             bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pacient', 'updatePacient', pacient.stringifyClass());
             if (bufferedResult.length > 0) {
                 jsonResult = JSON.parse(bufferedResult.toString());
-                updatingResult = (Boolean)(jsonResult);
+                let updatingResult = (Boolean)(jsonResult);
+
+                gateway.disconnect();
+                return updatingResult;
             } else {
                 returnError = true;
             }
@@ -40,10 +43,9 @@ async function resetPacientWaitingStatus(identityName, pacientLbo) {
             throw new Error(`Error while updating Pacient with id ${pacientLbo} to reseted waiting status...`);
         }
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
-    gateway.disconnect();
-    return updatingResult;
 };
 
 module.exports = resetPacientWaitingStatus;

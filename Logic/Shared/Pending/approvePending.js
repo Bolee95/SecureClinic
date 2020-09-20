@@ -7,16 +7,17 @@ const AddPacientToWaitingList = require('../../Auto/addPacientToWaitingList.js')
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function approvePending(identityName, licenceId, hospitalCode, ordinationCode, serviceCode, pacientLbo) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.TEHNICAL, IdentityRole.DIRECTOR]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
-    let updatingResult;
-
+    var updatingResult;
+    var finalResult;
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.TEHNICAL, IdentityRole.DIRECTOR]);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+
         let bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'getPending', [hospitalCode,ordinationCode,serviceCode,pacientLbo]);
         if (bufferedResult.length > 0) {
             let jsonResult = JSON.parse(bufferedResult.toString());
@@ -47,19 +48,23 @@ async function approvePending(identityName, licenceId, hospitalCode, ordinationC
                 updatingResult = (Boolean)(jsonResult);
 
                 if (updatingResult == true && modeledPending.approvers.length >= 3) {
-                    await AddPacientToWaitingList(gateway, modeledPending.getHospitalName(), modeledPending.getOrdinationName(), modeledPending.getServiceName(), hospitalCode, ordinationCode, serviceCode, pacientLbo, modeledPending.getScore());
-                } else {
-                    gateway.disconnect();
-                }
+                    finalResult = await AddPacientToWaitingList(gateway, modeledPending.getHospitalName(), modeledPending.getOrdinationName(), modeledPending.getServiceName(), hospitalCode, ordinationCode, serviceCode, pacientLbo, modeledPending.getScore());
+                } 
             }
         } else {
             throw new Error(`Error while approving pending with id ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}...`);
         }
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400,getErrorFromResponse(error));
     }
 
-    return updatingResult;
+    gateway.disconnect();
+    if (finalResult === undefined) {
+        return updatingResult;
+    } else {
+        return finalResult;
+    }
 };
 
 module.exports = approvePending;

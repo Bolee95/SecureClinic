@@ -4,28 +4,29 @@ const WaitingList = require('../../../ChaincodeWithStatesAPI/WaitingListContract
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getWaitingList(identityName, hospitalCode, ordinationCode, serviceCode) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.USER]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
-    let modeledWaitingList;
-
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+    
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.USER]);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getWaitingList', [hospitalCode, ordinationCode, serviceCode]);
         if (bufferedResult.length > 0) {
             const jsonResult = JSON.parse(bufferedResult.toString());
-            modeledWaitingList = new (WaitingList)(jsonResult);
+            const modeledWaitingList = new (WaitingList)(jsonResult);
+
+            gateway.disconnect();
+            return modeledWaitingList;
         } else {
             throw new Error(`Error while retrieving WaitingList with id ${hospitalCode}:${ordinationCode}:${serviceCode}...`);
         }
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
-    gateway.disconnect();
-    return modeledWaitingList;
 };
 
 module.exports = getWaitingList;

@@ -4,14 +4,15 @@ const Ammend = require('../../../ChaincodeWithStatesAPI/AmmendContract/lib/ammen
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function addNewEvidenceToAmmend(identityName, evidenceId, hospitalCode, ammendId) {  
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.TEHNICAL, IdentityRole.DIRECTOR]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.DOCTOR, IdentityRole.TEHNICAL, IdentityRole.DIRECTOR]);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+    
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAmmend', [hospitalCode,ammendId]);
         if (bufferedResult.length > 0) {
             const ammend = JSON.parse(bufferedResult.toString());
@@ -22,6 +23,7 @@ async function addNewEvidenceToAmmend(identityName, evidenceId, hospitalCode, am
             if (updateResult.length > 0) {
                 const result = JSON.parse(updateResult.toString());
                 if (result == true) {
+                    gateway.disconnect();
                     return modeledAmmend; 
                 }
             } else {
@@ -29,9 +31,9 @@ async function addNewEvidenceToAmmend(identityName, evidenceId, hospitalCode, am
             }
         } 
     } catch(error) {
+        gateway.disconnect(); 
         return ResponseError.createError(400,getErrorFromResponse(error));
-    } 
-    gateway.disconnect();   
+    }   
 };
 
 module.exports = addNewEvidenceToAmmend;

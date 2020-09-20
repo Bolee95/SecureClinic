@@ -4,16 +4,16 @@ const Pending = require('../../../ChaincodeWithStatesAPI/PendingContract/lib/pen
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function getAllPendings(identityName) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.TEHNICAL, IdentityRole.DIRECTOR, identityName.DOCTOR]);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+    var gateway;
     let modeledPendings = [];
-
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+    
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, [IdentityRole.TEHNICAL, IdentityRole.DIRECTOR, identityName.DOCTOR]);
+        
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+
         const bufferedResult = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'getAllPendings');
         if (bufferedResult.length > 0) {
             const jsonResult = JSON.parse(bufferedResult.toString());
@@ -33,6 +33,7 @@ async function getAllPendings(identityName) {
             throw new Error(`Error while retriving all pendings for hospital with HospitalCode ${hospitalCode}`);
         }
     } catch(error) {
+        gateway.disconnect();
         return ResponseError.createError(400,getErrorFromResponse(error));
     }
     gateway.disconnect();

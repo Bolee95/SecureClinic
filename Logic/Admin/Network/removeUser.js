@@ -3,14 +3,15 @@ const SmartContractUtil = require('../../utils/js-smart-contract-util');
 const { ResponseError, getErrorFromResponse } = require('../../../Logic/Response/Error.js');
 
 async function registerUser(identityName, username) {
-    // Using Utility class to setup everything
-    const fabricWallet = await SmartContractUtil.getFileSystemWallet();
-    // Check if user exists in wallets
-    await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
-    await SmartContractUtil.checkIdentityNameWithRole(identityName, IdentityRole.ADMIN);
-    // Connecting to Gateway
-    const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+    var gateway;
     try {
+        const fabricWallet = await SmartContractUtil.getFileSystemWallet();
+        
+        await SmartContractUtil.checkIdentityInWallet(fabricWallet, identityName);
+        await SmartContractUtil.checkIdentityNameWithRole(identityName, IdentityRole.ADMIN);
+       
+        gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
+    
         const ca = gateway.getClient().getCertificateAuthority();
         const adminIdentity = gateway.getCurrentIdentity();
 
@@ -18,11 +19,12 @@ async function registerUser(identityName, username) {
         await ca.revoke({ enrollmentID: username }, adminIdentity);
         await fabricWallet.delete(username);
         console.log(`User with id ${username} removed from wallet.`);
+        gateway.disconnect();
+        return true;
     } catch (error) {
+        gateway.disconnect();
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
-    gateway.disconnect();
-    return true;
 };
 
 module.exports = registerUser;

@@ -7,13 +7,14 @@ var pswrd = 'admin';
 var url = '127.0.0.1:5984';
 var db = '/db/';
 
-async function readFileFromDb(fileId) {
+const { ResponseError } = require('../../../Logic/Response/Error');
 
+async function readFileFromDb(fileId) {
     try {
         const requestUrl = protocol + username + ':' + pswrd + '@' + url + db + fileId;
-
         var filepath;
-        let result = await request(requestUrl, function(err, res, body) {
+
+        await request(requestUrl, function(err, res, body) {
             if (err == null) {
                 const jsonResult = JSON.parse(body);
                 if (jsonResult['file'] !== undefined) {
@@ -21,23 +22,19 @@ async function readFileFromDb(fileId) {
                     const filename = jsonResult['file']['name'];
                     const extension =  jsonResult['file']['extension'];
                     const mime = jsonResult['file']['mime'];
-                    // const version = jsonResult['file']['version'];
-                    console.log('File successfully read');
+                    
                     var tempFile = temp.fileSync({ prefix: filename, postfix: extension });
                     fs.writeFileSync(tempFile.name, bufferedResult);
-
                     filepath = { 'tempPath': tempFile.name, 'filename': filename, 'mime': mime};
                 }
             }
             else {
-                //throw new Error(`Error while reading file with id ${fileId}: ${err}`);
-
-                return `Error while reading file with id ${fileId}`;
-            }
+                throw new Error(`Error while reading file with id ${fileId}: ${err}`);
+            };
         });
         return filepath;
-    } catch(erorr) {
-        return `Error while reading file with id ${fileId}`;
+    } catch(error) {
+        return ResponseError.createError(400, error);
     }
 };
 

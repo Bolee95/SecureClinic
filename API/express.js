@@ -11,6 +11,10 @@ const configureSharedServiceListners = require('./sharedApi');
 const app = express();
 app.use(formidableMiddleware());
 
+// process.on('uncaughtException', function (err) {
+//     console.log(err);
+// });
+
 const logger = winston.createLogger({
 	level: 'info',
 	format: winston.format.simple(),

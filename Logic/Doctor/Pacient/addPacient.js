@@ -35,7 +35,9 @@ async function createPacient(identityName, name, surname, lbo, jmbg, city, hospi
             throw new Error(`Error while creating new Pacient with lbo ${lbo}...`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
 };

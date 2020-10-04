@@ -30,7 +30,9 @@ async function createAmmend(identityName, hospitalCode, ordinationCode, serviceC
             throw new Error(`Error while creating Ammend with id: ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}!`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
 };

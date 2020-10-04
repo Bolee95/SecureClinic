@@ -25,7 +25,9 @@ async function addPacientPrivateData(identityName, pacientLbo, cardId, screename
             throw new Error(`Error while Adding Pacient private data with lbo ${pacientLbo}...`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
 };

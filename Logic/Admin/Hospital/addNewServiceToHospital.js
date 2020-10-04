@@ -43,11 +43,3 @@ async function addNewServiceToHospital(identityName, hospitalCode, serviceCode) 
 };
 
 module.exports = addNewServiceToHospital;
-
-// addNewServiceToHospital().then(() => {
-// }).catch((exception) => {
-//     console.log('Adding new service to Hospital failed...Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-// });

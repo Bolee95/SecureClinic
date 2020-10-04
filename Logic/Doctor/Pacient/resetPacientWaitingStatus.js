@@ -43,7 +43,9 @@ async function resetPacientWaitingStatus(identityName, pacientLbo) {
             throw new Error(`Error while updating Pacient with id ${pacientLbo} to reseted waiting status...`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
 };

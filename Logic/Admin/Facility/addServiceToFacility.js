@@ -36,7 +36,9 @@ async function addServiceToFacility(identityName, facilityCode, serviceCode, ser
             throw new Error(`Error while retrieving facility with code ${facilityCode}`);
         }  
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }   
 };

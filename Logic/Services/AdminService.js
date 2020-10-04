@@ -7,8 +7,9 @@ const createFacility = require('../Admin/Facility/createFacility');
 const getFacility = require('../Admin/Facility/getFacility');
 // Hospital
 const addNewOrdiantionToHospital = require('../Admin/Hospital/addNewOrdiantionToHospital');
-const addNewServiceToHospital = require('../Admin/Hospital/addNewServiceToHospital');
+//const addNewServiceToHospital = require('../Admin/Hospital/addNewServiceToHospital');
 const createHospital = require('../Admin/Hospital/createHospital');
+const addNewServiceToHospital = require('../Admin/Hospital/addNewOrdinationAndServiceToHospital');
 // Network
 const registerUser = require('../Admin/Network/registerUser');
 const removeUser = require('../Admin/Network/removeUser');
@@ -47,8 +48,8 @@ class AdminService {
         return result;
     }
 
-    static async addNewServiceToHospital(identityName, hospitalCode, serviceCode) {
-        const result = await addNewServiceToHospital(identityName, hospitalCode, serviceCode);
+    static async addNewServiceToHospital(identityName, hospitalCode, ordinationName, ordinationCode, serviceName, serviceCode) {
+        const result = await addNewServiceToHospital(identityName, hospitalCode, ordinationName, ordinationCode, serviceName, serviceCode);
         return result;
     }
 

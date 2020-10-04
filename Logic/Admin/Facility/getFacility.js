@@ -22,12 +22,3 @@ async function getFacility(identityName, facilityCode) {
 };
 
 module.exports = getFacility;
-
-// getFacility().then(() => {
-// }).catch((exception) => {
-//     console.log('Creating new facility failed.... Error:\n');
-//     console.log(exception);
-//     process.exit(-1);
-// }).finally(() => {
-//     //console.log('CreateHospital function ended');
-// });

@@ -31,7 +31,9 @@ async function addNewEvidenceToAmmend(identityName, evidenceId, hospitalCode, am
             }
         } 
     } catch(error) {
-        gateway.disconnect(); 
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400,getErrorFromResponse(error));
     }   
 };

@@ -3,11 +3,15 @@ const ApprovedPacient = require('../../ChaincodeWithStatesAPI/WaitingListContrac
 const Pacient = require('../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
 const WaitingList = require('../../ChaincodeWithStatesAPI/WaitingListContract/lib/waitingList.js');
 const changePacientWaitingStatusToWaiting = require('./changePacientStatusToWaiting');
+const { ordinations } = require('../resources/Ordinations');
 
 
 async function addPacientToWaitingList(gateway, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, pacientLbo, score) {
     let pacient;
     let waitingList;
+
+    // For now in static data
+    let maxWaitingTime = getMaxWaitingTimeForService(serviceCode);
 
     // WAITING LIST RETRIVAL
     const waitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getWaitingList', [hospitalCode, ordinationCode, serviceCode]);
@@ -16,9 +20,8 @@ async function addPacientToWaitingList(gateway, hospitalName, ordinationName, se
         waitingList = new (WaitingList)(jsonResult);
     } else {
         // Waiting list doesn't exist, create one   
-        // TO-DO: Retrieve Service max time 
-        waitingList = WaitingList.createInstance(hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, [], 60);
-        const createWaitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'addWaitingList', newWaitingList.stringifyClass());
+        waitingList = WaitingList.createInstance(hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, [], maxWaitingTime);
+        const createWaitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'addWaitingList', waitingList.stringifyClass());
         if (createWaitingListResult.length > 0) {
             // Everything alright, can continue futher
         } 
@@ -37,8 +40,7 @@ async function addPacientToWaitingList(gateway, hospitalName, ordinationName, se
 
     // CREATING AND ADDING PACIENT TO WAITNG LIST
     let addedDate = Date.now();
-    // TO-DO: Retrieve Service max time 
-    let maxDate = addedDate + (86400000 * 60);
+    let maxDate = addedDate + (86400000 * maxWaitingTime);
     const approvedPacient = ApprovedPacient.createInstance(pacient.lbo, pacient.getNameAndSurname(), pacient.city, addedDate, score, maxDate);
     waitingList.addNewPacient(approvedPacient);
 
@@ -57,5 +59,30 @@ async function addPacientToWaitingList(gateway, hospitalName, ordinationName, se
     let result = await changePacientWaitingStatusToWaiting(gateway, pacientLbo, hospitalName, hospitalCode, ordinationCode, serviceCode);
     return result;
 };
+
+function getMaxWaitingTimeForService(serviceCode) {
+    for (let index = 0; index < ordinations.length; index++) {
+        let ordinationItem = ordinations[index];
+
+        var services = [];
+
+        for(let index = 0; index < ordinationItem.services.length; index++) {
+            let serviceItem = ordinationItem.services[index];
+            let service = {
+                "name": serviceItem['serviceName'],
+                "code": serviceItem['serviceCode'],
+                "waitingTime": serviceItem['waitingTime']
+            };
+            services.push(service);
+        }
+
+        let selectedService = services.find(service => service["code"] === serviceCode);
+        if (selectedService === undefined) {
+            return 60;
+        } else {
+            return selectedService['waitingTime'];
+        }
+    }
+}
 
 module.exports = addPacientToWaitingList;

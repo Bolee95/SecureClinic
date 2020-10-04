@@ -33,7 +33,9 @@ async function getAllPacientsPrivateData(identityName) {
             throw new Error(`Error while retriving all pacients private data...`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();

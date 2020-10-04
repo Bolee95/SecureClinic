@@ -34,7 +34,9 @@ async function retrieveAllAmmends(identityName) {
             return new Error("Error while retrieving all Ammends...");
         }
     } catch(error) {
-    	gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();

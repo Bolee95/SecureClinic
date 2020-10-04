@@ -55,7 +55,9 @@ async function approvePending(identityName, licenceId, hospitalCode, ordinationC
             throw new Error(`Error while approving pending with id ${hospitalCode}:${ordinationCode}:${serviceCode}:${pacientLbo}...`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400,getErrorFromResponse(error));
     }
 

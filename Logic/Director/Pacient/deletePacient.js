@@ -24,7 +24,9 @@ async function deletePacient(identityName, pacientLbo) {
             throw new Error(`Error while deleting pacient with lbo ${pacientLbo}...`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
 };

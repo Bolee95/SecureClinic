@@ -24,7 +24,9 @@ async function getWaitingList(identityName, hospitalCode, ordinationCode, servic
             throw new Error(`Error while retrieving WaitingList with id ${hospitalCode}:${ordinationCode}:${serviceCode}...`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
 };

@@ -22,7 +22,9 @@ async function createEntity(identityName, licenceId, role, name, surname, hospit
             throw new Error(`Error while creating Entity ${entity.getLicenceId()}...`);
         }  
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
 };

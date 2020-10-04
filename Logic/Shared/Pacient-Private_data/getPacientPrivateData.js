@@ -24,7 +24,9 @@ async function getPacientPrivateData(identityName, pacientLbo) {
             throw new Error(`Error while retrieving Pacient private data. Probably there is no data for lbo ${pacientLbo}`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
 };

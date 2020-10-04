@@ -85,6 +85,8 @@ function configureAdminServiceListeners(expressApp) {
     });
 
     // Hospital
+
+    // Not used
     expressApp.post("/admin/addOrdinationToHospital", async (req, res, err) => {
         const identityName = req.get("Identity_name");
         const formFields = req.fields;
@@ -99,6 +101,7 @@ function configureAdminServiceListeners(expressApp) {
         }
     });
 
+    // Not used
     expressApp.post("/admin/addServiceToHospital", async (req, res, err) => {
         const identityName = req.get("Identity_name");
         const formFields = req.fields;
@@ -128,6 +131,23 @@ function configureAdminServiceListeners(expressApp) {
             res.status(200).json(result);
         }
     });
+
+    expressApp.post("/admin/addNewService", async (req, res, err) => {
+        const identityName = req.get("Identity_name");
+        const formFields = req.fields;
+        const hospitalCode = formFields["hospitalCode"];
+        const ordinationName = formFields["ordinationName"];
+        const ordinationCode = formFields["ordinationCode"];
+        const serviceName = formFields["serviceName"];
+        const serviceCode = formFields["serviceCode"];
+
+        const result = await adminService.addNewServiceToHospital(identityName, hospitalCode, ordinationName, ordinationCode, serviceName, serviceCode);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
+            res.status(200).json(result);
+        }
+    })
 
     // Network
     expressApp.post("/admin/registerUserWallet", async (req, res, err) => {

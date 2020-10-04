@@ -24,7 +24,9 @@ async function getEntity(identityName, licenceId) {
             throw new Error(`Error while retriving entity with licenceId ${licenceId}...`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
 };

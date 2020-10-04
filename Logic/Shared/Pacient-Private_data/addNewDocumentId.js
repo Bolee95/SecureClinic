@@ -39,7 +39,9 @@ async function addNewDocumentId(identityName, pacientLbo, documentsId) {
             throw new Error(`Error while updating Pacient private data.`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
 };

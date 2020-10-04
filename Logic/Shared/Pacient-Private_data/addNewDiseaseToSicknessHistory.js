@@ -38,7 +38,9 @@ async function addNewDiseaseToSicknessHistory(identityName, pacientLbo, diseaseC
             throw new Error(`Error while updating Pacient private data with lbo ${pacientLbo}.`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
 };

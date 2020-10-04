@@ -35,7 +35,9 @@ async function getAllPacientsForHospital(identityName, hospitalCode) {
             throw new Error(`Error while retriving all pacients for specific hospital...`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     }
     gateway.disconnect();

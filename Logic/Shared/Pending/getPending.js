@@ -24,7 +24,9 @@ async function getPending(identityName, hospitalCode, ordinationCode, serviceCod
             throw new Error(`Error while retriving pending with id ${hospitalCode + ':' + ordinationCode + ':' + serviceCode + ':' + pacientLbo}...`);
         }
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         return ResponseError.createError(400, getErrorFromResponse(error));
     };
 };  

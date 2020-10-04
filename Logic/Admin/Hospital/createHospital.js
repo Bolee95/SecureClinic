@@ -21,7 +21,9 @@ async function createHospital(identityName, hospitalName, hospitalCode, privateO
             throw new Error(`Error while creating Hospital...`);
         }  
     } catch(error) {
-        gateway.disconnect();
+        if (gateway !== undefined) {
+            gateway.disconnect();
+        }
         ResponseError.createError(400, getErrorFromResponse(error));
     }
 };

@@ -1,0 +1,44 @@
+[
+    {
+        "transactionName": "statisticExists",
+        "transactionLabel": "A test statisticExists transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "createStatistic",
+        "transactionLabel": "A test createStatistic transaction",
+        "arguments": [
+            "001",
+            "some value"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "readStatistic",
+        "transactionLabel": "A test readStatistic transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "updateStatistic",
+        "transactionLabel": "A test updateStatistic transaction",
+        "arguments": [
+            "001",
+            "some other value"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "deleteStatistic",
+        "transactionLabel": "A test deleteStatistic transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    }
+]

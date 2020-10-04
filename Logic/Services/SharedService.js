@@ -36,6 +36,9 @@ const getEntity = require('../Shared/Entity/getEntity');
 const uploadFile = require('../Shared/Files/writeFileToDbAPI');
 const getFile = require('../Shared/Files/readFileFromDbAPI');
 const uploadMultipleFiles = require('../Shared/Files/writeMultipleFiles');
+// Statistics
+const updateStatistics = require('../Statistics/updateStatisticsForHospital');
+const getStatistics = require('../Statistics/getStatistics');
 
 class SharedService {
 
@@ -184,6 +187,17 @@ class SharedService {
 
     static async uploadMultipleFiles(identityName, files) {
         const result = await uploadMultipleFiles(identityName, files);
+        return result;
+    }
+
+    // Statistics
+    static async updateStatistics(identityName, hospitalCode) {
+        const result = await updateStatistics(identityName, hospitalCode);
+        return result;
+    }
+
+    static async getStatistics(identityName, hospitalCode) {
+        const result = await getStatistics(identityName,hospitalCode);
         return result;
     }
 }

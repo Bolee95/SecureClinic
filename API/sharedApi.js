@@ -421,6 +421,33 @@ function configureSharedServiceListners(expressApp) {
             res.status(400).json(error);
         }
     });
+
+    // Statistics
+    expressApp.post("/shared/updateStatistics", async (req, res, err) => {
+        const identityName = req.get("Identity_name");
+
+        const formFields = req.fields;
+        const hospitalCode = formFields["hospitalCode"];
+
+        const result =   await sharedService.updateStatistics(identityName, hospitalCode);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
+            res.status(200).json(result);
+        }
+    })
+
+    expressApp.get("/shared/getStatistics", async (req, res, err) => {
+        const identityName = req.get("Identity_name");
+        const hospitalCode = req.query.hospitalCode;
+
+        const result = await sharedService.getStatistics(identityName, hospitalCode);
+        if (result.code === 400) { 
+            res.status(400).json(result);
+        } else {
+            res.status(200).json(result);
+        }
+    })
 }
 
 module.exports = configureSharedServiceListners;

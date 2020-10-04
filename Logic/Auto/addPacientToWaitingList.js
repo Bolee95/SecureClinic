@@ -3,7 +3,7 @@ const ApprovedPacient = require('../../ChaincodeWithStatesAPI/WaitingListContrac
 const Pacient = require('../../ChaincodeWithStatesAPI/PacientContract/lib/pacient.js');
 const WaitingList = require('../../ChaincodeWithStatesAPI/WaitingListContract/lib/waitingList.js');
 const changePacientWaitingStatusToWaiting = require('./changePacientStatusToWaiting');
-const { ordinations } = require('../resources/Ordinations');
+const { ordinations } = require('../Resources/Ordinations');
 
 
 async function addPacientToWaitingList(gateway, hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, pacientLbo, score) {

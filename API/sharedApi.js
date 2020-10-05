@@ -429,7 +429,7 @@ function configureSharedServiceListners(expressApp) {
         const formFields = req.fields;
         const hospitalCode = formFields["hospitalCode"];
 
-        const result =   await sharedService.updateStatistics(identityName, hospitalCode);
+        const result = await sharedService.updateStatistics(identityName, hospitalCode);
         if (result.code === 400) { 
             res.status(400).json(result);
         } else {

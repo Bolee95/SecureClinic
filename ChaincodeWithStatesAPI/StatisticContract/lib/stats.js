@@ -21,12 +21,61 @@ class Stats {
         return this.numWaitingLists;
     }
 
+    setNumberOfAmmends(numOfAmmends) {
+        this.numOfAmmends = numOfAmmends;
+    }
+
+    getNumOfAmmends() {
+        return this.numOfAmmends;
+    }
+
+    setNumberOfUnapprovedAmmends(numOfUnapprovedAmmends) {
+        this.numOfUnapprovedAmmends = numOfUnapprovedAmmends;
+    }
+
+    getNumOfUnapprovedAmmends() {
+        return this.numOfUnapprovedAmmends;
+    }
+
+    setNumberOfApprovedAmmends(numOfApprovedAmmends) {
+        this.numOfApprovedAmmends = numOfApprovedAmmends;
+    }
+
+    getNumOfApprovedAmmends() {
+        return this.numOfApprovedAmmends;
+    }
+
+    setNumberOfPendings(numOfPendings) {
+        this.numOfPendings = numOfPendings;
+    }
+
+    getNumOfPendings() {
+        return this.numOfPendings;
+    }
+
+    setNumberOfUnapprovedPendings(numOfUnapprovedPendings) {
+        this.numOfUnapprovedPendings = numOfUnapprovedPendings;
+    }
+
+    getNumOfUnapprovedPendings() {
+        return this.numOfUnapprovedPendings;
+    }
+
+    setNumberOfApprovedPending(numOfApprovedPendings) {
+        this.numOfApprovedPendings = numOfApprovedPendings;
+    }
+
+    getNumOfApprovedPendings() {
+        return this.numOfApprovedPendings;
+    }
+
+
     toBuffer() {
         return Buffer.from(JSON.stringify(this));
     }
 
-    static createInstance(timestamp, numPacients, numServices) {
-        return new Stats({ timestamp, numPacients, numServices });
+    static createInstance(timestamp, numPacients, numServices, numAmmends, numUnapprovedAmmends, numApprovedAmmends, numPendings, numUnapprovedPendings, numApprovedPendings) {
+        return new Stats({ timestamp, numPacients, numServices, numAmmends, numUnapprovedAmmends, numApprovedAmmends, numPendings, numUnapprovedPendings, numApprovedPendings });
     }
 }
 module.exports = Stats;

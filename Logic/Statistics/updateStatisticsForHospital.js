@@ -1,5 +1,9 @@
 const Hospital = require('./../../ChaincodeWithStatesAPI/HospitalContract/lib/hospital');
 const WaitingList = require('./../../ChaincodeWithStatesAPI/WaitingListContract/lib/waitingList');
+const Ammend = require('./../../ChaincodeWithStatesAPI/AmmendContract/lib/ammend');
+const AmmendApprover = require('./../../ChaincodeWithStatesAPI/AmmendContract/lib/approver');
+const Pending = require('./../../ChaincodeWithStatesAPI/PendingContract/lib/pending');
+const PendingApprover = require('./../../ChaincodeWithStatesAPI/PendingContract/lib/approver');
 const Stat = require('./../../ChaincodeWithStatesAPI/StatisticContract/lib/stats');
 const Statistic = require('./../../ChaincodeWithStatesAPI/StatisticContract/lib/statistic');
 const SmartContractUtil = require('./../utils/js-smart-contract-util');
@@ -12,6 +16,12 @@ async function updateStatisticsForHospital(identityName, hospitalCode) {
     {
         var numberOfServices = 0;
         var numberOfPacients = 0;
+        var numberOfAmmends = 0;
+        var numberOfUnapprovedAmmends = 0;
+        var numberOfApprovedAmmends = 0;
+        var numberOfPendings = 0;
+        var numberOfUnaprovedPendings = 0;
+        var numberOfApprovedPendings = 0;
         var timestamp = Date.now();
 
         const fabricWallet = await SmartContractUtil.getFileSystemWallet();
@@ -21,6 +31,7 @@ async function updateStatisticsForHospital(identityName, hospitalCode) {
         
         gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, identityName);
    
+        // Number of services
         const hospitalResult = await SmartContractUtil.submitTransaction(gateway, 'Hospital', 'getHospital', hospitalCode);
         if (hospitalResult.length > 0) {
             const jsonResult = JSON.parse(hospitalResult.toString());
@@ -30,7 +41,7 @@ async function updateStatisticsForHospital(identityName, hospitalCode) {
             throw new Error(`Couldn't retrieve hospital with hospital code ${hospitalCode}...`);
         }
 
-
+        // Number of pacients in hospital
         var modeledWLists = [];
         const waitingListsResults = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getAllWaitingListsForHospital', hospitalCode);
         if (waitingListsResults.length > 0) {
@@ -54,7 +65,82 @@ async function updateStatisticsForHospital(identityName, hospitalCode) {
             }
         }
 
-        let newStat = Stat.createInstance(timestamp,numberOfPacients,numberOfServices);
+        // Number of total ammends and unaproved ones
+        var modeledAmmends = [];
+        const ammendsResults = await SmartContractUtil.submitTransaction(gateway, 'Ammend', 'getAllAmmendsForHospital', hospitalCode);
+        if (ammendsResults.length > 0) {
+            const jsonResult = JSON.parse(ammendsResults.toString());
+            
+            let index = 0;
+            while(index != null) {
+                const ammendElement = jsonResult[index];
+                if (ammendElement == undefined) {
+                    index = null;
+                } else {
+                    const modeledAmmend = new (Ammend)(ammendElement);
+                    var alreadyApproved = false;
+
+                    if (modeledAmmend.approvers == undefined) {
+                        modeledAmmend.approvers = [];
+                    }
+
+                    for (const approver of modeledAmmend.approvers) {
+                        const modeledApprover = new (AmmendApprover)(approver);
+                        if (modeledApprover.licenceId == identityName) {
+                            alreadyApproved = true;
+                        }
+                    }
+                    if (!alreadyApproved) {
+                        numberOfUnapprovedAmmends = numberOfUnapprovedAmmends + 1;
+                        modeledAmmends.push(modeledAmmend);
+                    } else {
+                        numberOfApprovedAmmends = numberOfApprovedAmmends + 1;
+                    }
+                    index++;
+                }    
+            };
+        } 
+
+        numberOfAmmends = modeledAmmends.length;
+
+        var modeledPendings = [];
+        // Number of pendings and unaproved ones
+        const pendingsResults = await SmartContractUtil.submitTransaction(gateway, 'Pending', 'getAllPendingsForHospitalCode', hospitalCode);
+        if (pendingsResults.length > 0) {
+            const jsonResult = JSON.parse(pendingsResults.toString());
+            
+            let index = 0;
+            while(index != null) {
+                const pendingElement = jsonResult[index];
+                if (pendingElement == undefined) {
+                    index = null;
+                } else {
+
+                    const modeledPending = new (Pending)(pendingElement);
+                    var alreadyApproved = false;
+
+                    for (const approver of modeledPending.approvers) {
+                        const modeledApprover = new (PendingApprover)(approver);
+                        if (modeledApprover.licenceId == identityName) {
+                            alreadyApproved = true;
+                        } 
+                    }
+                    if (!alreadyApproved) {
+                        numberOfUnaprovedPendings = numberOfUnaprovedPendings + 1;
+                        modeledPendings.push(modeledPending);
+                    } else {
+                        numberOfApprovedPendings = numberOfApprovedPendings + 1;
+                    }
+                    index++;
+                }    
+            };
+        }
+
+        numberOfPendings = modeledPendings.length;
+
+        /// Stat setup
+
+        let newStat = Stat.createInstance(timestamp, numberOfPacients, numberOfServices, numberOfAmmends, numberOfUnapprovedAmmends, numberOfApprovedAmmends, numberOfPendings, numberOfUnaprovedPendings, numberOfApprovedPendings);
         var modeledStatistic;
         var createNewStatistic = false;
 

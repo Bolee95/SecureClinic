@@ -91,7 +91,7 @@ class State {
         return JSON.stringify(this);
     }
 
-     /**
+    /**
      * Constructs a specific State object from string data
      * that should represent stringified object of specific State instance
      * @param {string} stringData Stringifed object

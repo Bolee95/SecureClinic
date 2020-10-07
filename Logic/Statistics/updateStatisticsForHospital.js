@@ -22,6 +22,7 @@ async function updateStatisticsForHospital(identityName, hospitalCode) {
         var numberOfPendings = 0;
         var numberOfUnaprovedPendings = 0;
         var numberOfApprovedPendings = 0;
+        var waitingListsStats = [];
         var timestamp = Date.now();
 
         const fabricWallet = await SmartContractUtil.getFileSystemWallet();
@@ -62,6 +63,13 @@ async function updateStatisticsForHospital(identityName, hospitalCode) {
             for(let index = 0; index < modeledWLists.length; index++) {
                 let modeledWlist = modeledWLists[index];
                 numberOfPacients = numberOfPacients + modeledWlist.getAllPacients().length;
+
+                let modeledWListStat = {
+                    'name': modeledWlist.getServiceName(),
+                    'count': modeledWlist.getAllPacients().length
+                }
+
+                waitingListsStats.push(modeledWListStat);
             }
         }
 
@@ -139,8 +147,7 @@ async function updateStatisticsForHospital(identityName, hospitalCode) {
         numberOfPendings = modeledPendings.length;
 
         /// Stat setup
-
-        let newStat = Stat.createInstance(timestamp, numberOfPacients, numberOfServices, numberOfAmmends, numberOfUnapprovedAmmends, numberOfApprovedAmmends, numberOfPendings, numberOfUnaprovedPendings, numberOfApprovedPendings);
+        let newStat = Stat.createInstance(timestamp, numberOfPacients, numberOfServices, numberOfAmmends, numberOfUnapprovedAmmends, numberOfApprovedAmmends, numberOfPendings, numberOfUnaprovedPendings, numberOfApprovedPendings, waitingListsStats);
         var modeledStatistic;
         var createNewStatistic = false;
 

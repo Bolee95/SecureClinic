@@ -69,13 +69,20 @@ class Stats {
         return this.numOfApprovedPendings;
     }
 
+    setWaitingListsStats(stats) {
+        this.waitingListStats = stats;
+    }
+
+    getWaitingListsStats() {
+        return this.waitingListsStats;
+    }
 
     toBuffer() {
         return Buffer.from(JSON.stringify(this));
     }
 
-    static createInstance(timestamp, numPacients, numServices, numAmmends, numUnapprovedAmmends, numApprovedAmmends, numPendings, numUnapprovedPendings, numApprovedPendings) {
-        return new Stats({ timestamp, numPacients, numServices, numAmmends, numUnapprovedAmmends, numApprovedAmmends, numPendings, numUnapprovedPendings, numApprovedPendings });
+    static createInstance(timestamp, numPacients, numServices, numAmmends, numUnapprovedAmmends, numApprovedAmmends, numPendings, numUnapprovedPendings, numApprovedPendings, waitingListsStats) {
+        return new Stats({ timestamp, numPacients, numServices, numAmmends, numUnapprovedAmmends, numApprovedAmmends, numPendings, numUnapprovedPendings, numApprovedPendings, waitingListsStats});
     }
 }
 module.exports = Stats;

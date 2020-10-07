@@ -24,7 +24,7 @@ class StatisticContract extends Contract {
     }
 
     async instantiate(ctx) {
-        let stat = Stat.createInstance(Date.now(), 0, 0);
+        let stat = Stat.createInstance('1',1,2,3,4,5,6,7,8,[]);
         let statistic1 = Statistic.createInstance('AA', [stat]);
         let statistic2 = Statistic.createInstance('AD', [stat]);
         await ctx.statisticList.addStatistic(statistic1);

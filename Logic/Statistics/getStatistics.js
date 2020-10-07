@@ -31,6 +31,7 @@ async function getStatistics(identityName, hospitalCode) {
                 returningStats['diffNumApprovedPendings'] = returningStats['stats'][1]['numApprovedPendings'] - returningStats['stats'][0]['numApprovedPendings'];
                 returningStats['diffNumUnapprovedPendings'] = returningStats['stats'][1]['numUnapprovedPendings'] - returningStats['stats'][0]['numUnapprovedPendings'];
                 returningStats['diffTimestamp'] = returningStats['stats'][1]['timestamp'] - returningStats['stats'][0]['timestamp'];
+                returningStats['waitingListsStats'] = returningStats['stats'][1]['waitingListsStats'];
             } else {
                 returningStats = stats;
             }

@@ -7,6 +7,11 @@ class WaitingList extends State {
         super(WaitingList.getClass(), [obj.hospitalCode, obj.ordinationCode, obj.serviceCode]);
         Object.assign(this,obj);
     }
+
+    getServiceName() {
+        return this.serviceName;
+    }
+
     getHospitalCode() {
         return this.hospitalCode;
     }
@@ -48,7 +53,7 @@ class WaitingList extends State {
     }
 
     static createInstance(hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, pacients, maxWaitingDays) {
-        return new WaitingList({hospitalName, ordinationName, serviceName, hospitalCode , ordinationCode, serviceCode, pacients, maxWaitingDays});
+        return new WaitingList({hospitalName, ordinationName, serviceName, hospitalCode, ordinationCode, serviceCode, pacients, maxWaitingDays});
     }
 
     static getClass() {

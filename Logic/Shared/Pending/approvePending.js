@@ -47,7 +47,8 @@ async function approvePending(identityName, licenceId, hospitalCode, ordinationC
                 jsonResult = JSON.parse(bufferedResult.toString());
                 updatingResult = (Boolean)(jsonResult);
 
-                if (updatingResult == true && modeledPending.approvers.length >= 3) {
+                // For test purposes set to 1, it should be 3
+                if (updatingResult == true && modeledPending.approvers.length >= 1) {
                     finalResult = await AddPacientToWaitingList(gateway, modeledPending.getHospitalName(), modeledPending.getOrdinationName(), modeledPending.getServiceName(), hospitalCode, ordinationCode, serviceCode, pacientLbo, modeledPending.getScore());
                 } 
             }

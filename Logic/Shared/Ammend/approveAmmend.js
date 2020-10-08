@@ -48,7 +48,8 @@ async function approveAmmend(identityName, hospitalCode, ordinationCode, service
                 const result = JSON.parse(updateResult.toString());
                 updateRes = (Boolean)(result);
                 if (updateRes == true) {
-                    if (modeledAmmend.getListOfApprovers().length >= 3) {
+                    // For test purposes changed to 1, it should be 3
+                    if (modeledAmmend.getListOfApprovers().length >= 1) {
                         finalResult = await RemovePacientFromWList(gateway, hospitalCode, ordinationCode, serviceCode, pacientLbo);
                     }
                 }

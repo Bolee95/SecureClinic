@@ -15,7 +15,7 @@ async function addPacientToWaitingListTest(pacientLbo, name, surname) {
     const gateway = await SmartContractUtil.getConfiguredGateway(fabricWallet, adminIdName);
     try {
         // WAITING LIST RETRIVAL
-        const waitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getWaitingList', ['AD', 'BB', 'CC']);
+        const waitingListResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'getWaitingList', ['AD', 'AE', 'AA']);
         if (waitingListResult.length > 0) {
             const jsonResult = JSON.parse(waitingListResult.toString());
             waitingList = new (WaitingList)(jsonResult);
@@ -36,7 +36,7 @@ async function addPacientToWaitingListTest(pacientLbo, name, surname) {
         let addedDate = Date.now();
         // TO-DO: Retrieve Service max time 
         let maxDate = addedDate + (86400000 * 50);
-        const approvedPacient = ApprovedPacient.createInstance(pacientLbo, name + ' ' + surname, 'Nis', addedDate, 10, maxDate);
+        const approvedPacient = ApprovedPacient.createInstance(pacientLbo, name + ' ' + surname, 'Niš', addedDate, 10, maxDate);
         waitingList.addNewPacient(approvedPacient);
 
         const updateResult = await SmartContractUtil.submitTransaction(gateway, 'WaitingList', 'updateWaitingList', waitingList.stringifyClass());

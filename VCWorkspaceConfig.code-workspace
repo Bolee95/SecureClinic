@@ -1,0 +1,44 @@
+{
+	"folders": [
+		{
+			"path": "/Users/bogdan/Desktop/Secure-Clinic-Web-App/easydev_2.5.1/new-seed"
+		},
+		{
+			"path": "SecureClinic/ChaincodeWithStatesAPI/EntityContract"
+		},
+		{
+			"path": "SecureClinic/ChaincodeWithStatesAPI/PendingContract"
+		},
+		{
+			"path": "SecureClinic/ChaincodeWithStatesAPI/HospitalContract"
+		},
+		{
+			"path": "SecureClinic/API"
+		},
+		{
+			"path": "SecureClinic/Logic"
+		},
+		{
+			"path": "SecureClinic/ChaincodeWithStatesAPI/PacientContract"
+		},
+		{
+			"path": "SecureClinic/ChaincodeWithStatesAPI/WaitingListContract"
+		},
+		{
+			"path": "/Users/bogdan/Desktop/Secure-Clinic-Web-App/easydev_2.5.1/template"
+		},
+		{
+			"path": "SecureClinic/ChaincodeWithStatesAPI/AmmendContract"
+		},
+		{
+			"name": "ChaincodeWithStatesAPI",
+			"path": "SecureClinic/ChaincodeWithStatesAPI"
+		},
+		{
+			"path": "SecureClinic/ChaincodeWithStatesAPI/StatisticContract"
+		}
+	],
+	"settings": {
+		"compile-hero.disable-compile-files-on-did-save-code": true
+	}
+}

@@ -1,2 +1,0 @@
-API DOCS
-https://hyperledger.github.io/fabric-chaincode-java/release-1.4/api/org/hyperledger/fabric/shim/ChaincodeStub.html#getStateByRangeWithPagination-java.lang.String-java.lang.String-int-java.lang.String-

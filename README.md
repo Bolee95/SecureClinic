@@ -1,5 +1,5 @@
 # SecureClinic
-Secure Clinic is a system for managing hospital waiting lists based on private blockchain.
+Secure Clinic is a system for storing and managing data regarding hospital waiting lists, by using private blockhain. For this purpose, Hyperledger was used.
 
 This repo contains following logic:
 - Definition of smart contracts written in JavaScript
